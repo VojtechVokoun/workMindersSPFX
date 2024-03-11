@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "workminders-spfx-client-side-solution",
+    "id": "98655c61-63d2-4510-8ae9-50ea22c1b279",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "Vojtech Vokoun",
+      "websiteUrl": "https://www.vokounapps.cz",
+      "privacyUrl": "https://www.vokounapps.cz",
+      "termsOfUseUrl": "https://www.vokounapps.cz",
+      "mpnId": "Undefined-1.18.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "workminders-spfx description"
+      },
+      "longDescription": {
+        "default": "workminders-spfx description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "workminders-spfx Feature",
+        "description": "The feature that activates elements of the workminders-spfx solution.",
+        "id": "0959c3f9-53cc-4f77-aee9-cb2b3c46df85",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/workminders-spfx.sppkg"
+  }
+}
