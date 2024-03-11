@@ -1,6 +1,5 @@
 /**
  * This is the object containing the user suggestions returned by the Graph API.
- * It is used in the getUserSuggestions and getManager function.
  * @param id - the user's ID
  * @param displayName - the user's display name
  * @param mail - the user's email
@@ -15,7 +14,7 @@ export type TUserSuggestion = {
 };
 
 /**
- * This is the object containing the team suggestions returned by the Graph API. It is used in the getTeamSuggestions function.
+ * This is the object containing the team suggestions returned by the Graph API.
  * @param id - the team's ID
  * @param displayName - the team's display name
  * @param url - the team's URL
@@ -25,4 +24,17 @@ export type TTeamSuggestion = {
   id: string;
   displayName: string;
   url: string;
+};
+
+/**
+ * This is the object containing the sites returned by the SharePoint REST API.
+ * @param id - the channel's ID
+ * @param displayName - the channel's display name
+ * @param webUrl - the channel's web URL
+ * @returns The SP Site object.
+ */
+export type TSPSite = {
+  id: string;
+  displayName: string;
+  webUrl: string;
 };
