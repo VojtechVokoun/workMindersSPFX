@@ -24,6 +24,7 @@ export const getUserSuggestions = async (
       `/users?$filter=startswith(displayName,'${query}') or startswith(mail,'${query}') or startswith(userPrincipalName,'${query}')`,
     )
     .version("v1.0")
+    .top(5)
     .get();
 
   // TODO: remove after testing
@@ -73,6 +74,7 @@ export const getTeamSuggestions = async (
   const teamSuggestions = await client
     .api(`/me/joinedTeams?$filter=startswith(displayName,'${query}')`)
     .version("v1.0")
+    .top(5)
     .get();
 
   // TODO: remove after testing
