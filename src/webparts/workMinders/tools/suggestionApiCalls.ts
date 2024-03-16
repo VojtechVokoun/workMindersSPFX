@@ -29,10 +29,14 @@ export const getUserSuggestions = async (
     )
     .version("v1.0")
     .select("id,displayName,mail,userPrincipalName")
-    .get();
+    .get()
+    .catch((error: unknown) => {
+      console.error(`getUserSuggestions: ${error}`);
+      return null;
+    });
 
   // TODO: remove after testing
-  console.log(userSuggestions);
+  console.log(userSuggestions.value);
 
   // Return the suggestions
   return userSuggestions.value;
@@ -45,7 +49,14 @@ export const getManager = async (
   client: MSGraphClientV3,
 ): Promise<TUserSuggestion> => {
   // Get the user's manager
-  const manager = await client.api("/me/manager").version("v1.0").get();
+  const manager = await client
+    .api("/me/manager")
+    .version("v1.0")
+    .get()
+    .catch((error: unknown) => {
+      console.error(`getManager: ${error}`);
+      return null;
+    });
 
   // TODO: remove after testing
   console.log(manager);
@@ -71,17 +82,21 @@ export const getTeamSuggestions = async (
     .api(`/me/joinedTeams?$filter=startswith(displayName,'${query}')`)
     .version("v1.0")
     .select("id,displayName,webUrl")
-    .get();
+    .get()
+    .catch((error: unknown) => {
+      console.error(`getTeamSuggestions: ${error}`);
+      return null;
+    });
 
   // TODO: remove after testing
-  console.log(teamSuggestions);
+  console.log(teamSuggestions.value);
 
   // Return the suggestions
   return teamSuggestions.value;
 };
 
 /**
- * This calls the Graph API to get all the sites that the user has access to.
+ * This calls the SharePoint REST API to get all the sites that the user has access to.
  * This function is called when the webpart is loaded – that is because the neither the SharePoint REST API nor the
  * Graph API is able to query the user's sites based on the user's input. (The 'starts with' filter is not supported,
  * both APIs only return sites if the name and search query are matching.)
@@ -96,6 +111,10 @@ export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
       `${context.pageContext.web.absoluteUrl}/_api/search/query?querytext='contentclass:STS_Site'&rowlimit=500`,
       SPHttpClient.configurations.v1,
     )
+    .catch((error: unknown) => {
+      console.error(`getSites: ${error}`);
+      return null;
+    })
     .then((response: SPHttpClientResponse) => {
       return response.json();
     });
