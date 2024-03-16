@@ -18,17 +18,15 @@ export interface IWorkMindersWebPartProps {
 
 export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMindersWebPartProps> {
   private _isDarkTheme: boolean = false;
-  private _environmentMessage: string = "";
+
+  //private _environmentMessage: string = "";
 
   public render(): void {
     const element: React.ReactElement<IWorkMindersProps> = React.createElement(
       WorkMinders,
       {
-        description: this.properties.description,
         isDarkTheme: this._isDarkTheme,
-        environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
-        userDisplayName: this.context.pageContext.user.displayName,
         webpartContext: this.context,
       },
     );
@@ -38,7 +36,7 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
 
   protected onInit(): Promise<void> {
     return this._getEnvironmentMessage().then((message) => {
-      this._environmentMessage = message;
+      //this._environmentMessage = message;
     });
   }
 
