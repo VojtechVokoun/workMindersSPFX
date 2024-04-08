@@ -2,6 +2,9 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 import {
   MSGraphClientV3,
   SPHttpClient,
+  SPHttpClientConfiguration,
+  ODataVersion,
+  ISPHttpClientConfiguration,
   SPHttpClientResponse,
 } from "@microsoft/sp-http";
 import {
@@ -105,27 +108,38 @@ export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
   // Set up the SharePoint HTTP client
   const client: SPHttpClient = context.spHttpClient;
 
+  // Set up the SharePoint HTTP client configuration
+  const spSearchConfig: ISPHttpClientConfiguration = {
+    defaultODataVersion: ODataVersion.v3,
+  };
+  const clientConfigODataV3: SPHttpClientConfiguration =
+    SPHttpClient.configurations.v1.overrideWith(spSearchConfig);
+
   // Get the user's sites
-  const clientResponse: any = await client
+  const clientResponse: SPHttpClientResponse | null = await client
     .get(
       `${context.pageContext.web.absoluteUrl}/_api/search/query?querytext='contentclass:STS_Site'&rowlimit=500`,
-      SPHttpClient.configurations.v1,
+      clientConfigODataV3,
     )
     .catch((error: unknown) => {
       console.error(`getSites: ${error}`);
       return null;
-    })
-    .then((response: SPHttpClientResponse) => {
-      return response.json();
     });
 
-  const loadedSites: any[] =
-    clientResponse.PrimaryQueryResult.RelevantResults.Table.Rows;
+  if (!clientResponse) {
+    return [];
+  }
 
-  const processedSites: TSPSite[] = [];
+  // Process the response
+  const processedResponse: any = await clientResponse.json();
+
+  const loadedSites: any[] =
+    processedResponse.PrimaryQueryResult.RelevantResults.Table.Rows;
+
+  const finalSites: TSPSite[] = [];
 
   loadedSites.map((site) => {
-    processedSites.push({
+    finalSites.push({
       id: site.Cells[46].Value,
       displayName: site.Cells[2].Value,
       webUrl: site.Cells[5].Value,
@@ -133,8 +147,8 @@ export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
   });
 
   // TODO: remove after testing
-  console.log(processedSites);
+  console.log(finalSites);
 
   // Return the suggestions
-  return processedSites;
+  return finalSites;
 };
