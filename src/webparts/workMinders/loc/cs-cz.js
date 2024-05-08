@@ -8,6 +8,11 @@ define([], function () {
     propPaneHeight: "Výška",
     propPaneHeightDescription:
       "Nastavte výšku WorkMinders. Výchozí hodnota je 500px.",
+    propPaneSmallUi: "Minimalistické rozhraní",
+    propPaneSmallUiDescription:
+      "Rozhraní WorkMinders bude minimalizováno. Ideální pro umístění ve více sloupcích.",
+    // Property Pane - Version
+    propPaneVersion: "Verze",
 
     // Environment
     AppLocalEnvironmentSharePoint:

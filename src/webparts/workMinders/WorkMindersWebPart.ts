@@ -1,22 +1,23 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import { Version } from "@microsoft/sp-core-library";
-import {
-  type IPropertyPaneConfiguration,
-  PropertyPaneTextField,
-} from "@microsoft/sp-property-pane";
+import { type IPropertyPaneConfiguration } from "@microsoft/sp-property-pane";
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import { IReadonlyTheme } from "@microsoft/sp-component-base";
 import { MSGraphClientV3 } from "@microsoft/sp-http";
+import { PropertyFieldNumber } from "@pnp/spfx-property-controls/lib/PropertyFieldNumber";
+import { PropertyPaneWebPartInformation } from "@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation";
 
 import WorkMinders from "./components/WorkMinders";
 import { IWorkMindersProps } from "./components/IWorkMindersProps";
 import { TWorkMinder } from "./types/ItemTypes";
 
 import * as strings from "WorkMindersWebPartStrings";
+import { PropertyFieldToggleWithCallout } from "@pnp/spfx-property-controls";
 
 export interface IWorkMindersWebPartProps {
   height: number;
+  smallUi: boolean;
 }
 
 export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMindersWebPartProps> {
@@ -34,6 +35,7 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         webpartContext: this.context,
         height: this.properties.height,
+        smallUi: this.properties.smallUi,
         oneDriveDoesNotExist: this._oneDriveDoesNotExist,
         workMinders: this._workMinders,
       },
@@ -214,9 +216,27 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
             {
               groupName: strings.propPaneLookAndFeel,
               groupFields: [
-                PropertyPaneTextField("description", {
+                PropertyFieldNumber("height", {
+                  key: "height",
                   label: strings.propPaneHeight,
                   description: strings.propPaneHeightDescription,
+                  value: this.properties.height,
+                }),
+                PropertyFieldToggleWithCallout("smallUi", {
+                  key: "smallUi",
+                  label: strings.propPaneSmallUi,
+                  calloutContent: strings.propPaneSmallUiDescription,
+                  calloutTrigger: 1,
+                  checked: this.properties.smallUi,
+                }),
+              ],
+            },
+            {
+              groupName: strings.propPaneVersion,
+              groupFields: [
+                PropertyPaneWebPartInformation({
+                  description: `WorkMinders v${this.context.manifest.version}<br><a href="https://www.vokounapps.cz" target="_blank">VokounApps</a>`,
+                  key: `webPartInfoId`,
                 }),
               ],
             },

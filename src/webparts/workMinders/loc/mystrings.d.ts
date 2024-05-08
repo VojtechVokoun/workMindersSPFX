@@ -6,6 +6,10 @@ declare interface IWorkMindersWebPartStrings {
   propPaneLookAndFeel: string;
   propPaneHeight: string;
   propPaneHeightDescription: string;
+  propPaneSmallUi: string;
+  propPaneSmallUiDescription: string;
+  // Property Pane - Version
+  propPaneVersion: string;
 
   // Environment
   AppLocalEnvironmentSharePoint: string;

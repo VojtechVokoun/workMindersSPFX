@@ -9,7 +9,6 @@
   "supportedHosts": [
     "SharePointWebPart",
     "TeamsPersonalApp",
-    "TeamsTab",
     "SharePointFullPage"
   ],
   "supportsThemeVariants": true,
@@ -27,7 +26,8 @@
       },
       "officeFabricIconFontName": "Page",
       "properties": {
-        "height": 500
+        "height": 500,
+        "smallUi": false
       }
     }
   ]

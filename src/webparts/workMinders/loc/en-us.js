@@ -8,6 +8,11 @@ define([], function () {
     propPaneHeight: "Height",
     propPaneHeightDescription:
       "Set the height of the web part. Default is 500px.",
+    propPaneSmallUi: "Minimal UI",
+    propPaneSmallUiDescription:
+      "WorkMinders UI will be minimized. Ideal for multi-column placement.",
+    // Property Pane - Version
+    propPaneVersion: "Version",
 
     // Environment
     AppLocalEnvironmentSharePoint:

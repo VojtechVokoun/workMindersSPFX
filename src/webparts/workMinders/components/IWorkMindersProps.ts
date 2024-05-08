@@ -7,5 +7,6 @@ export interface IWorkMindersProps {
   webpartContext: WebPartContext;
   workMinders: TWorkMinder[];
   height: number;
+  smallUi: boolean;
   oneDriveDoesNotExist: boolean;
 }
