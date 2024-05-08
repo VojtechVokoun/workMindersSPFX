@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useEffect } from "react";
-import styles from "./WorkMinders.module.scss";
-import type { IWorkMindersProps } from "./IWorkMindersProps";
+
 import { MSGraphClientV3 } from "@microsoft/sp-http";
+
 import {
   //getManager,
   getSites,
@@ -10,6 +10,20 @@ import {
   getUserSuggestions,
   getRecentFiles,
 } from "../tools/suggestionApiCalls";
+import { TWorkMinder } from "../types/ItemTypes";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+
+import styles from "./WorkMinders.module.scss";
+
+export interface IWorkMindersProps {
+  isDarkTheme: boolean;
+  hasTeamsContext: boolean;
+  webpartContext: WebPartContext;
+  workMinders: TWorkMinder[];
+  height: number;
+  smallUi: boolean;
+  oneDriveDoesNotExist: boolean;
+}
 
 /**
  * A background component that fetches data from the Graph API, renders the webpart and all its overlays.

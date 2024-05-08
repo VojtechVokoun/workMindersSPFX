@@ -8,8 +8,7 @@ import { MSGraphClientV3 } from "@microsoft/sp-http";
 import { PropertyFieldNumber } from "@pnp/spfx-property-controls/lib/PropertyFieldNumber";
 import { PropertyPaneWebPartInformation } from "@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation";
 
-import WorkMinders from "./components/WorkMinders";
-import { IWorkMindersProps } from "./components/IWorkMindersProps";
+import WorkMinders, { IWorkMindersProps } from "./components/WorkMinders";
 import { TWorkMinder } from "./types/ItemTypes";
 
 import * as strings from "WorkMindersWebPartStrings";
