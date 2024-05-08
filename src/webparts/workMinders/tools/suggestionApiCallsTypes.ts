@@ -38,3 +38,18 @@ export type TSPSite = {
   displayName: string;
   webUrl: string;
 };
+
+/**
+ * This is the object containing the files returned by the Graph API.
+ * @param id - the file's ID
+ * @param displayName - the file's display name
+ * @param webUrl - the file's web URL
+ * @param lastModifiedDateTime - the file's last modified date and time in ISO 8601 format
+ * @returns The file object.
+ */
+export type TFile = {
+  id: string;
+  displayName: string;
+  webUrl: string;
+  lastModifiedDateTime: string;
+};

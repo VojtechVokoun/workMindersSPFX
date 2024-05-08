@@ -11,6 +11,7 @@ import {
   TUserSuggestion,
   TTeamSuggestion,
   TSPSite,
+  TFile,
 } from "./suggestionApiCallsTypes";
 
 /**
@@ -151,4 +152,29 @@ export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
 
   // Return the suggestions
   return finalSites;
+};
+
+/**
+ * This calls the Graph API to get the user's recent files.
+ * This function is called when the webpart is loaded – that is because the Graph API is able to query the user's recent
+ * files based on the user's input.
+ */
+export const getRecentFiles = async (
+  client: MSGraphClientV3,
+): Promise<TFile[]> => {
+  // Get the user's recent files
+  const recentFiles = await client
+    .api("/me/drive/recent")
+    .version("v1.0")
+    .top(500)
+    .get()
+    .catch((error: unknown) => {
+      console.error(`getRecentFiles: ${error}`);
+      return null;
+    });
+
+  // TODO: remove after testing
+  console.log(recentFiles.value as TFile[]);
+
+  return recentFiles.value as TFile[];
 };
