@@ -1,43 +1,79 @@
-import * as React from 'react';
-import styles from './WorkMinders.module.scss';
-import type { IWorkMindersProps } from './IWorkMindersProps';
-import { escape } from '@microsoft/sp-lodash-subset';
+import * as React from "react";
+import { useEffect } from "react";
+import styles from "./WorkMinders.module.scss";
+import type { IWorkMindersProps } from "./IWorkMindersProps";
+import { MSGraphClientV3 } from "@microsoft/sp-http";
+import {
+  //getManager,
+  getSites,
+  getTeamSuggestions,
+  getUserSuggestions,
+  getRecentFiles,
+} from "../tools/suggestionApiCalls";
 
-export default class WorkMinders extends React.Component<IWorkMindersProps, {}> {
-  public render(): React.ReactElement<IWorkMindersProps> {
-    const {
-      description,
-      isDarkTheme,
-      environmentMessage,
-      hasTeamsContext,
-      userDisplayName
-    } = this.props;
+/**
+ * A background component that fetches data from the Graph API, renders the webpart and all its overlays.
+ * @param props
+ * @constructor
+ */
+const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
+  //const [overlayActive, setOverlayActive] = React.useState<boolean>(true);
 
-    return (
-      <section className={`${styles.workMinders} ${hasTeamsContext ? styles.teams : ''}`}>
-        <div className={styles.welcome}>
-          <img alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
-          <h2>Well done, {escape(userDisplayName)}!</h2>
-          <div>{environmentMessage}</div>
-          <div>Web part property value: <strong>{escape(description)}</strong></div>
-        </div>
-        <div>
-          <h3>Welcome to SharePoint Framework!</h3>
-          <p>
-            The SharePoint Framework (SPFx) is a extensibility model for Microsoft Viva, Microsoft Teams and SharePoint. It&#39;s the easiest way to extend Microsoft 365 with automatic Single Sign On, automatic hosting and industry standard tooling.
-          </p>
-          <h4>Learn more about SPFx development:</h4>
-          <ul className={styles.links}>
-            <li><a href="https://aka.ms/spfx" target="_blank" rel="noreferrer">SharePoint Framework Overview</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-graph" target="_blank" rel="noreferrer">Use Microsoft Graph in your solution</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-teams" target="_blank" rel="noreferrer">Build for Microsoft Teams using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-viva" target="_blank" rel="noreferrer">Build for Microsoft Viva Connections using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-store" target="_blank" rel="noreferrer">Publish SharePoint Framework applications to the marketplace</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-api" target="_blank" rel="noreferrer">SharePoint Framework API reference</a></li>
-            <li><a href="https://aka.ms/m365pnp" target="_blank" rel="noreferrer">Microsoft 365 Developer Community</a></li>
-          </ul>
-        </div>
-      </section>
-    );
-  }
-}
+  /**
+   * ! Test function
+   * Fetch all the data from the Graph API.
+   * @returns void
+   */
+  const getAll = async (): Promise<void> => {
+    // Generate the hraph client
+    const graphClient: MSGraphClientV3 =
+      await props.webpartContext.msGraphClientFactory.getClient("3");
+    //console.log("Manager:");
+    //await getManager(graphClient);
+    console.log("Team suggestions:");
+    await getTeamSuggestions(graphClient, "Coe");
+    console.log("User suggestions:");
+    await getUserSuggestions(graphClient, "Vojt");
+    console.log("Sites:");
+    await getSites(props.webpartContext);
+    console.log("Files:");
+    await getRecentFiles(graphClient);
+  };
+
+  // EFFECTS ----------------------------------------------
+  /**
+   * Fetch the data from the Graph API when the component is mounted.
+   */
+  useEffect(() => {
+    getAll().catch((error) => {
+      console.error("Error in useEffect: ", error);
+    });
+  }, []);
+
+  // STYLES -----------------------------------------------
+  const containerStyle = {
+    height: props.height,
+  };
+
+  // RENDER -----------------------------------------------
+  /**
+   * Render the webpart. If an overlay is active, render it as well (on top of the content).
+   */
+  return (
+    <div
+      className={`${styles.va_workMinders} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.va_workMinders_dark : ""}`}
+      style={containerStyle}
+    >
+      {
+        //<div className={styles.va_screenOverlay} />
+      }
+
+      <div>nevim vole isDarkTheme: {props.isDarkTheme ? "true" : "false"}</div>
+      <div>
+        onedrive does not exist: {props.oneDriveDoesNotExist ? "true" : "false"}
+      </div>
+    </div>
+  );
+};
+
+export default WorkMinders;

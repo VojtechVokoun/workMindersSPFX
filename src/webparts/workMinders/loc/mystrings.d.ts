@@ -1,7 +1,13 @@
 declare interface IWorkMindersWebPartStrings {
-  PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
+  // WORKMINDERS WEBPART
+  // Property Pane
+  propPaneDescription: string;
+  // Property Pane - Look and Feel
+  propPaneLookAndFeel: string;
+  propPaneHeight: string;
+  propPaneHeightDescription: string;
+
+  // Environment
   AppLocalEnvironmentSharePoint: string;
   AppLocalEnvironmentTeams: string;
   AppLocalEnvironmentOffice: string;
@@ -13,7 +19,7 @@ declare interface IWorkMindersWebPartStrings {
   UnknownEnvironment: string;
 }
 
-declare module 'WorkMindersWebPartStrings' {
+declare module "WorkMindersWebPartStrings" {
   const strings: IWorkMindersWebPartStrings;
   export = strings;
 }
