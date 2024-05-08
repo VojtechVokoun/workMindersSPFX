@@ -7,12 +7,7 @@ import {
   ISPHttpClientConfiguration,
   SPHttpClientResponse,
 } from "@microsoft/sp-http";
-import {
-  TUserSuggestion,
-  TTeamSuggestion,
-  TSPSite,
-  TFile,
-} from "./suggestionApiCallsTypes";
+import { TUser, TTeams, TSPSite, TFile } from "../types/ItemTypes";
 
 /**
  * This calls the Graph API to get the user autocomplete suggestions for a given search query.
@@ -20,7 +15,7 @@ import {
 export const getUserSuggestions = async (
   client: MSGraphClientV3,
   query: string,
-): Promise<TUserSuggestion[]> => {
+): Promise<TUser[]> => {
   // If the query is too short, return an empty array
   if (query.length < 3) {
     return [];
@@ -49,9 +44,7 @@ export const getUserSuggestions = async (
 /**
  * This calls the Graph API to get the user's manager. This is used in the webpart after entering a certain keyword.
  */
-export const getManager = async (
-  client: MSGraphClientV3,
-): Promise<TUserSuggestion> => {
+export const getManager = async (client: MSGraphClientV3): Promise<TUser> => {
   // Get the user's manager
   const manager = await client
     .api("/me/manager")
@@ -75,7 +68,7 @@ export const getManager = async (
 export const getTeamSuggestions = async (
   client: MSGraphClientV3,
   query: string,
-): Promise<TTeamSuggestion[]> => {
+): Promise<TTeams[]> => {
   // If the query is too short, return an empty array
   if (query.length < 3) {
     return [];

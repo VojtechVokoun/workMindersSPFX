@@ -1,12 +1,12 @@
 /**
- * This is the object containing the user suggestions returned by the Graph API.
+ * This is the object containing the users returned by the Graph API.
  * @param id - the user's ID
  * @param displayName - the user's display name
  * @param mail - the user's email
  * @param userPrincipalName - the user's user principal name
- * @returns The user suggestion object.
+ * @returns The user object.
  */
-export type TUserSuggestion = {
+export type TUser = {
   id: string;
   displayName: string;
   mail: string;
@@ -14,13 +14,13 @@ export type TUserSuggestion = {
 };
 
 /**
- * This is the object containing the team suggestions returned by the Graph API.
+ * This is the object containing the teams returned by the Graph API.
  * @param id - the team's ID
  * @param displayName - the team's display name
  * @param url - the team's URL
- * @returns The team suggestion object.
+ * @returns The team object.
  */
-export type TTeamSuggestion = {
+export type TTeams = {
   id: string;
   displayName: string;
   url: string;
@@ -52,4 +52,23 @@ export type TFile = {
   displayName: string;
   webUrl: string;
   lastModifiedDateTime: string;
+};
+
+/**
+ * This is the object holding the reminder data.
+ */
+export type TWorkMinder = {
+  localId: string;
+  oneDriveId: string;
+  title: string;
+  description: string;
+  createdDate: string;
+  modifiedDate: string;
+  dueDate: string;
+  isCompleted: boolean;
+  isImportant: boolean;
+  linkedUsers: TUser[];
+  linkedTeams: TTeams[];
+  linkedSpSites: TSPSite[];
+  linkedFiles: TFile[];
 };

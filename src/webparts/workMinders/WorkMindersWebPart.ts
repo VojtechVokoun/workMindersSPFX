@@ -11,13 +11,16 @@ import { IReadonlyTheme } from "@microsoft/sp-component-base";
 import * as strings from "WorkMindersWebPartStrings";
 import WorkMinders from "./components/WorkMinders";
 import { IWorkMindersProps } from "./components/IWorkMindersProps";
+//import { TWorkMinder } from "./types/ItemTypes";
+import { MSGraphClientV3 } from "@microsoft/sp-http";
 
 export interface IWorkMindersWebPartProps {
-  description: string;
+  height: number;
 }
 
 export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMindersWebPartProps> {
   private _isDarkTheme: boolean = false;
+  private _oneDriveDoesNotExist: boolean = false;
 
   //private _environmentMessage: string = "";
 
@@ -28,6 +31,7 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         isDarkTheme: this._isDarkTheme,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         webpartContext: this.context,
+        height: this.properties.height,
       },
     );
 
@@ -35,6 +39,9 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
   }
 
   protected onInit(): Promise<void> {
+    this._getWorkMinders().catch((error) => {
+      console.error(`onInit: ${error}`);
+    });
     return this._getEnvironmentMessage().then((message) => {
       //this._environmentMessage = message;
     });
@@ -79,6 +86,78 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
     );
   }
 
+  /**
+   * Fetches all reminders from user's OneDrive.
+   * @private
+   */
+  private async _getWorkMinders(): Promise<any | undefined> {
+    // Get the Graph client
+    const graphClient: MSGraphClientV3 =
+      await this.context.msGraphClientFactory.getClient("3");
+
+    // Find out if the user has a OneDrive
+    // Get the user's OneDrive
+    const oneDrive = await graphClient
+      .api("/me/drive")
+      .version("v1.0")
+      .get()
+      .catch((error: unknown) => {
+        console.error(`_getReminders: ${error}`);
+        return;
+      });
+
+    // If the user doesn't have a OneDrive, set the flag and return
+    if (!oneDrive) {
+      this._oneDriveDoesNotExist = true;
+      return;
+    }
+
+    // See if the 'WorkMinders App' folder exists, if not, create it
+    // Get the 'WorkMinders App' folder
+    const workMindersFolder = await graphClient
+      .api(`/me/drive/root/children`)
+      .version("v1.0")
+      .filter("name eq 'WorkMinders App'")
+      .get()
+      .catch((error: unknown) => {
+        console.error(`_getReminders: ${error}`);
+        return null;
+      });
+
+    // If the folder doesn't exist, create it and return
+    if (!workMindersFolder) {
+      await graphClient
+        .api("/me/drive/root/children")
+        .version("v1.0")
+        .post({
+          name: "WorkMinders App",
+          folder: {},
+        })
+        .catch((error: unknown) => {
+          console.error(`_getReminders: ${error}`);
+        });
+
+      return;
+    }
+
+    // Get the reminders
+    const reminders = await graphClient
+      .api(`/me/drive/root:/WorkMinders App:/children`)
+      .version("v1.0")
+      .get()
+      .catch((error: unknown) => {
+        console.error(`_getReminders: ${error}`);
+        return null;
+      });
+
+    // TODO: remove after testing
+    console.log(reminders.value);
+
+    // Process the reminders
+    // TODO: implement
+    return reminders.value;
+  }
+
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
     if (!currentTheme) {
       return;
@@ -113,14 +192,15 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription,
+            description: strings.propPaneDescription,
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: strings.propPaneLookAndFeel,
               groupFields: [
                 PropertyPaneTextField("description", {
-                  label: strings.DescriptionFieldLabel,
+                  label: strings.propPaneHeight,
+                  description: strings.propPaneHeightDescription,
                 }),
               ],
             },
