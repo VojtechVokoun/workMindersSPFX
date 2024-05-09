@@ -235,6 +235,7 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
     const reminders = await graphClient
       .api(`/me/drive/root:/WorkMinders App:/children`)
       .version("v1.0")
+      .filter("startswith(name, 'workminder_')")
       .get()
       .catch((error: unknown) => {
         console.error(`_getReminders: ${error}`);
