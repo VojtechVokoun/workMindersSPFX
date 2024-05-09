@@ -83,12 +83,6 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   const getHeader = (): string => {
     switch (activeTag) {
-      //headerAllTasks: string;
-      //   headerCompletedTasks: string;
-      //   headerOverdueTasks: string;
-      //   headerUpcomingTasks: string;
-      //   headerImportantTasks: string;
-
       case "":
         return strings.headerAllTasks;
       case "completed":
@@ -115,15 +109,15 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   return (
     <div
-      className={`${styles.va_workMinders} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.va_workMinders_dark : ""}`}
+      className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""}`}
       style={containerStyle}
     >
       {
-        //<div className={styles.va_screenOverlay} />
+        //<div className={styles.wm_screenOverlay} />
       }
 
       <header>
-        <h1>{getHeader()}</h1>
+        <h1 className={styles.vm_listTile}>{getHeader()}</h1>
       </header>
 
       <div>nevim vole isDarkTheme: {props.isDarkTheme ? "true" : "false"}</div>
