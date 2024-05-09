@@ -76,8 +76,9 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * Filter the tasks based on the active tag.
    */
   const filterTasks = (): void => {
-    let filteredTasks: TWorkMinder[] = [];
+    let filteredTasks: TWorkMinder[];
 
+    // Filter the tasks based on the active tag
     switch (activeTag) {
       case strings.tasksAll:
         filteredTasks = props.workMinders;
@@ -100,15 +101,6 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
             new Date(task.dueDate) > new Date() &&
             !task.isCompleted,
         );
-        filteredTasks.sort((a, b) => {
-          if (a.dueDate && b.dueDate) {
-            return (
-              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
-            );
-          } else {
-            return 0;
-          }
-        });
         break;
       case strings.tasksImportant:
         filteredTasks = props.workMinders.filter((task) => task.isImportant);
@@ -120,6 +112,16 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         break;
     }
 
+    // Sort the tasks by due date
+    filteredTasks.sort((a, b) => {
+      if (a.dueDate && b.dueDate) {
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      } else {
+        return 0;
+      }
+    });
+
+    // Set the filtered tasks state
     setFilteredTasks(filteredTasks);
   };
 
