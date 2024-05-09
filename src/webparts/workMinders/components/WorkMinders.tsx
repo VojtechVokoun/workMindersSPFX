@@ -15,6 +15,8 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
+import ListChoice from "./mainLayout/ListChoice";
+import TaskList from "./mainLayout/TaskList";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
@@ -42,7 +44,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   /**
    * The active tag for the task list.
    */
-  const [activeTag, setActiveTag] = React.useState<string>("");
+  const [activeTag, setActiveTag] = React.useState<string>(strings.tasksAll);
 
   /**
    * ! Test function
@@ -70,33 +72,11 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * Fetch the data from the Graph API when the component is mounted.
    */
   useEffect(() => {
-    setActiveTag(""); // TODO: remove this line after implementation
+    setActiveTag(strings.tasksAll); // TODO: remove this line after implementation
     getAll().catch((error) => {
       console.error("Error in useEffect: ", error);
     });
   }, []);
-
-  // METHODS ----------------------------------------------
-  /**
-   * Get the header text for the webpart.
-   * @returns string
-   */
-  const getHeader = (): string => {
-    switch (activeTag) {
-      case "":
-        return strings.headerAllTasks;
-      case "completed":
-        return strings.headerCompletedTasks;
-      case "overdue":
-        return strings.headerOverdueTasks;
-      case "upcoming":
-        return strings.headerUpcomingTasks;
-      case "important":
-        return strings.headerImportantTasks;
-      default:
-        return activeTag;
-    }
-  };
 
   // STYLES -----------------------------------------------
   const containerStyle = {
@@ -109,21 +89,20 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   return (
     <div
-      className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""}`}
+      className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${!props.smallUi ? styles.wm_sidebarContainer : ""}`}
       style={containerStyle}
     >
       {
         //<div className={styles.wm_screenOverlay} />
       }
 
-      <header>
-        <h1 className={styles.vm_listTile}>{getHeader()}</h1>
-      </header>
+      <ListChoice
+        userTags={props.settings.tagList}
+        activeTag={activeTag}
+        setActiveTag={setActiveTag}
+      />
 
-      <div>nevim vole isDarkTheme: {props.isDarkTheme ? "true" : "false"}</div>
-      <div>
-        onedrive does not exist: {props.oneDriveDoesNotExist ? "true" : "false"}
-      </div>
+      <TaskList activeTag={activeTag} tasks={[]} />
     </div>
   );
 };
