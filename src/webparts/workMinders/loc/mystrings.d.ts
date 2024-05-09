@@ -18,7 +18,7 @@ declare interface IWorkMindersWebPartStrings {
   tasksUpcoming: string;
   tasksImportant: string;
 
-  // TaskList
+  // ContentView
   taskListViewNoTasks: string;
   taskListViewNoTasksDescription: string;
 

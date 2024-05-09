@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
+import ListChoiceItem from "./ListChoiceItem";
+
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./ListChoice.module.scss";
-import ListChoiceItem from "./ListChoiceItem";
 
 export interface IListChoiceProps {
   userTags: string[];

@@ -21,7 +21,7 @@ define([], function () {
     tasksUpcoming: "Nadcházející úkoly",
     tasksImportant: "Důležité úkoly",
 
-    // TaskList
+    // ContentView
     taskListViewNoTasks: "Žádné úkoly",
     taskListViewNoTasksDescription:
       "Nejsou tady žádné úkoly. Přidejte nový kliknutím na tlačítko níže.",

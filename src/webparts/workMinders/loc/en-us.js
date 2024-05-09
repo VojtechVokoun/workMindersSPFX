@@ -21,7 +21,7 @@ define([], function () {
     tasksUpcoming: "Upcoming Tasks",
     tasksImportant: "Important Tasks",
 
-    // TaskList
+    // ContentView
     taskListViewNoTasks: "No tasks",
     taskListViewNoTasksDescription:
       "There are no tasks here. Add a new one by clicking the button below.",
