@@ -71,4 +71,13 @@ export type TWorkMinder = {
   linkedTeams: TTeams[];
   linkedSpSites: TSPSite[];
   linkedFiles: TFile[];
+  tags: string[];
+};
+
+/**
+ * This object holds the user's settings.
+ */
+export type TSettings = {
+  oneDriveId: string;
+  tagList: string[];
 };

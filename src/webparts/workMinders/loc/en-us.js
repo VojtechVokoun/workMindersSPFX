@@ -14,6 +14,32 @@ define([], function () {
     // Property Pane - Version
     propPaneVersion: "Version",
 
+    // Header
+    headerAllTasks: "All Tasks",
+    headerCompletedTasks: "Completed Tasks",
+    headerOverdueTasks: "Overdue Tasks",
+    headerUpcomingTasks: "Upcoming Tasks",
+    headerImportantTasks: "Important Tasks",
+
+    // TaskListView
+    taskListViewNoTasks: "No tasks",
+    taskListViewNoTasksDescription:
+      "There are no tasks here. Add a new one by clicking the button below.",
+
+    // TaskItem
+    taskItemMarkAsComplete: "Mark as complete",
+    taskItemMarkAsIncomplete: "Mark as incomplete",
+    taskItemDelete: "Delete",
+    taskItemEdit: "Edit",
+    taskItemViewDetails: "View details",
+    taskItemDueDate: "Due date",
+    taskItemCreated: "Created",
+    taskItemModified: "Modified",
+    taskItemLinkedPeople: "Linked people",
+    taskItemLinkedSites: "Linked sites",
+    taskItemLinkedTeams: "Linked teams",
+    taskItemLinkedFiles: "Linked files",
+
     // Environment
     AppLocalEnvironmentSharePoint:
       "The app is running on your local environment as SharePoint web part",

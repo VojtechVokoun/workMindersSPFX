@@ -14,6 +14,32 @@ define([], function () {
     // Property Pane - Version
     propPaneVersion: "Verze",
 
+    // Header
+    headerAllTasks: "Všechny úkoly",
+    headerCompletedTasks: "Dokončené úkoly",
+    headerOverdueTasks: "Úkoly po termínu",
+    headerUpcomingTasks: "Nadcházející úkoly",
+    headerImportantTasks: "Důležité úkoly",
+
+    // TaskListView
+    taskListViewNoTasks: "Žádné úkoly",
+    taskListViewNoTasksDescription:
+      "Nejsou tady žádné úkoly. Přidejte nový kliknutím na tlačítko níže.",
+
+    // TaskItem
+    taskItemMarkAsComplete: "Označit jako dokončené",
+    taskItemMarkAsIncomplete: "Označit jako nedokončené",
+    taskItemDelete: "Smazat",
+    taskItemEdit: "Upravit",
+    taskItemViewDetails: "Zobrazit detaily",
+    taskItemDueDate: "Termín",
+    taskItemCreated: "Vytvořeno",
+    taskItemModified: "Upraveno",
+    taskItemLinkedPeople: "Propojení lidé",
+    taskItemLinkedSites: "Propojené weby",
+    taskItemLinkedTeams: "Propojené týmy",
+    taskItemLinkedFiles: "Propojené soubory",
+
     // Environment
     AppLocalEnvironmentSharePoint:
       "Aplikace běží ve vašem lokálním prostředí jako webová část SharePointu",

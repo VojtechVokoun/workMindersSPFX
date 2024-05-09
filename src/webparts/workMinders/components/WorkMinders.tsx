@@ -10,15 +10,17 @@ import {
   getUserSuggestions,
   getRecentFiles,
 } from "../tools/suggestionApiCalls";
-import { TWorkMinder } from "../types/ItemTypes";
+import { TSettings, TWorkMinder } from "../types/ItemTypes";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 
+import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
   hasTeamsContext: boolean;
   webpartContext: WebPartContext;
+  settings: TSettings;
   workMinders: TWorkMinder[];
   height: number;
   smallUi: boolean;
@@ -31,7 +33,16 @@ export interface IWorkMindersProps {
  * @constructor
  */
 const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
-  //const [overlayActive, setOverlayActive] = React.useState<boolean>(true);
+  // COMPONENT STATE --------------------------------------
+  /**
+   * The task edited in the overlay. If the overlay is not active, the value is empty.
+   */
+  //const [overlayTask, setOverlayTask] =
+  //React.useState<TWorkMinder | null>(null);
+  /**
+   * The active tag for the task list.
+   */
+  const [activeTag, setActiveTag] = React.useState<string>("");
 
   /**
    * ! Test function
@@ -59,10 +70,39 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * Fetch the data from the Graph API when the component is mounted.
    */
   useEffect(() => {
+    setActiveTag(""); // TODO: remove this line after implementation
     getAll().catch((error) => {
       console.error("Error in useEffect: ", error);
     });
   }, []);
+
+  // METHODS ----------------------------------------------
+  /**
+   * Get the header text for the webpart.
+   * @returns string
+   */
+  const getHeader = (): string => {
+    switch (activeTag) {
+      //headerAllTasks: string;
+      //   headerCompletedTasks: string;
+      //   headerOverdueTasks: string;
+      //   headerUpcomingTasks: string;
+      //   headerImportantTasks: string;
+
+      case "":
+        return strings.headerAllTasks;
+      case "completed":
+        return strings.headerCompletedTasks;
+      case "overdue":
+        return strings.headerOverdueTasks;
+      case "upcoming":
+        return strings.headerUpcomingTasks;
+      case "important":
+        return strings.headerImportantTasks;
+      default:
+        return activeTag;
+    }
+  };
 
   // STYLES -----------------------------------------------
   const containerStyle = {
@@ -81,6 +121,10 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
       {
         //<div className={styles.va_screenOverlay} />
       }
+
+      <header>
+        <h1>{getHeader()}</h1>
+      </header>
 
       <div>nevim vole isDarkTheme: {props.isDarkTheme ? "true" : "false"}</div>
       <div>
