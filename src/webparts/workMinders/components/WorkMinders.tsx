@@ -15,8 +15,8 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
-import ListChoice from "./mainLayout/ListChoice";
-import TaskList from "./mainLayout/TaskList";
+import ListChoice from "./listChoice/ListChoice";
+import ContentView from "./contentView/ContentView";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
@@ -45,7 +45,12 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * The active tag for the task list.
    */
   const [activeTag, setActiveTag] = React.useState<string>(strings.tasksAll);
+  /**
+   * A state tracking the currently filtered tasks.
+   */
+  const [filteredTasks, setFilteredTasks] = React.useState<TWorkMinder[]>([]);
 
+  // METHODS ----------------------------------------------
   /**
    * ! Test function
    * Fetch all the data from the Graph API.
@@ -67,16 +72,73 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
     await getRecentFiles(graphClient);
   };
 
+  /**
+   * Filter the tasks based on the active tag.
+   */
+  const filterTasks = (): void => {
+    let filteredTasks: TWorkMinder[] = [];
+
+    switch (activeTag) {
+      case strings.tasksAll:
+        filteredTasks = props.workMinders;
+        break;
+      case strings.tasksCompleted:
+        filteredTasks = props.workMinders.filter((task) => task.isCompleted);
+        break;
+      case strings.tasksOverdue:
+        filteredTasks = props.workMinders.filter(
+          (task) =>
+            task.dueDate &&
+            new Date(task.dueDate) < new Date() &&
+            !task.isCompleted,
+        );
+        break;
+      case strings.tasksUpcoming:
+        filteredTasks = props.workMinders.filter(
+          (task) =>
+            task.dueDate &&
+            new Date(task.dueDate) > new Date() &&
+            !task.isCompleted,
+        );
+        filteredTasks.sort((a, b) => {
+          if (a.dueDate && b.dueDate) {
+            return (
+              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+            );
+          } else {
+            return 0;
+          }
+        });
+        break;
+      case strings.tasksImportant:
+        filteredTasks = props.workMinders.filter((task) => task.isImportant);
+        break;
+      default:
+        filteredTasks = props.workMinders.filter((task) =>
+          task.tags.includes(activeTag),
+        );
+        break;
+    }
+
+    setFilteredTasks(filteredTasks);
+  };
+
   // EFFECTS ----------------------------------------------
   /**
    * Fetch the data from the Graph API when the component is mounted.
    */
   useEffect(() => {
-    setActiveTag(strings.tasksAll); // TODO: remove this line after implementation
     getAll().catch((error) => {
       console.error("Error in useEffect: ", error);
     });
   }, []);
+
+  /**
+   * Filter the tasks when the active tag changes.
+   */
+  useEffect(() => {
+    filterTasks();
+  }, [activeTag]);
 
   // STYLES -----------------------------------------------
   const containerStyle = {
@@ -102,7 +164,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         setActiveTag={setActiveTag}
       />
 
-      <TaskList activeTag={activeTag} tasks={[]} />
+      <ContentView activeTag={activeTag} tasks={filteredTasks} />
     </div>
   );
 };
