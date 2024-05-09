@@ -1,0 +1,19 @@
+.wm_listChoiceItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  padding: 7px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+  width: 100%;
+}
+
+.wm_listChoiceItemActive {
+  @extend .wm_listChoiceItem;
+  background-color: rgba(0, 120, 212, 0.2);
+  color: rgba(0, 120, 212, 1);
+}

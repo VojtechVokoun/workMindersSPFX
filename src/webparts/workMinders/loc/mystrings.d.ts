@@ -11,14 +11,14 @@ declare interface IWorkMindersWebPartStrings {
   // Property Pane - Version
   propPaneVersion: string;
 
-  // Header
-  headerAllTasks: string;
-  headerCompletedTasks: string;
-  headerOverdueTasks: string;
-  headerUpcomingTasks: string;
-  headerImportantTasks: string;
+  // Default task sections
+  tasksAll: string;
+  tasksCompleted: string;
+  tasksOverdue: string;
+  tasksUpcoming: string;
+  tasksImportant: string;
 
-  // TaskListView
+  // TaskList
   taskListViewNoTasks: string;
   taskListViewNoTasksDescription: string;
 
@@ -35,6 +35,9 @@ declare interface IWorkMindersWebPartStrings {
   taskItemLinkedSites: string;
   taskItemLinkedTeams: string;
   taskItemLinkedFiles: string;
+
+  // ListChoice
+  tags: string;
 
   // Environment
   AppLocalEnvironmentSharePoint: string;

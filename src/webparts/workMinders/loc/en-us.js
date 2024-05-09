@@ -15,13 +15,13 @@ define([], function () {
     propPaneVersion: "Version",
 
     // Header
-    headerAllTasks: "All Tasks",
-    headerCompletedTasks: "Completed Tasks",
-    headerOverdueTasks: "Overdue Tasks",
-    headerUpcomingTasks: "Upcoming Tasks",
-    headerImportantTasks: "Important Tasks",
+    tasksAll: "All Tasks",
+    tasksCompleted: "Completed Tasks",
+    tasksOverdue: "Overdue Tasks",
+    tasksUpcoming: "Upcoming Tasks",
+    tasksImportant: "Important Tasks",
 
-    // TaskListView
+    // TaskList
     taskListViewNoTasks: "No tasks",
     taskListViewNoTasksDescription:
       "There are no tasks here. Add a new one by clicking the button below.",
@@ -39,6 +39,9 @@ define([], function () {
     taskItemLinkedSites: "Linked sites",
     taskItemLinkedTeams: "Linked teams",
     taskItemLinkedFiles: "Linked files",
+
+    // ListChoice
+    tags: "Tags",
 
     // Environment
     AppLocalEnvironmentSharePoint:

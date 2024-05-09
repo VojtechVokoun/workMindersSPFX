@@ -15,13 +15,13 @@ define([], function () {
     propPaneVersion: "Verze",
 
     // Header
-    headerAllTasks: "Všechny úkoly",
-    headerCompletedTasks: "Dokončené úkoly",
-    headerOverdueTasks: "Úkoly po termínu",
-    headerUpcomingTasks: "Nadcházející úkoly",
-    headerImportantTasks: "Důležité úkoly",
+    tasksAll: "Všechny úkoly",
+    tasksCompleted: "Dokončené úkoly",
+    tasksOverdue: "Úkoly po termínu",
+    tasksUpcoming: "Nadcházející úkoly",
+    tasksImportant: "Důležité úkoly",
 
-    // TaskListView
+    // TaskList
     taskListViewNoTasks: "Žádné úkoly",
     taskListViewNoTasksDescription:
       "Nejsou tady žádné úkoly. Přidejte nový kliknutím na tlačítko níže.",
@@ -39,6 +39,9 @@ define([], function () {
     taskItemLinkedSites: "Propojené weby",
     taskItemLinkedTeams: "Propojené týmy",
     taskItemLinkedFiles: "Propojené soubory",
+
+    // ListChoice
+    tags: "Tagy",
 
     // Environment
     AppLocalEnvironmentSharePoint:
