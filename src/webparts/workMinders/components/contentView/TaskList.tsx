@@ -15,46 +15,26 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
     <section className={styles.wm_taskList}>
       {!props.tasks.length && (
         <div className={styles.vm_noTasks}>
-          <h2>{strings.taskListViewNoTasks}</h2>
-          <p>{strings.taskListViewNoTasksDescription}</p>
+          <h2 className={styles.vm_noTasksTitle}>
+            {strings.taskListViewNoTasks}
+          </h2>
+          <p className={styles.vm_noTasksDescription}>
+            {strings.taskListViewNoTasksDescription}
+          </p>
         </div>
       )}
 
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
+      {props.tasks
+        .filter((task: TWorkMinder) => !task.isCompleted)
+        .map((task: TWorkMinder) => (
+          <TaskItem key={task.localId} task={task} />
+        ))}
 
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
-
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
-
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
-
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
-
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
-
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
-
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
-
-      {props.tasks.map((task: TWorkMinder) => (
-        <TaskItem key={task.localId} task={task} />
-      ))}
+      {props.tasks
+        .filter((task: TWorkMinder) => task.isCompleted)
+        .map((task: TWorkMinder) => (
+          <TaskItem key={task.localId} task={task} />
+        ))}
     </section>
   );
 };

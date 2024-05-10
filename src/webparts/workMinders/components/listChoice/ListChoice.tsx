@@ -1,18 +1,18 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
-import { Add16Regular } from "@fluentui/react-icons";
+import { Add20Regular } from "@fluentui/react-icons";
 
 import ListChoiceItem from "./ListChoiceItem";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./ListChoice.module.scss";
-import globalStyles from "../GlobalStyles.module.scss";
 
 export interface IListChoiceProps {
   userTags: string[];
   activeTag: string;
   setActiveTag: Dispatch<SetStateAction<string>>;
+  height: number;
 }
 
 /**
@@ -49,7 +49,10 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
 
   // RENDER -----------------------------------------------
   return (
-    <div className={styles.wm_listChoice}>
+    <div
+      className={styles.wm_listChoice}
+      style={{ height: `${props.height}px` }}
+    >
       <section className={styles.wm_tagSection}>
         {defaultTags.map((tag) => (
           <ListChoiceItem
@@ -60,7 +63,11 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
           />
         ))}
 
-        <h3 className={styles.wm_tagSectionTitle}>{strings.tags}</h3>
+        <div className={styles.wm_tagSectionTitle}>
+          <h3 className={styles.wm_tagSectionTitleText}>{strings.tags}</h3>
+
+          <Add20Regular />
+        </div>
 
         {sortUserTags().map((tag) => (
           <ListChoiceItem
@@ -70,14 +77,6 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
             setActiveTag={props.setActiveTag}
           />
         ))}
-      </section>
-
-      <section className={globalStyles.wm_footer}>
-        <button className={globalStyles.wm_rectButton}>
-          <Add16Regular />
-
-          {strings.addTag}
-        </button>
       </section>
     </div>
   );

@@ -164,6 +164,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         userTags={props.settings.tagList}
         activeTag={activeTag}
         setActiveTag={setActiveTag}
+        height={props.height}
       />
 
       <ContentView

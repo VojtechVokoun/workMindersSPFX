@@ -19,7 +19,7 @@ const ListChoiceItem = (props: IListChoiceItemProps): JSX.Element => {
       }
       onClick={() => props.setActiveTag(props.tag)}
     >
-      {props.tag}
+      <p className={styles.wm_listChoiceItemLabel}>{props.tag}</p>
     </button>
   );
 };

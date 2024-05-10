@@ -14,10 +14,11 @@
   background-color: transparent;
   background-image: linear-gradient(to bottom right, rgba(1, 1, 1, 0.01), rgba(0, 0, 0, 0.07));
   transition: ease-in-out 150ms;
+  flex-shrink: 0;
 }
 
 .wm_rectButton:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
 }
 
 .wm_rectButton_primary {

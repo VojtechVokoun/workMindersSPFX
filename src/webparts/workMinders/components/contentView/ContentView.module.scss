@@ -1,6 +1,6 @@
 .wm_contentView {
-  display: grid;
-  grid-template-rows: 50px 1fr;
+  display: flex;
+  flex-direction: column;
 }
 
 .wm_contentNav {
@@ -11,8 +11,12 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   padding-top: 10px;
   padding-bottom: 10px;
+  gap: 5px;
 }
 
 .vm_contentTitle {
   margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
