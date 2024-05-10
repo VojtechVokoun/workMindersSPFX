@@ -63,7 +63,7 @@ export const createReminder = async (
   // Send the reminder
   const creationResponse = await graphClient
     .api(
-      `/me/drive/root:/WorkMinders App/workminder_${reminder.title}.json:/content`,
+      `/me/drive/root:/WorkMinders App/workminder_${reminder.title}_${new Date().toISOString()}.json:/content`,
     )
     .version("v1.0")
     .headers({

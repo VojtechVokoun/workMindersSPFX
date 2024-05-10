@@ -219,8 +219,12 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
     this._settings.oneDriveId = settingsFileMetadata.id;
     this._settings.tagList = settings.tagList.split(";;");
 
-    // TODO: remove after testing
-    console.log(this._settings);
+    // Remove duplicates and empty strings
+    this._settings.tagList = this._settings.tagList.filter(
+      (tag, index, self) => {
+        return self.indexOf(tag) === index && tag !== "";
+      },
+    );
 
     return;
   }
