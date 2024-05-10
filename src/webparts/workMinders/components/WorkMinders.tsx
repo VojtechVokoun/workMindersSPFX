@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect } from "react";
 
 import { MSGraphClientV3 } from "@microsoft/sp-http";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 import {
   //getManager,
@@ -10,8 +11,8 @@ import {
   getUserSuggestions,
   getRecentFiles,
 } from "../tools/suggestionApiCalls";
-import { TSettings, TWorkMinder } from "../types/ItemTypes";
-import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { Settings } from "../classes/Settings";
+import { TWorkMinder } from "../types/ItemTypes";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
@@ -22,7 +23,6 @@ export interface IWorkMindersProps {
   isDarkTheme: boolean;
   hasTeamsContext: boolean;
   webpartContext: WebPartContext;
-  settings: TSettings;
   workMinders: TWorkMinder[];
   height: number;
   smallUi: boolean;
@@ -188,7 +188,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
       }
 
       <ListChoice
-        userTags={props.settings.tagList}
+        userTags={Settings.tagList}
         activeTag={activeTag}
         setActiveTag={setActiveTag}
         handleTagEdit={handleTagEdit}

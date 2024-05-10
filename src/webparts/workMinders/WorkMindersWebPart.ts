@@ -7,12 +7,13 @@ import { IReadonlyTheme } from "@microsoft/sp-component-base";
 import { MSGraphClientV3 } from "@microsoft/sp-http";
 import { PropertyFieldNumber } from "@pnp/spfx-property-controls/lib/PropertyFieldNumber";
 import { PropertyPaneWebPartInformation } from "@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation";
+import { PropertyFieldToggleWithCallout } from "@pnp/spfx-property-controls";
 
+import { Settings } from "./classes/Settings";
+import { TWorkMinder } from "./types/ItemTypes";
 import WorkMinders, { IWorkMindersProps } from "./components/WorkMinders";
-import { TSettings, TWorkMinder } from "./types/ItemTypes";
 
 import * as strings from "WorkMindersWebPartStrings";
-import { PropertyFieldToggleWithCallout } from "@pnp/spfx-property-controls";
 
 export interface IWorkMindersWebPartProps {
   height: number;
@@ -21,10 +22,6 @@ export interface IWorkMindersWebPartProps {
 
 export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMindersWebPartProps> {
   private _isDarkTheme: boolean = false;
-  private _settings: TSettings = {
-    oneDriveId: "",
-    tagList: [],
-  };
   private _workMinders: TWorkMinder[] = [];
   private _oneDriveDoesNotExist: boolean = false;
 
@@ -39,7 +36,6 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         webpartContext: this.context,
         height: this.properties.height,
         smallUi: this.properties.smallUi,
-        settings: this._settings,
         oneDriveDoesNotExist: this._oneDriveDoesNotExist,
         workMinders: this._workMinders,
       },
@@ -156,75 +152,11 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
       return;
     }
 
-    // Fetch the settings
-    await this._getSettings(graphClient);
+    // Create the first instance of the settings class
+    Settings.getInstance(this.context);
 
     // Fetch the reminders
     await this._getWorkMinders(graphClient);
-
-    return;
-  }
-
-  /**
-   * Fetches settings fron user's OneDrive.
-   * @param graphClient - the Graph client
-   * @private
-   */
-  private async _getSettings(graphClient: MSGraphClientV3): Promise<void> {
-    // Get the settings file
-    const settings = await graphClient
-      .api(`/me/drive/root:/WorkMinders App/_appSettings.json:/content`)
-      .version("v1.0")
-      .get()
-      .catch((error: unknown) => {
-        console.error(`_getSettings: ${error}`);
-        return;
-      });
-
-    console.log(settings);
-
-    // If the settings file doesn't exist, create it
-    if (!settings) {
-      console.log("Creating the '_appSettings.json' file");
-
-      const creationResponse = await graphClient
-        .api("/me/drive/root:/WorkMinders App/_appSettings.json:/content")
-        .version("v1.0")
-        .headers({
-          "Content-Type": "application/json",
-        })
-        .put({
-          tagList: "",
-        })
-        .catch((error: unknown) => {
-          console.error(`_getSettings: ${error}`);
-        });
-
-      this._settings.oneDriveId = creationResponse.id;
-
-      return;
-    }
-
-    // Get the settings file ID
-    const settingsFileMetadata = await graphClient
-      .api(`/me/drive/root:/WorkMinders App/_appSettings.json`)
-      .version("v1.0")
-      .get()
-      .catch((error: unknown) => {
-        console.error(`_getSettings: ${error}`);
-        return;
-      });
-
-    // Process the settings
-    this._settings.oneDriveId = settingsFileMetadata.id;
-    this._settings.tagList = settings.tagList.split(";;");
-
-    // Remove duplicates and empty strings
-    this._settings.tagList = this._settings.tagList.filter(
-      (tag, index, self) => {
-        return self.indexOf(tag) === index && tag !== "";
-      },
-    );
 
     return;
   }

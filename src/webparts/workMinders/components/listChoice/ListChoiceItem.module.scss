@@ -11,6 +11,7 @@
   border-radius: 5px;
   background-color: transparent;
   width: 100%;
+  min-height: 16px;
 }
 
 .wm_listChoiceItemActive {
@@ -29,6 +30,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  min-height: 16px;
 }
 
 .wm_listChoiceItemHoverSection {
@@ -50,6 +52,7 @@
   border: none;
   background-color: transparent;
   color: gray;
+  height: 16px;
 }
 
 .wm_listChoiceItemButton:hover {

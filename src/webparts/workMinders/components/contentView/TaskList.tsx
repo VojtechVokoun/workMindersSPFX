@@ -1,10 +1,10 @@
 import * as React from "react";
 
 import { TWorkMinder } from "../../types/ItemTypes";
+import TaskItem from "./taskItem/TaskItem";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./TaskList.module.scss";
-import TaskItem from "./taskItem/TaskItem";
 
 interface ITaskListProps {
   tasks: TWorkMinder[];
