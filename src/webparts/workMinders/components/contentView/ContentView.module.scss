@@ -1,33 +1,10 @@
 .wm_contentView {
-  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 10px 10px 10px 15px;
 }
 
 .vm_contentTile {
   margin: 0;
-}
-
-.wm_addButton {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-weight: 600;
-  outline: none;
-  background: #0078D4FF;
-  margin: 0;
-}
-
-.wm_contentBottom {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-start;
-  align-items: center;
 }

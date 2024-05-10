@@ -1,10 +1,13 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
+import { Add16Regular } from "@fluentui/react-icons";
+
 import ListChoiceItem from "./ListChoiceItem";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./ListChoice.module.scss";
+import globalStyles from "../GlobalStyles.module.scss";
 
 export interface IListChoiceProps {
   userTags: string[];
@@ -47,9 +50,7 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
             setActiveTag={props.setActiveTag}
           />
         ))}
-      </section>
 
-      <section>
         <h3 className={styles.wm_tagSectionTitle}>{strings.tags}</h3>
 
         {props.userTags.map((tag) => (
@@ -60,6 +61,14 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
             setActiveTag={props.setActiveTag}
           />
         ))}
+      </section>
+
+      <section className={globalStyles.wm_contentFooter}>
+        <button className={globalStyles.wm_rectButton}>
+          <Add16Regular />
+
+          {strings.addTask}
+        </button>
       </section>
     </div>
   );

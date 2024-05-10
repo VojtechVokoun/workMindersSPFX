@@ -14,7 +14,9 @@
 
 .wm_listChoiceItemActive {
   @extend .wm_listChoiceItem;
-  background-color: #0078D433;
   color: #0078D4FF;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  background-color: transparent;
+  background-image: linear-gradient(to bottom right, #0078D433, #0078D44D);
 }

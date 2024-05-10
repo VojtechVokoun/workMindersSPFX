@@ -10,6 +10,7 @@ import TaskList from "./TaskList";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./ContentView.module.scss";
+import globalStyles from "../GlobalStyles.module.scss";
 
 export interface IContentViewProps {
   webpartContext: WebPartContext;
@@ -26,9 +27,9 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
 
       <TaskList tasks={props.tasks} />
 
-      <section className={styles.wm_contentBottom}>
+      <section className={globalStyles.wm_contentFooter}>
         <button
-          className={styles.wm_addButton}
+          className={globalStyles.wm_rectButton_primary}
           onClick={() =>
             createReminder(props.webpartContext, {
               localId: 0,

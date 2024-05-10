@@ -1,0 +1,29 @@
+.wm_rectButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-weight: 600;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  background-color: transparent;
+  background-image: linear-gradient(to bottom right, rgba(1, 1, 1, 0.01), rgba(0, 0, 0, 0.07));
+}
+
+.wm_rectButton_primary {
+  @extend .wm_rectButton;
+  color: #FFFFFF;
+  background-image: linear-gradient(to bottom right, #0078D4CF, #0078D4FF);
+}
+
+.wm_contentFooter {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
+}
