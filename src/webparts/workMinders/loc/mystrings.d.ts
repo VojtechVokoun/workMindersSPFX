@@ -21,6 +21,7 @@ declare interface IWorkMindersWebPartStrings {
   // ContentView
   taskListViewNoTasks: string;
   taskListViewNoTasksDescription: string;
+  addTask: string;
 
   // TaskItem
   taskItemMarkAsComplete: string;

@@ -1,11 +1,18 @@
 import * as React from "react";
 
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { Add16Regular } from "@fluentui/react-icons";
+
+import { createReminder } from "../../tools/reminderSenders";
 import { TWorkMinder } from "../../types/ItemTypes";
+
+import TaskList from "./TaskList";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./ContentView.module.scss";
 
 export interface IContentViewProps {
+  webpartContext: WebPartContext;
   activeTag: string;
   tasks: TWorkMinder[];
 }
@@ -17,22 +24,34 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
         <h1 className={styles.vm_contentTile}>{props.activeTag}</h1>
       </header>
 
-      {!props.tasks.length && (
-        <section>
-          <div className={styles.vm_contentTile}>
-            <h2>{strings.taskListViewNoTasks}</h2>
-            <p>{strings.taskListViewNoTasksDescription}</p>
-          </div>
-        </section>
-      )}
+      <TaskList tasks={props.tasks} />
 
-      <section>
-        {props.tasks.map((task) => (
-          <div key={task.localId} className={styles.vm_contentTile}>
-            <h2>{task.title}</h2>
-            <p>{task.description}</p>
-          </div>
-        ))}
+      <section className={styles.wm_contentBottom}>
+        <button
+          className={styles.wm_addButton}
+          onClick={() =>
+            createReminder(props.webpartContext, {
+              localId: 0,
+              oneDriveId: "",
+              title: "Test WorkMinder",
+              description: "Testing the WorkMinder creation process.",
+              createdDate: "",
+              modifiedDate: "",
+              dueDate: "",
+              isCompleted: false,
+              isImportant: true,
+              linkedUsers: [],
+              linkedTeams: [],
+              linkedSpSites: [],
+              linkedFiles: [],
+              tags: ["pr1"],
+            } as TWorkMinder)
+          }
+        >
+          <Add16Regular color={"#FFFFFF"} />
+
+          {strings.addTask}
+        </button>
       </section>
     </div>
   );

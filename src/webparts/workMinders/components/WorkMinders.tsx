@@ -166,7 +166,11 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         setActiveTag={setActiveTag}
       />
 
-      <ContentView activeTag={activeTag} tasks={filteredTasks} />
+      <ContentView
+        webpartContext={props.webpartContext}
+        activeTag={activeTag}
+        tasks={filteredTasks}
+      />
     </div>
   );
 };

@@ -25,6 +25,7 @@ define([], function () {
     taskListViewNoTasks: "No tasks",
     taskListViewNoTasksDescription:
       "There are no tasks here. Add a new one by clicking the button below.",
+    addTask: "Add Task",
 
     // TaskItem
     taskItemMarkAsComplete: "Mark as complete",
