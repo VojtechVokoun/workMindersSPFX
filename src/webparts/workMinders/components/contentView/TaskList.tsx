@@ -4,7 +4,7 @@ import { TWorkMinder } from "../../types/ItemTypes";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./TaskList.module.scss";
-import TaskItem from "./TaskItem";
+import TaskItem from "./taskItem/TaskItem";
 
 interface ITaskListProps {
   tasks: TWorkMinder[];

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { TWorkMinder } from "../../types/ItemTypes";
+import { TWorkMinder } from "../../../types/ItemTypes";
 
 import styles from "./TaskItem.module.scss";
 
