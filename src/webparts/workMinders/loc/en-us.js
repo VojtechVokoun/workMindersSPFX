@@ -24,8 +24,8 @@ define([], function () {
     // ContentView
     taskListViewNoTasks: "No tasks",
     taskListViewNoTasksDescription:
-      "There are no tasks here. Add a new one by clicking the button below.",
-    addTask: "Add Task",
+      "There are no tasks here. Add a new one by clicking the button in the top right corner.",
+    addTask: "New Task",
 
     // TaskItem
     taskItemMarkAsComplete: "Mark as complete",
@@ -43,6 +43,7 @@ define([], function () {
 
     // ListChoice
     tags: "Tags",
+    addTag: "New tag",
 
     // Environment
     AppLocalEnvironmentSharePoint:

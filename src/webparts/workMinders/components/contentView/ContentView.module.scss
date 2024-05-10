@@ -1,10 +1,18 @@
 .wm_contentView {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10px 10px 10px 15px;
+  display: grid;
+  grid-template-rows: 50px 1fr;
 }
 
-.vm_contentTile {
+.wm_contentNav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.vm_contentTitle {
   margin: 0;
 }

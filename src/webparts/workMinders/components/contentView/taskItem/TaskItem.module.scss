@@ -3,4 +3,13 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  border-bottom: .5px solid #EAEAEAEA;
+}
+
+.wm_taskItemMainSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }

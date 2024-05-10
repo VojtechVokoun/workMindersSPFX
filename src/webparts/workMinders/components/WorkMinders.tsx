@@ -170,6 +170,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         webpartContext={props.webpartContext}
         activeTag={activeTag}
         tasks={filteredTasks}
+        height={props.height}
       />
     </div>
   );

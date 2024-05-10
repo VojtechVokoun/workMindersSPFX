@@ -33,6 +33,15 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
     strings.tasksImportant,
   ];
 
+  // SORTING ----------------------------------------------
+  /**
+   * Sorts the user tags alphabetically.
+   * @returns string[]
+   */
+  const sortUserTags = (): string[] => {
+    return props.userTags.sort((a, b) => a.localeCompare(b));
+  };
+
   // ICON GETTER ------------------------------------------
   /**
    * Gets an
@@ -41,7 +50,7 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
   // RENDER -----------------------------------------------
   return (
     <div className={styles.wm_listChoice}>
-      <section>
+      <section className={styles.wm_tagSection}>
         {defaultTags.map((tag) => (
           <ListChoiceItem
             key={tag}
@@ -53,7 +62,7 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
 
         <h3 className={styles.wm_tagSectionTitle}>{strings.tags}</h3>
 
-        {props.userTags.map((tag) => (
+        {sortUserTags().map((tag) => (
           <ListChoiceItem
             key={tag}
             tag={tag}
@@ -63,11 +72,11 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
         ))}
       </section>
 
-      <section className={globalStyles.wm_contentFooter}>
+      <section className={globalStyles.wm_footer}>
         <button className={globalStyles.wm_rectButton}>
           <Add16Regular />
 
-          {strings.addTask}
+          {strings.addTag}
         </button>
       </section>
     </div>

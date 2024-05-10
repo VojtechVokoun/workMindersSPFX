@@ -16,18 +16,20 @@ export interface IContentViewProps {
   webpartContext: WebPartContext;
   activeTag: string;
   tasks: TWorkMinder[];
+  height: number;
 }
 
 const ContentView = (props: IContentViewProps): JSX.Element => {
   return (
-    <div className={styles.wm_contentView}>
-      <header>
-        <h1 className={styles.vm_contentTile}>{props.activeTag}</h1>
-      </header>
+    <div
+      className={styles.wm_contentView}
+      style={{ height: `${props.height}px` }}
+    >
+      <nav
+        className={`${styles.wm_contentNav} ${globalStyles.wm_contentViewItemHorizontalPadding}`}
+      >
+        <h1 className={styles.vm_contentTitle}>{props.activeTag}</h1>
 
-      <TaskList tasks={props.tasks} />
-
-      <section className={globalStyles.wm_contentFooter}>
         <button
           className={globalStyles.wm_rectButton_primary}
           onClick={() =>
@@ -53,7 +55,9 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
 
           {strings.addTask}
         </button>
-      </section>
+      </nav>
+
+      <TaskList tasks={props.tasks} />
     </div>
   );
 };

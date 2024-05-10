@@ -14,11 +14,43 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
   return (
     <section className={styles.wm_taskList}>
       {!props.tasks.length && (
-        <div className={styles.vm_contentTitle}>
+        <div className={styles.vm_noTasks}>
           <h2>{strings.taskListViewNoTasks}</h2>
           <p>{strings.taskListViewNoTasksDescription}</p>
         </div>
       )}
+
+      {props.tasks.map((task: TWorkMinder) => (
+        <TaskItem key={task.localId} task={task} />
+      ))}
+
+      {props.tasks.map((task: TWorkMinder) => (
+        <TaskItem key={task.localId} task={task} />
+      ))}
+
+      {props.tasks.map((task: TWorkMinder) => (
+        <TaskItem key={task.localId} task={task} />
+      ))}
+
+      {props.tasks.map((task: TWorkMinder) => (
+        <TaskItem key={task.localId} task={task} />
+      ))}
+
+      {props.tasks.map((task: TWorkMinder) => (
+        <TaskItem key={task.localId} task={task} />
+      ))}
+
+      {props.tasks.map((task: TWorkMinder) => (
+        <TaskItem key={task.localId} task={task} />
+      ))}
+
+      {props.tasks.map((task: TWorkMinder) => (
+        <TaskItem key={task.localId} task={task} />
+      ))}
+
+      {props.tasks.map((task: TWorkMinder) => (
+        <TaskItem key={task.localId} task={task} />
+      ))}
 
       {props.tasks.map((task: TWorkMinder) => (
         <TaskItem key={task.localId} task={task} />

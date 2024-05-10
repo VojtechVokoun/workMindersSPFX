@@ -26,9 +26,14 @@
   background-image: linear-gradient(to bottom right, #0078D4CF, #0078D4FF);
 }
 
-.wm_contentFooter {
+.wm_footer {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-start;
   align-items: center;
+  padding: 10px;
+}
+
+.wm_contentViewItemHorizontalPadding {
+  padding: 0 10px 0 15px;
 }

@@ -39,6 +39,7 @@ declare interface IWorkMindersWebPartStrings {
 
   // ListChoice
   tags: string;
+  addTag: string;
 
   // Environment
   AppLocalEnvironmentSharePoint: string;

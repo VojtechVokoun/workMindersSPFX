@@ -4,8 +4,9 @@
   justify-content: flex-start;
   height: 100%;
   width: 100%;
+  overflow-y: auto;
 }
 
-.vm_contentTitle {
-  margin: 0;
+.vm_noTasks {
+  margin: auto 30px;
 }

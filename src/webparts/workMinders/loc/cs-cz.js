@@ -24,8 +24,8 @@ define([], function () {
     // ContentView
     taskListViewNoTasks: "Žádné úkoly",
     taskListViewNoTasksDescription:
-      "Nejsou tady žádné úkoly. Přidejte nový kliknutím na tlačítko níže.",
-    addTask: "Přidat úkol",
+      "Nejsou tady žádné úkoly. Přidejte nový kliknutím na tlačítko v pravém horním rohu.",
+    addTask: "Nový úkol",
 
     // TaskItem
     taskItemMarkAsComplete: "Označit jako dokončené",
@@ -43,6 +43,7 @@ define([], function () {
 
     // ListChoice
     tags: "Tagy",
+    addTag: "Nový tag",
 
     // Environment
     AppLocalEnvironmentSharePoint:
