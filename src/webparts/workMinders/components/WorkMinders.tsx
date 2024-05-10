@@ -42,6 +42,13 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   //const [overlayTask, setOverlayTask] =
   //React.useState<TWorkMinder | null>(null);
   /**
+   * States tracking the actvity of the tag creation/edit overlay.
+   */
+  //const [tagOverlayActive, setTagOverlayActive] =
+  //React.useState<boolean>(false);
+  //const [editedTag, setEditedTag] = React.useState<string>("");
+
+  /**
    * The active tag for the task list.
    */
   const [activeTag, setActiveTag] = React.useState<string>(strings.tasksAll);
@@ -135,6 +142,26 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
     });
   }, []);
 
+  // EVENT HANDLERS ---------------------------------------
+  /**
+   * Handles the edit of a tag.
+   * @param tag - the tag to edit
+   */
+  const handleTagEdit = (tag: string): void => {
+    //setTagOverlayActive(true);
+    //setEditedTag(tag);
+  };
+
+  /**
+   * Handles the deletion of a tag.
+   * @param tag - the tag to delete
+   */
+  const handleTagDelete = (tag: string): void => {
+    //const newTags: string[] = props.settings.tagList.filter((t) => t !== tag);
+    //props.settings.tagList = newTags;
+    //props.settings.save();
+  };
+
   /**
    * Filter the tasks when the active tag changes and when the tasks change.
    */
@@ -164,6 +191,8 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         userTags={props.settings.tagList}
         activeTag={activeTag}
         setActiveTag={setActiveTag}
+        handleTagEdit={handleTagEdit}
+        handleTagDelete={handleTagDelete}
         height={props.height}
       />
 

@@ -12,6 +12,8 @@ export interface IListChoiceProps {
   userTags: string[];
   activeTag: string;
   setActiveTag: Dispatch<SetStateAction<string>>;
+  handleTagEdit: (tag: string) => void;
+  handleTagDelete: (tag: string) => void;
   height: number;
 }
 
@@ -75,6 +77,8 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
             tag={tag}
             activeTag={props.activeTag}
             setActiveTag={props.setActiveTag}
+            handleTagEdit={props.handleTagEdit}
+            handleTagDelete={props.handleTagDelete}
           />
         ))}
       </section>
