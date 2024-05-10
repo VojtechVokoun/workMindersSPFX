@@ -242,12 +242,35 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         return;
       });
 
-    // TODO: remove after testing
-    console.log(reminders.value);
-
     // Process the reminders
-    // TODO: implement
-    return;
+    for (const reminder of reminders.value) {
+      const id: number = reminders.value.indexOf(reminder);
+      // Get the reminder content
+      const reminderContent = await graphClient
+        .api(`/me/drive/items/${reminder.id}/content`)
+        .version("v1.0")
+        .get();
+
+      this._workMinders.push({
+        ...(reminderContent as TWorkMinder),
+        oneDriveId: reminder.id,
+        localId: id,
+        createdDate: reminder.createdDateTime,
+        modifiedDate: reminder.lastModifiedDateTime,
+      } as TWorkMinder);
+
+      /*console.log(reminder);
+      this._workMinders.push({
+        ...(reminder as TWorkMinder),
+        oneDriveId: reminder.id,
+        localId: id,
+        createdDate: reminder.createdDateTime,
+        modifiedDate: reminder.lastModifiedDateTime,
+      } as TWorkMinder);*/
+    }
+
+    // TODO: remove after testing
+    //console.log(this._workMinders);
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {

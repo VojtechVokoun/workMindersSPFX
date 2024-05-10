@@ -58,7 +58,7 @@ export type TFile = {
  * This is the object holding the reminder data.
  */
 export type TWorkMinder = {
-  localId: string;
+  localId: number;
   oneDriveId: string;
   title: string;
   description: string;

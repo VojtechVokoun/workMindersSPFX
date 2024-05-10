@@ -136,11 +136,11 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   }, []);
 
   /**
-   * Filter the tasks when the active tag changes.
+   * Filter the tasks when the active tag changes and when the tasks change.
    */
   useEffect(() => {
     filterTasks();
-  }, [activeTag]);
+  }, [activeTag, props.workMinders]);
 
   // STYLES -----------------------------------------------
   const containerStyle = {
