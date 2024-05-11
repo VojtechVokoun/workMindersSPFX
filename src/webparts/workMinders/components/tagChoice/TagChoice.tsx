@@ -3,12 +3,12 @@ import { Dispatch, SetStateAction } from "react";
 
 import { Add20Regular } from "@fluentui/react-icons";
 
-import ListChoiceItem from "./ListChoiceItem";
+import TagChoiceItem from "./TagChoiceItem";
 
 import * as strings from "WorkMindersWebPartStrings";
-import styles from "./ListChoice.module.scss";
+import styles from "./TagChoice.module.scss";
 
-export interface IListChoiceProps {
+export interface ITagChoiceProps {
   userTags: string[];
   activeTag: string;
   setActiveTag: Dispatch<SetStateAction<string>>;
@@ -23,7 +23,7 @@ export interface IListChoiceProps {
  * @param props - component properties
  * @constructor
  */
-const ListChoice = (props: IListChoiceProps): JSX.Element => {
+const TagChoice = (props: ITagChoiceProps): JSX.Element => {
   // HELPER LIST ------------------------------------------
   /**
    * List of default tags.
@@ -57,12 +57,12 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
   // RENDER -----------------------------------------------
   return (
     <div
-      className={styles.wm_listChoice}
+      className={styles.wm_tagChoice}
       style={{ height: `${props.height}px` }}
     >
       <section className={styles.wm_tagSection}>
         {defaultTags.map((tag: string) => (
-          <ListChoiceItem
+          <TagChoiceItem
             key={tag}
             tag={tag}
             activeTag={props.activeTag}
@@ -81,7 +81,7 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
         </div>
 
         {sortUserTags().map((tag: string) => (
-          <ListChoiceItem
+          <TagChoiceItem
             key={tag}
             tag={tag}
             activeTag={props.activeTag}
@@ -95,4 +95,4 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
   );
 };
 
-export default ListChoice;
+export default TagChoice;

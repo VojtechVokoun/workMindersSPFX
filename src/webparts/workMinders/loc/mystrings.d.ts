@@ -43,7 +43,7 @@ declare interface IWorkMindersWebPartStrings {
   taskItemLinkedFiles: string;
   taskItemImportant: string;
 
-  // ListChoice
+  // TagChoice
   tags: string;
   addTag: string;
 

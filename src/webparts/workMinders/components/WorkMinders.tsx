@@ -7,9 +7,9 @@ import { Settings } from "../classes/Settings";
 import { TWorkMinder } from "../types/ItemTypes";
 
 import AddEditTagOverlay from "./overlays/AddEditTagOverlay";
-import DeleteTagOverlay from "./overlays/DeleteTagOverlay";
-import ListChoice from "./listChoice/ListChoice";
 import ContentView from "./contentView/ContentView";
+import DeleteTagOverlay from "./overlays/DeleteTagOverlay";
+import TagChoice from "./tagChoice/TagChoice";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
@@ -191,7 +191,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         />
       )}
 
-      <ListChoice
+      <TagChoice
         userTags={Settings.tagList}
         activeTag={activeTag}
         setActiveTag={setActiveTag}

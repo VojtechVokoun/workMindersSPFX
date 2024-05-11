@@ -47,7 +47,7 @@ define([], function () {
     taskItemLinkedFiles: "Propojené soubory",
     taskItemImportant: "Důležité",
 
-    // ListChoice
+    // TagChoice
     tags: "Tagy",
     addTag: "Nový tag",
 

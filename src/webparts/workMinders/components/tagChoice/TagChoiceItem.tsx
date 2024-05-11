@@ -4,9 +4,9 @@ import { Dispatch, SetStateAction } from "react";
 import { Delete16Regular, Edit16Regular } from "@fluentui/react-icons";
 
 import * as strings from "WorkMindersWebPartStrings";
-import styles from "./ListChoiceItem.module.scss";
+import styles from "./TagChoiceItem.module.scss";
 
-interface IListChoiceItemProps {
+interface ITagChoiceItemProps {
   tag: string;
   activeTag: string;
   setActiveTag: Dispatch<SetStateAction<string>>;
@@ -14,7 +14,7 @@ interface IListChoiceItemProps {
   handleTagDelete?: (tag: string) => void;
 }
 
-const ListChoiceItem = (props: IListChoiceItemProps): JSX.Element => {
+const TagChoiceItem = (props: ITagChoiceItemProps): JSX.Element => {
   // COMPONENT STATE --------------------------------------
   /**
    * The state tracking the hover state of the list item.
@@ -73,28 +73,28 @@ const ListChoiceItem = (props: IListChoiceItemProps): JSX.Element => {
     <button
       className={
         props.tag === props.activeTag
-          ? styles.wm_listChoiceItemActive
-          : styles.wm_listChoiceItem
+          ? styles.wm_tagChoiceItemActive
+          : styles.wm_tagChoiceItem
       }
       onClick={() => props.setActiveTag(props.tag)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <p className={styles.wm_listChoiceItemLabel}>{props.tag}</p>
+      <p className={styles.wm_tagChoiceItemLabel}>{props.tag}</p>
 
       {props.handleTagEdit !== undefined &&
         props.handleTagDelete !== undefined &&
         hovered && (
-          <div className={styles.wm_listChoiceItemHoverSection}>
+          <div className={styles.wm_tagChoiceItemHoverSection}>
             <button
-              className={styles.wm_listChoiceItemButton}
+              className={styles.wm_tagChoiceItemButton}
               onClick={handleEditClick}
               title={strings.edit}
             >
               <Edit16Regular />
             </button>
             <button
-              className={styles.wm_listChoiceItemDeleteButton}
+              className={styles.wm_tagChoiceItemDeleteButton}
               onClick={handleDeleteClick}
               title={strings.delete}
             >
@@ -106,4 +106,4 @@ const ListChoiceItem = (props: IListChoiceItemProps): JSX.Element => {
   );
 };
 
-export default ListChoiceItem;
+export default TagChoiceItem;

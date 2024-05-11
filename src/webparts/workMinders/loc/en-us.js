@@ -47,7 +47,7 @@ define([], function () {
     taskItemLinkedFiles: "Linked files",
     taskItemImportant: "Important",
 
-    // ListChoice
+    // TagChoice
     tags: "Tags",
     addTag: "New tag",
 
