@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 
 import { Delete16Regular, Edit16Regular } from "@fluentui/react-icons";
 
+import * as strings from "WorkMindersWebPartStrings";
 import styles from "./ListChoiceItem.module.scss";
 
 interface IListChoiceItemProps {
@@ -88,12 +89,14 @@ const ListChoiceItem = (props: IListChoiceItemProps): JSX.Element => {
             <button
               className={styles.wm_listChoiceItemButton}
               onClick={handleEditClick}
+              title={strings.edit}
             >
               <Edit16Regular />
             </button>
             <button
               className={styles.wm_listChoiceItemDeleteButton}
               onClick={handleDeleteClick}
+              title={strings.delete}
             >
               <Delete16Regular />
             </button>

@@ -144,6 +144,13 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
 
   // EVENT HANDLERS ---------------------------------------
   /**
+   * Handles the addition of a tag.
+   */
+  const handleTagAdd = (): void => {
+    //setTagOverlayActive(true);
+  };
+
+  /**
    * Handles the edit of a tag.
    * @param tag - the tag to edit
    */
@@ -191,6 +198,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         userTags={Settings.tagList}
         activeTag={activeTag}
         setActiveTag={setActiveTag}
+        handleTagAdd={handleTagAdd}
         handleTagEdit={handleTagEdit}
         handleTagDelete={handleTagDelete}
         height={props.height}

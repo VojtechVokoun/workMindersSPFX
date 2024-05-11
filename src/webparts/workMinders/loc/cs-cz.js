@@ -44,6 +44,8 @@ define([], function () {
     // ListChoice
     tags: "Tagy",
     addTag: "Nový tag",
+    edit: "Upravit",
+    delete: "Smazat",
 
     // Environment
     AppLocalEnvironmentSharePoint:

@@ -1,5 +1,4 @@
 declare interface IWorkMindersWebPartStrings {
-  // WORKMINDERS WEBPART
   // Property Pane
   propPaneDescription: string;
   // Property Pane - Look and Feel
@@ -40,6 +39,8 @@ declare interface IWorkMindersWebPartStrings {
   // ListChoice
   tags: string;
   addTag: string;
+  edit: string;
+  delete: string;
 
   // Environment
   AppLocalEnvironmentSharePoint: string;

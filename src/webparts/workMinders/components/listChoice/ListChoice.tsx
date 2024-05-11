@@ -12,6 +12,7 @@ export interface IListChoiceProps {
   userTags: string[];
   activeTag: string;
   setActiveTag: Dispatch<SetStateAction<string>>;
+  handleTagAdd: () => void;
   handleTagEdit: (tag: string) => void;
   handleTagDelete: (tag: string) => void;
   height: number;
@@ -44,10 +45,14 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
     return props.userTags.sort((a, b) => a.localeCompare(b));
   };
 
-  // ICON GETTER ------------------------------------------
+  // EVENT HANDLERS ---------------------------------------
   /**
-   * Gets an
+   * Handles the click event on the add button.
+   * Passes the tag to the parent component, which will handle the editing.
    */
+  const handleAddClick = (): void => {
+    props.handleTagAdd();
+  };
 
   // RENDER -----------------------------------------------
   return (
@@ -56,7 +61,7 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
       style={{ height: `${props.height}px` }}
     >
       <section className={styles.wm_tagSection}>
-        {defaultTags.map((tag) => (
+        {defaultTags.map((tag: string) => (
           <ListChoiceItem
             key={tag}
             tag={tag}
@@ -68,10 +73,10 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
         <div className={styles.wm_tagSectionTitle}>
           <h3 className={styles.wm_tagSectionTitleText}>{strings.tags}</h3>
 
-          <Add20Regular />
+          <Add20Regular title={strings.addTag} onClick={handleAddClick} />
         </div>
 
-        {sortUserTags().map((tag) => (
+        {sortUserTags().map((tag: string) => (
           <ListChoiceItem
             key={tag}
             tag={tag}

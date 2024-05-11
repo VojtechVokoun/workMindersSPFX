@@ -44,6 +44,8 @@ define([], function () {
     // ListChoice
     tags: "Tags",
     addTag: "New tag",
+    edit: "Edit",
+    delete: "Delete",
 
     // Environment
     AppLocalEnvironmentSharePoint:
