@@ -64,27 +64,6 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
 
   // METHODS ----------------------------------------------
   /**
-   * ! Test function
-   * Fetch all the data from the Graph API.
-   * @returns void
-   */
-  const getAll = async (): Promise<void> => {
-    // Generate the hraph client
-    const graphClient: MSGraphClientV3 =
-      await props.webpartContext.msGraphClientFactory.getClient("3");
-    //console.log("Manager:");
-    //await getManager(graphClient);
-    console.log("Team suggestions:");
-    await getTeamSuggestions(graphClient, "Coe");
-    console.log("User suggestions:");
-    await getUserSuggestions(graphClient, "Vojt");
-    console.log("Sites:");
-    await getSites(props.webpartContext);
-    console.log("Files:");
-    await getRecentFiles(graphClient);
-  };
-
-  /**
    * Filter the tasks based on the active tag.
    */
   const filterTasks = (): void => {
@@ -141,22 +120,12 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
     setFilteredTasks(filteredTasks);
   };
 
-  // EFFECTS ----------------------------------------------
-  /**
-   * Fetch the data from the Graph API when the component is mounted.
-   */
-  useEffect((): void => {
-    getAll().catch((error): void => {
-      console.error("Error in useEffect: ", error);
-    });
-  }, []);
-
   // EVENT HANDLERS ---------------------------------------
   /**
    * Handles the addition of a tag.
    */
   const handleTagAdd = (): void => {
-    //setTagOverlayActive(true);
+    setTagEditOverlayActive(true);
   };
 
   /**
