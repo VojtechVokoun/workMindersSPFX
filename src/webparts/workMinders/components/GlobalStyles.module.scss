@@ -15,6 +15,7 @@
   background-image: linear-gradient(to bottom right, rgba(1, 1, 1, 0.01), rgba(0, 0, 0, 0.07));
   transition: ease-in-out 150ms;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .wm_rectButton:hover {

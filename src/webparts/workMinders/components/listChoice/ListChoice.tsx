@@ -73,7 +73,11 @@ const ListChoice = (props: IListChoiceProps): JSX.Element => {
         <div className={styles.wm_tagSectionTitle}>
           <h3 className={styles.wm_tagSectionTitleText}>{strings.tags}</h3>
 
-          <Add20Regular title={strings.addTag} onClick={handleAddClick} />
+          <Add20Regular
+            title={strings.addTag}
+            onClick={handleAddClick}
+            cursor={"pointer"}
+          />
         </div>
 
         {sortUserTags().map((tag: string) => (
