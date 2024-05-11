@@ -18,6 +18,7 @@ import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
 import ListChoice from "./listChoice/ListChoice";
 import ContentView from "./contentView/ContentView";
+import AddEditTagOverlay from "./overlays/AddEditTagOverlay";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
@@ -44,9 +45,9 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   /**
    * States tracking the actvity of the tag creation/edit overlay.
    */
-  //const [tagOverlayActive, setTagOverlayActive] =
-  //React.useState<boolean>(false);
-  //const [editedTag, setEditedTag] = React.useState<string>("");
+  const [tagOverlayActive, setTagOverlayActive] =
+    React.useState<boolean>(false);
+  const [editedTag, setEditedTag] = React.useState<string>("");
 
   /**
    * The active tag for the task list.
@@ -155,8 +156,8 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * @param tag - the tag to edit
    */
   const handleTagEdit = (tag: string): void => {
-    //setTagOverlayActive(true);
-    //setEditedTag(tag);
+    setTagOverlayActive(true);
+    setEditedTag(tag);
   };
 
   /**
@@ -193,6 +194,17 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
       {
         //<div className={styles.wm_screenOverlay} />
       }
+
+      {tagOverlayActive && (
+        <AddEditTagOverlay
+          setTagOverlayActive={setTagOverlayActive}
+          editedTag={editedTag}
+          setEditedTag={setEditedTag}
+          activeTag={activeTag}
+          setActiveTag={setActiveTag}
+          tasks={filteredTasks}
+        />
+      )}
 
       <ListChoice
         userTags={Settings.tagList}

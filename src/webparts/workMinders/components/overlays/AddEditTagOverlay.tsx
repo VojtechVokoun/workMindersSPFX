@@ -1,8 +1,6 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
-import { WebPartContext } from "@microsoft/sp-webpart-base";
-
 import { Settings } from "../../classes/Settings";
 import { TWorkMinder } from "../../types/ItemTypes";
 
@@ -17,7 +15,6 @@ interface IAddEditTagOverlayProps {
   setEditedTag: Dispatch<SetStateAction<string>>;
   setTagOverlayActive: Dispatch<SetStateAction<boolean>>;
   tasks: TWorkMinder[];
-  context: WebPartContext;
 }
 
 const AddEditTagOverlay = (props: IAddEditTagOverlayProps): JSX.Element => {
@@ -84,6 +81,7 @@ const AddEditTagOverlay = (props: IAddEditTagOverlayProps): JSX.Element => {
 
         <input
           type="text"
+          className={globalStyles.wm_borderedInput}
           value={inputValue}
           onChange={handleInputChange}
           placeholder={
