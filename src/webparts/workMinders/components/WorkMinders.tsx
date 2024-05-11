@@ -14,11 +14,13 @@ import {
 import { Settings } from "../classes/Settings";
 import { TWorkMinder } from "../types/ItemTypes";
 
-import * as strings from "WorkMindersWebPartStrings";
-import styles from "./WorkMinders.module.scss";
+import AddEditTagOverlay from "./overlays/AddEditTagOverlay";
+import DeleteTagOverlay from "./overlays/DeleteTagOverlay";
 import ListChoice from "./listChoice/ListChoice";
 import ContentView from "./contentView/ContentView";
-import AddEditTagOverlay from "./overlays/AddEditTagOverlay";
+
+import * as strings from "WorkMindersWebPartStrings";
+import styles from "./WorkMinders.module.scss";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
@@ -45,7 +47,9 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   /**
    * States tracking the actvity of the tag creation/edit overlay.
    */
-  const [tagOverlayActive, setTagOverlayActive] =
+  const [tagEditOverlayActive, setTagEditOverlayActive] =
+    React.useState<boolean>(false);
+  const [tagDeleteOverlayActive, setTagDeleteOverlayActive] =
     React.useState<boolean>(false);
   const [editedTag, setEditedTag] = React.useState<string>("");
 
@@ -92,11 +96,13 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         filteredTasks = props.workMinders;
         break;
       case strings.tasksCompleted:
-        filteredTasks = props.workMinders.filter((task) => task.isCompleted);
+        filteredTasks = props.workMinders.filter(
+          (task: TWorkMinder) => task.isCompleted,
+        );
         break;
       case strings.tasksOverdue:
         filteredTasks = props.workMinders.filter(
-          (task) =>
+          (task: TWorkMinder) =>
             task.dueDate &&
             new Date(task.dueDate) < new Date() &&
             !task.isCompleted,
@@ -104,24 +110,26 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         break;
       case strings.tasksUpcoming:
         filteredTasks = props.workMinders.filter(
-          (task) =>
+          (task: TWorkMinder) =>
             task.dueDate &&
             new Date(task.dueDate) > new Date() &&
             !task.isCompleted,
         );
         break;
       case strings.tasksImportant:
-        filteredTasks = props.workMinders.filter((task) => task.isImportant);
+        filteredTasks = props.workMinders.filter(
+          (task: TWorkMinder) => task.isImportant,
+        );
         break;
       default:
-        filteredTasks = props.workMinders.filter((task) =>
+        filteredTasks = props.workMinders.filter((task: TWorkMinder) =>
           task.tags.includes(activeTag),
         );
         break;
     }
 
     // Sort the tasks by due date
-    filteredTasks.sort((a, b) => {
+    filteredTasks.sort((a: TWorkMinder, b: TWorkMinder): number => {
       if (a.dueDate && b.dueDate) {
         return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       } else {
@@ -137,8 +145,8 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   /**
    * Fetch the data from the Graph API when the component is mounted.
    */
-  useEffect(() => {
-    getAll().catch((error) => {
+  useEffect((): void => {
+    getAll().catch((error): void => {
       console.error("Error in useEffect: ", error);
     });
   }, []);
@@ -156,7 +164,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * @param tag - the tag to edit
    */
   const handleTagEdit = (tag: string): void => {
-    setTagOverlayActive(true);
+    setTagEditOverlayActive(true);
     setEditedTag(tag);
   };
 
@@ -165,20 +173,25 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * @param tag - the tag to delete
    */
   const handleTagDelete = (tag: string): void => {
+    setTagDeleteOverlayActive(true);
+    setEditedTag(tag);
     //const newTags: string[] = props.settings.tagList.filter((t) => t !== tag);
     //props.settings.tagList = newTags;
     //props.settings.save();
+    //if (tag === activeTag) {
+    //setActiveTag(strings.tasksAll);
+    //}
   };
 
   /**
    * Filter the tasks when the active tag changes and when the tasks change.
    */
-  useEffect(() => {
+  useEffect((): void => {
     filterTasks();
   }, [activeTag, props.workMinders, Settings.tagList]);
 
   // STYLES -----------------------------------------------
-  const containerStyle = {
+  const containerDynamicStyle: React.CSSProperties = {
     height: props.height,
   };
 
@@ -189,15 +202,26 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   return (
     <div
       className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${!props.smallUi ? styles.wm_sidebarContainer : ""}`}
-      style={containerStyle}
+      style={containerDynamicStyle}
     >
       {
         //<div className={styles.wm_screenOverlay} />
       }
 
-      {tagOverlayActive && (
+      {tagEditOverlayActive && (
         <AddEditTagOverlay
-          setTagOverlayActive={setTagOverlayActive}
+          setTagOverlayActive={setTagEditOverlayActive}
+          editedTag={editedTag}
+          setEditedTag={setEditedTag}
+          activeTag={activeTag}
+          setActiveTag={setActiveTag}
+          tasks={filteredTasks}
+        />
+      )}
+
+      {tagDeleteOverlayActive && (
+        <DeleteTagOverlay
+          setTagOverlayActive={setTagDeleteOverlayActive}
           editedTag={editedTag}
           setEditedTag={setEditedTag}
           activeTag={activeTag}

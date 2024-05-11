@@ -2,6 +2,8 @@ declare interface IWorkMindersWebPartStrings {
   // General Actions
   done: string;
   cancel: string;
+  edit: string;
+  delete: string;
 
   // Property Pane
   propPaneDescription: string;
@@ -43,13 +45,14 @@ declare interface IWorkMindersWebPartStrings {
   // ListChoice
   tags: string;
   addTag: string;
-  edit: string;
-  delete: string;
 
   // Add/Edit Tag
   addTagPlaceholder: string;
   editTagPlaceholder: string;
   tagHint: string;
+
+  // Delete Tag
+  tagDeleteDescription: string;
 
   // Environment
   AppLocalEnvironmentSharePoint: string;

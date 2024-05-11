@@ -76,7 +76,7 @@ const AddEditTagOverlay = (props: IAddEditTagOverlayProps): JSX.Element => {
   // RENDER -----------------------------------------------
   return (
     <div className={globalStyles.vm_screenOverlay}>
-      <div className={styles.vm_overlayContent}>
+      <div className={globalStyles.vm_tagOverlayContent}>
         <h2>{getOverlayTitle()}</h2>
 
         <input

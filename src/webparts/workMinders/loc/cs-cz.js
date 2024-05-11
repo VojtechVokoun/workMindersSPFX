@@ -3,6 +3,8 @@ define([], function () {
     // General Actions
     done: "Hotovo",
     cancel: "Zrušit",
+    edit: "Upravit",
+    delete: "Smazat",
 
     // Property Pane
     propPaneDescription: "Nastavení",
@@ -47,13 +49,14 @@ define([], function () {
     // ListChoice
     tags: "Tagy",
     addTag: "Nový tag",
-    edit: "Upravit",
-    delete: "Smazat",
 
     // Add/Edit Tag
     addTagPlaceholder: "Zadejte název nového tagu",
     editTagPlaceholder: "Zadejte nový název tagu",
     tagHint: "Vyberte krátký, výstižný název.",
+
+    // Delete Tag
+    tagDeleteDescription: "Tuto akci nelze vrátit zpět.",
 
     // Environment
     AppLocalEnvironmentSharePoint:

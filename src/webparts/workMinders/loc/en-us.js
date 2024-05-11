@@ -3,6 +3,8 @@ define([], function () {
     // General Actions
     done: "Done",
     cancel: "Cancel",
+    edit: "Edit",
+    delete: "Delete",
 
     // Property Pane
     propPaneDescription: "WebPart Settings",
@@ -47,13 +49,14 @@ define([], function () {
     // ListChoice
     tags: "Tags",
     addTag: "New tag",
-    edit: "Edit",
-    delete: "Delete",
 
     // Add/Edit Tag
     addTagPlaceholder: "Enter a name for the new tag",
     editTagPlaceholder: "Enter a new name for the tag",
     tagHint: "Choose a short, descriptive name.",
+
+    // Delete Tag
+    tagDeleteDescription: "This action cannot be undone.",
 
     // Environment
     AppLocalEnvironmentSharePoint:
