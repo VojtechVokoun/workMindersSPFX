@@ -1,6 +1,9 @@
 define([], function () {
   return {
-    // WORKMINDERS WEBPART
+    // General Actions
+    done: "Done",
+    cancel: "Cancel",
+
     // Property Pane
     propPaneDescription: "WebPart Settings",
     // Property Pane - Look and Feel
@@ -46,6 +49,11 @@ define([], function () {
     addTag: "New tag",
     edit: "Edit",
     delete: "Delete",
+
+    // Add/Edit Tag
+    addTagPlaceholder: "Enter a name for the new tag",
+    editTagPlaceholder: "Enter a new name for the tag",
+    tagHint: "Choose a short, descriptive name.",
 
     // Environment
     AppLocalEnvironmentSharePoint:

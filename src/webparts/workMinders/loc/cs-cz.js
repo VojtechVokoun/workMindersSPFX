@@ -1,6 +1,9 @@
 define([], function () {
   return {
-    // WORKMINDERS WEBPART
+    // General Actions
+    done: "Hotovo",
+    cancel: "Zrušit",
+
     // Property Pane
     propPaneDescription: "Nastavení",
     // Property Pane - Look and Feel
@@ -46,6 +49,11 @@ define([], function () {
     addTag: "Nový tag",
     edit: "Upravit",
     delete: "Smazat",
+
+    // Add/Edit Tag
+    addTagPlaceholder: "Zadejte název nového tagu",
+    editTagPlaceholder: "Zadejte nový název tagu",
+    tagHint: "Vyberte krátký, výstižný název.",
 
     // Environment
     AppLocalEnvironmentSharePoint:

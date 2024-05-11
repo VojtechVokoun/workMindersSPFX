@@ -1,4 +1,8 @@
 declare interface IWorkMindersWebPartStrings {
+  // General Actions
+  done: string;
+  cancel: string;
+
   // Property Pane
   propPaneDescription: string;
   // Property Pane - Look and Feel
@@ -41,6 +45,11 @@ declare interface IWorkMindersWebPartStrings {
   addTag: string;
   edit: string;
   delete: string;
+
+  // Add/Edit Tag
+  addTagPlaceholder: string;
+  editTagPlaceholder: string;
+  tagHint: string;
 
   // Environment
   AppLocalEnvironmentSharePoint: string;

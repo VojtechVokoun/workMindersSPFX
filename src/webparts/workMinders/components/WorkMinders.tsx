@@ -174,7 +174,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   useEffect(() => {
     filterTasks();
-  }, [activeTag, props.workMinders]);
+  }, [activeTag, props.workMinders, Settings.tagList]);
 
   // STYLES -----------------------------------------------
   const containerStyle = {
