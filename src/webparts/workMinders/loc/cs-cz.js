@@ -45,6 +45,7 @@ define([], function () {
     taskItemLinkedSites: "Propojené weby",
     taskItemLinkedTeams: "Propojené týmy",
     taskItemLinkedFiles: "Propojené soubory",
+    taskItemImportant: "Důležité",
 
     // ListChoice
     tags: "Tagy",

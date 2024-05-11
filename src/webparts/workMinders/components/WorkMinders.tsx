@@ -1,16 +1,8 @@
 import * as React from "react";
 import { useEffect } from "react";
 
-import { MSGraphClientV3 } from "@microsoft/sp-http";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 
-import {
-  //getManager,
-  getSites,
-  getTeamSuggestions,
-  getUserSuggestions,
-  getRecentFiles,
-} from "../tools/suggestionApiCalls";
 import { Settings } from "../classes/Settings";
 import { TWorkMinder } from "../types/ItemTypes";
 

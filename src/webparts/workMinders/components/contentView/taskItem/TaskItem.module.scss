@@ -4,6 +4,14 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: .5px solid #EAEAEAEA;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: calc(100% - 25px);
+  cursor: pointer;
+}
+
+.wm_taskItem:hover {
+  background-image: linear-gradient(to bottom right, #0078D405, #0078D422);
 }
 
 .wm_taskItemMainSection {
@@ -11,4 +19,49 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  gap: 7px;
+  width: calc(100% - 110px);
+}
+
+.wm_taskItemTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.wm_taskItemDescription {
+  font-size: 14px;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.wm_taskItemButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.wm_taskItemButton {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #323130;
+  height: 16px;
+}
+
+.wm_taskItemButtonImportant {
+  color: #FF0000;
 }

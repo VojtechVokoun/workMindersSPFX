@@ -41,6 +41,7 @@ declare interface IWorkMindersWebPartStrings {
   taskItemLinkedSites: string;
   taskItemLinkedTeams: string;
   taskItemLinkedFiles: string;
+  taskItemImportant: string;
 
   // ListChoice
   tags: string;
