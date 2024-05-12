@@ -3,6 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  gap: 7px;
   border-bottom: .5px solid #EAEAEAEA;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -20,7 +21,7 @@
   justify-content: center;
   align-items: flex-start;
   gap: 7px;
-  width: calc(100% - 110px);
+  width: calc(100% - 87px);
 }
 
 .wm_taskItemTitle {
@@ -48,7 +49,7 @@
   justify-content: flex-end;
   align-items: center;
   gap: 5px;
-  width: 100px;
+  width: 45px;
   flex-shrink: 0;
 }
 
@@ -59,9 +60,14 @@
   border: none;
   background-color: transparent;
   color: #323130;
-  height: 16px;
+  height: 20px;
 }
 
 .wm_taskItemButtonImportant {
   color: #FF0000;
+}
+
+.wm_taskItemButtonCheckbox {
+  width: 24px;
+  height: 24px;
 }
