@@ -20,7 +20,6 @@ export interface IWorkMindersProps {
   webpartContext: WebPartContext;
   workMinders: TWorkMinder[];
   height: number;
-  smallUi: boolean;
   oneDriveDoesNotExist: boolean;
 }
 
@@ -162,7 +161,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   return (
     <div
-      className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${!props.smallUi ? styles.wm_sidebarContainer : ""}`}
+      className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${styles.wm_sidebarContainer}`}
       style={containerDynamicStyle}
     >
       {

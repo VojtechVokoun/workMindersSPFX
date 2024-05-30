@@ -7,7 +7,6 @@ import { IReadonlyTheme } from "@microsoft/sp-component-base";
 import { MSGraphClientV3 } from "@microsoft/sp-http";
 import { PropertyFieldNumber } from "@pnp/spfx-property-controls/lib/PropertyFieldNumber";
 import { PropertyPaneWebPartInformation } from "@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation";
-import { PropertyFieldToggleWithCallout } from "@pnp/spfx-property-controls";
 
 import { Settings } from "./classes/Settings";
 import { TWorkMinder } from "./types/ItemTypes";
@@ -17,7 +16,6 @@ import * as strings from "WorkMindersWebPartStrings";
 
 export interface IWorkMindersWebPartProps {
   height: number;
-  smallUi: boolean;
 }
 
 export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMindersWebPartProps> {
@@ -35,7 +33,6 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         webpartContext: this.context,
         height: this.properties.height,
-        smallUi: this.properties.smallUi,
         oneDriveDoesNotExist: this._oneDriveDoesNotExist,
         workMinders: this._workMinders,
       },
@@ -254,13 +251,6 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
                   label: strings.propPaneHeight,
                   description: strings.propPaneHeightDescription,
                   value: this.properties.height,
-                }),
-                PropertyFieldToggleWithCallout("smallUi", {
-                  key: "smallUi",
-                  label: strings.propPaneSmallUi,
-                  calloutContent: strings.propPaneSmallUiDescription,
-                  calloutTrigger: 1,
-                  checked: this.properties.smallUi,
                 }),
               ],
             },
