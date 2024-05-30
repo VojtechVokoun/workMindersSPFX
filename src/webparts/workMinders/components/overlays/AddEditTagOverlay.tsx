@@ -97,6 +97,8 @@ const AddEditTagOverlay = (props: IAddEditTagOverlayProps): JSX.Element => {
           <button
             className={globalStyles.wm_rectButton_primary}
             onClick={handleSaveClick}
+            disabled={inputValue === ""}
+            style={{ opacity: inputValue === "" ? 0.5 : 1 }}
           >
             {strings.done}
           </button>

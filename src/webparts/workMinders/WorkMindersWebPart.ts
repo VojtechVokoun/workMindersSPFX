@@ -191,19 +191,7 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         createdDate: reminder.createdDateTime,
         modifiedDate: reminder.lastModifiedDateTime,
       } as TWorkMinder);
-
-      /*console.log(reminder);
-      this._workMinders.push({
-        ...(reminder as TWorkMinder),
-        oneDriveId: reminder.id,
-        localId: id,
-        createdDate: reminder.createdDateTime,
-        modifiedDate: reminder.lastModifiedDateTime,
-      } as TWorkMinder);*/
     }
-
-    // TODO: remove after testing
-    //console.log(this._workMinders);
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
