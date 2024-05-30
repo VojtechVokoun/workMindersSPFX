@@ -2,8 +2,15 @@ import * as React from "react";
 import { useEffect } from "react";
 
 import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { Spinner } from "@fluentui/react-components";
 
 import { Settings } from "../classes/Settings";
+import { WorkMinder } from "../classes/WorkMinder";
+
+import {
+  checkOneDriveExistence,
+  checkWorkMindersFolder,
+} from "../tools/oneDriveUtilities";
 
 import AddEditTagOverlay from "./overlays/AddEditTagOverlay";
 import ContentView from "./contentView/ContentView";
@@ -12,16 +19,12 @@ import TagChoice from "./tagChoice/TagChoice";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
-import { WorkMinder } from "../classes/WorkMinder";
-import { Spinner } from "@fluentui/react-components";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
   hasTeamsContext: boolean;
   webpartContext: WebPartContext;
-  workMinders: WorkMinder[];
   height: number;
-  oneDriveDoesNotExist: boolean;
 }
 
 /**
@@ -31,6 +34,19 @@ export interface IWorkMindersProps {
  */
 const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   // COMPONENT STATE --------------------------------------
+  /**
+   * A state tracking if the OneDrive exists.
+   * If the OneDrive does not exist, the value is true.
+   */
+  const [oneDriveDoesNotExist, setOneDriveDoesNotExist] =
+    React.useState<boolean>(false);
+
+  /**
+   * A state holding all the tasks fetched from the Graph API.
+   * The value is an array of WorkMinder objects.
+   */
+  const [workMinders, setWorkMinders] = React.useState<WorkMinder[]>([]);
+
   /**
    * The task edited in the overlay. If the overlay is not active, the value is empty.
    */
@@ -69,15 +85,15 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
     // Filter the tasks based on the active tag
     switch (activeTag) {
       case strings.tasksAll:
-        filteredTasks = props.workMinders;
+        filteredTasks = workMinders;
         break;
       case strings.tasksCompleted:
-        filteredTasks = props.workMinders.filter(
+        filteredTasks = workMinders.filter(
           (task: WorkMinder) => task.isCompleted,
         );
         break;
       case strings.tasksOverdue:
-        filteredTasks = props.workMinders.filter(
+        filteredTasks = workMinders.filter(
           (task: WorkMinder) =>
             task.dueDate &&
             new Date(task.dueDate) < new Date() &&
@@ -85,7 +101,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         );
         break;
       case strings.tasksUpcoming:
-        filteredTasks = props.workMinders.filter(
+        filteredTasks = workMinders.filter(
           (task: WorkMinder) =>
             task.dueDate &&
             new Date(task.dueDate) > new Date() &&
@@ -93,12 +109,12 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         );
         break;
       case strings.tasksImportant:
-        filteredTasks = props.workMinders.filter(
+        filteredTasks = workMinders.filter(
           (task: WorkMinder) => task.isImportant,
         );
         break;
       default:
-        filteredTasks = props.workMinders.filter((task: WorkMinder) =>
+        filteredTasks = workMinders.filter((task: WorkMinder) =>
           task.tags.includes(activeTag),
         );
         break;
@@ -141,35 +157,82 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   const handleTagDelete = (tag: string): void => {
     setTagDeleteOverlayActive(true);
     setEditedTag(tag);
-    //const newTags: string[] = props.settings.tagList.filter((t) => t !== tag);
-    //props.settings.tagList = newTags;
-    //props.settings.save();
-    //if (tag === activeTag) {
-    //setActiveTag(strings.tasksAll);
-    //}
   };
+
+  /**
+   * Fetch the data with the Graph API. If the OneDrive does not exist, set the state accordingly.
+   * If the data is fetched, set the loaded state to true.
+   */
+  const getDataFromOneDrive = async (): Promise<void> => {
+    const graphClient =
+      await props.webpartContext.msGraphClientFactory.getClient("3");
+
+    const oneDriveExists = await checkOneDriveExistence(graphClient);
+
+    if (!oneDriveExists) {
+      setOneDriveDoesNotExist(true);
+      return;
+    }
+
+    await checkWorkMindersFolder(graphClient);
+
+    Settings.getInstance(props.webpartContext);
+
+    const workMinders: WorkMinder[] =
+      await WorkMinder.getWorkMinders(graphClient);
+
+    setWorkMinders(workMinders);
+
+    setLoaded(true);
+  };
+
+  // LIFECYCLE ---------------------------------------------
+  /**
+   * Fetch the data from OneDrive.
+   */
+  useEffect((): void => {
+    getDataFromOneDrive().catch((error: unknown) => {
+      console.error(`getDataFromOneDrive: ${error}`);
+    });
+  }, []);
 
   /**
    * Filter the tasks when the active tag changes and when the tasks change.
    */
   useEffect((): void => {
     filterTasks();
-    setLoaded(false);
-  }, [activeTag, props.workMinders, Settings.tagList]);
+  }, [activeTag, workMinders, Settings.tagList]);
 
   // STYLES -----------------------------------------------
+  /**
+   * The dynamic styles for the container. Sets the height of the container based on the set webpart height.
+   */
   const containerDynamicStyle: React.CSSProperties = {
     height: props.hasTeamsContext ? "auto" : `${props.height}px`,
   };
 
   // RENDER -----------------------------------------------
   /**
+   * If the OneDrive does not exist, render a message.
+   */
+  if (oneDriveDoesNotExist) {
+    return (
+      <div
+        className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${styles.wm_fullSizePrompt}`}
+        style={containerDynamicStyle}
+      >
+        <h2>{strings.oneDriveDoesNotExist}</h2>
+      </div>
+    );
+  }
+
+  /**
    * If the data is not yet fetched, render a loading spinner.
    */
   if (!loaded) {
     return (
       <div
-        className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${styles.wm_loading}`}
+        className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${styles.wm_fullSizePrompt}`}
         style={containerDynamicStyle}
       >
         <Spinner

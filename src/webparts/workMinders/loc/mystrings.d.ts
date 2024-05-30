@@ -4,6 +4,9 @@ declare interface IWorkMindersWebPartStrings {
   cancel: string;
   edit: string;
   delete: string;
+
+  // Web Part Status
+  oneDriveDoesNotExist: string;
   loadingData: string;
 
   // Property Pane

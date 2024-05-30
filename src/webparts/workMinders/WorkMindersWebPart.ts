@@ -4,15 +4,12 @@ import { Version } from "@microsoft/sp-core-library";
 import { type IPropertyPaneConfiguration } from "@microsoft/sp-property-pane";
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import { IReadonlyTheme } from "@microsoft/sp-component-base";
-import { MSGraphClientV3 } from "@microsoft/sp-http";
 import { PropertyFieldNumber } from "@pnp/spfx-property-controls/lib/PropertyFieldNumber";
 import { PropertyPaneWebPartInformation } from "@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation";
 
-import { Settings } from "./classes/Settings";
 import WorkMinders, { IWorkMindersProps } from "./components/WorkMinders";
 
 import * as strings from "WorkMindersWebPartStrings";
-import { WorkMinder } from "./classes/WorkMinder";
 
 export interface IWorkMindersWebPartProps {
   height: number;
@@ -20,10 +17,6 @@ export interface IWorkMindersWebPartProps {
 
 export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMindersWebPartProps> {
   private _isDarkTheme: boolean = false;
-  private _workMinders: WorkMinder[] = [];
-  private _oneDriveDoesNotExist: boolean = false;
-
-  //private _environmentMessage: string = "";
 
   public render(): void {
     const element: React.ReactElement<IWorkMindersProps> = React.createElement(
@@ -33,8 +26,6 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         webpartContext: this.context,
         height: this.properties.height,
-        oneDriveDoesNotExist: this._oneDriveDoesNotExist,
-        workMinders: this._workMinders,
       },
     );
 
@@ -42,17 +33,12 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
   }
 
   protected async onInit(): Promise<void> {
-    try {
-      return await this._getAllOneDriveData();
-    } catch (error) {
-      console.error(`onInit: ${error}`);
-    }
-    //return this._getEnvironmentMessage().then((message) => {
-    //this._environmentMessage = message;
-    //});
+    return this._getEnvironmentMessage().then((message) => {
+      console.log(message);
+    });
   }
 
-  /*private _getEnvironmentMessage(): Promise<string> {
+  private _getEnvironmentMessage(): Promise<string> {
     if (!!this.context.sdks.microsoftTeams) {
       // running in Teams, office.com or Outlook
       return this.context.sdks.microsoftTeams.teamsJs.app
@@ -89,110 +75,7 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         ? strings.AppLocalEnvironmentSharePoint
         : strings.AppSharePointEnvironment,
     );
-  }*/
-
-  /**
-   * Gets all data stored in the user's OneDrive.
-   * @private
-   */
-  private async _getAllOneDriveData(): Promise<void> {
-    // Get the Graph client
-    const graphClient: MSGraphClientV3 =
-      await this.context.msGraphClientFactory.getClient("3");
-
-    // Find out if the user has a OneDrive
-    // Get the user's OneDrive
-    const oneDrive = await graphClient
-      .api("/me/drive")
-      .version("v1.0")
-      .get()
-      .catch((error: unknown) => {
-        console.error(`_getReminders: ${error}`);
-        return;
-      });
-
-    // If the user doesn't have a OneDrive, set the flag and return
-    if (!oneDrive) {
-      this._oneDriveDoesNotExist = true;
-      return;
-    }
-
-    // See if the 'WorkMinders App' folder exists, if not, create it
-    // Get the 'WorkMinders App' folder
-    const workMindersFolder = await graphClient
-      .api(`/me/drive/root/children`)
-      .version("v1.0")
-      .filter("name eq 'WorkMinders App'")
-      .get()
-      .catch((error: unknown) => {
-        console.error(`_getReminders: ${error}`);
-        return;
-      });
-
-    console.log(workMindersFolder);
-
-    // If the folder doesn't exist, create it and return
-    if (!workMindersFolder.value.length) {
-      console.log("Creating the 'WorkMinders App' folder");
-
-      await graphClient
-        .api("/me/drive/root/children")
-        .version("v1.0")
-        .post({
-          name: "WorkMinders App",
-          folder: {},
-        })
-        .catch((error: unknown) => {
-          console.error(`_getReminders: ${error}`);
-        });
-
-      return;
-    }
-
-    // Create the first instance of the settings class
-    Settings.getInstance(this.context);
-
-    // Fetch the reminders
-    await WorkMinder.getWorkMinders(graphClient);
-
-    return;
   }
-
-  // /**
-  //  * Fetches all reminders from user's OneDrive.
-  //  * @param graphClient - the Graph client
-  //  * @private
-  //  */
-  // private async _getWorkMinders(graphClient: MSGraphClientV3): Promise<void> {
-  //   // Get the reminders
-  //   const reminders = await graphClient
-  //     .api(`/me/drive/root:/WorkMinders App:/children`)
-  //     .version("v1.0")
-  //     .filter("startswith(name, 'workminder_')")
-  //     .get()
-  //     .catch((error: unknown) => {
-  //       console.error(`_getReminders: ${error}`);
-  //       return;
-  //     });
-  //
-  //   // Process the reminders
-  //   for (const reminder of reminders.value) {
-  //     const id: number = reminders.value.indexOf(reminder);
-  //     // Get the reminder content
-  //     const reminderContent = await graphClient
-  //       .api(`/me/drive/items/${reminder.id}/content`)
-  //       .version("v1.0")
-  //       .get();
-  //
-  //     this._workMinders.push({
-  //       ...(reminderContent as TWorkMinder),
-  //       oneDriveId: reminder.id,
-  //       localId: id,
-  //       createdDate: reminder.createdDateTime,
-  //       modifiedDate: reminder.lastModifiedDateTime,
-  //     } as TWorkMinder);
-  //   }
-  // }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
     if (!currentTheme) {

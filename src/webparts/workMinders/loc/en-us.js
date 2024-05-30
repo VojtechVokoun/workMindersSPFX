@@ -5,6 +5,10 @@ define([], function () {
     cancel: "Cancel",
     edit: "Edit",
     delete: "Delete",
+
+    // Web Part Status
+    oneDriveDoesNotExist:
+      "Could not load your reminders (OneDrive does not exist).",
     loadingData: "Loading your reminders...",
 
     // Property Pane

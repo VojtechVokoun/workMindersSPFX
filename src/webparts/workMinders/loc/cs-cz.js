@@ -5,6 +5,10 @@ define([], function () {
     cancel: "Zrušit",
     edit: "Upravit",
     delete: "Smazat",
+
+    // Web Part Status
+    oneDriveDoesNotExist:
+      "Nepodařilo se načíst Vaše připomínky (OneDrive neexistuje).",
     loadingData: "Načítám Vaše připomínky...",
 
     // Property Pane
