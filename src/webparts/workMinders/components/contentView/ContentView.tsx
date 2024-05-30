@@ -3,19 +3,19 @@ import * as React from "react";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { Add16Regular } from "@fluentui/react-icons";
 
-import { createReminder } from "../../tools/reminderSenders";
-import { TWorkMinder } from "../../types/ItemTypes";
+//import { createReminder } from "../../tools/reminderSenders";
 
 import TaskList from "./TaskList";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./ContentView.module.scss";
 import globalStyles from "../GlobalStyles.module.scss";
+import { WorkMinder } from "../../classes/WorkMinder";
 
 export interface IContentViewProps {
   webpartContext: WebPartContext;
   activeTag: string;
-  tasks: TWorkMinder[];
+  tasks: WorkMinder[];
   height: number;
 }
 
@@ -33,22 +33,21 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
         <button
           className={globalStyles.wm_rectButton_primary}
           onClick={() =>
-            createReminder(props.webpartContext, {
-              localId: 0,
-              oneDriveId: "",
-              title: "Test WorkMinder",
-              description: "Testing the WorkMinder creation process.",
-              createdDate: "",
-              modifiedDate: "",
-              dueDate: "",
-              isCompleted: false,
-              isImportant: true,
-              linkedUsers: [],
-              linkedTeams: [],
-              linkedSpSites: [],
-              linkedFiles: [],
-              tags: ["pr1"],
-            } as TWorkMinder)
+            new WorkMinder(
+              0,
+              "Test WorkMinder",
+              "Testing the WorkMinder creation process.",
+              "",
+              "",
+              "",
+              false,
+              true,
+              [],
+              [],
+              [],
+              [],
+              ["pr1"],
+            ).createReminder(props.webpartContext)
           }
         >
           <Add16Regular color={"#FFFFFF"} />

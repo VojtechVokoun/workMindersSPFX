@@ -9,10 +9,10 @@ import { PropertyFieldNumber } from "@pnp/spfx-property-controls/lib/PropertyFie
 import { PropertyPaneWebPartInformation } from "@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation";
 
 import { Settings } from "./classes/Settings";
-import { TWorkMinder } from "./types/ItemTypes";
 import WorkMinders, { IWorkMindersProps } from "./components/WorkMinders";
 
 import * as strings from "WorkMindersWebPartStrings";
+import { WorkMinder } from "./classes/WorkMinder";
 
 export interface IWorkMindersWebPartProps {
   height: number;
@@ -20,7 +20,7 @@ export interface IWorkMindersWebPartProps {
 
 export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMindersWebPartProps> {
   private _isDarkTheme: boolean = false;
-  private _workMinders: TWorkMinder[] = [];
+  private _workMinders: WorkMinder[] = [];
   private _oneDriveDoesNotExist: boolean = false;
 
   //private _environmentMessage: string = "";
@@ -153,46 +153,46 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
     Settings.getInstance(this.context);
 
     // Fetch the reminders
-    await this._getWorkMinders(graphClient);
+    await WorkMinder.getWorkMinders(graphClient);
 
     return;
   }
 
-  /**
-   * Fetches all reminders from user's OneDrive.
-   * @param graphClient - the Graph client
-   * @private
-   */
-  private async _getWorkMinders(graphClient: MSGraphClientV3): Promise<void> {
-    // Get the reminders
-    const reminders = await graphClient
-      .api(`/me/drive/root:/WorkMinders App:/children`)
-      .version("v1.0")
-      .filter("startswith(name, 'workminder_')")
-      .get()
-      .catch((error: unknown) => {
-        console.error(`_getReminders: ${error}`);
-        return;
-      });
-
-    // Process the reminders
-    for (const reminder of reminders.value) {
-      const id: number = reminders.value.indexOf(reminder);
-      // Get the reminder content
-      const reminderContent = await graphClient
-        .api(`/me/drive/items/${reminder.id}/content`)
-        .version("v1.0")
-        .get();
-
-      this._workMinders.push({
-        ...(reminderContent as TWorkMinder),
-        oneDriveId: reminder.id,
-        localId: id,
-        createdDate: reminder.createdDateTime,
-        modifiedDate: reminder.lastModifiedDateTime,
-      } as TWorkMinder);
-    }
-  }
+  // /**
+  //  * Fetches all reminders from user's OneDrive.
+  //  * @param graphClient - the Graph client
+  //  * @private
+  //  */
+  // private async _getWorkMinders(graphClient: MSGraphClientV3): Promise<void> {
+  //   // Get the reminders
+  //   const reminders = await graphClient
+  //     .api(`/me/drive/root:/WorkMinders App:/children`)
+  //     .version("v1.0")
+  //     .filter("startswith(name, 'workminder_')")
+  //     .get()
+  //     .catch((error: unknown) => {
+  //       console.error(`_getReminders: ${error}`);
+  //       return;
+  //     });
+  //
+  //   // Process the reminders
+  //   for (const reminder of reminders.value) {
+  //     const id: number = reminders.value.indexOf(reminder);
+  //     // Get the reminder content
+  //     const reminderContent = await graphClient
+  //       .api(`/me/drive/items/${reminder.id}/content`)
+  //       .version("v1.0")
+  //       .get();
+  //
+  //     this._workMinders.push({
+  //       ...(reminderContent as TWorkMinder),
+  //       oneDriveId: reminder.id,
+  //       localId: id,
+  //       createdDate: reminder.createdDateTime,
+  //       modifiedDate: reminder.lastModifiedDateTime,
+  //     } as TWorkMinder);
+  //   }
+  // }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
     if (!currentTheme) {

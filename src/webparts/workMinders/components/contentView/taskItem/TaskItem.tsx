@@ -7,16 +7,15 @@ import {
   Important20Regular,
 } from "@fluentui/react-icons";
 
-import { TWorkMinder } from "../../../types/ItemTypes";
-
 import TagContainer from "./TagContainer";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./TaskItem.module.scss";
 import globalStyles from "../../GlobalStyles.module.scss";
+import { WorkMinder } from "../../../classes/WorkMinder";
 
 interface ITaskItemProps {
-  task: TWorkMinder;
+  task: WorkMinder;
 }
 
 const TaskItem = (props: ITaskItemProps): JSX.Element => {

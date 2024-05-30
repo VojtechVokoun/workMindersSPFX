@@ -4,6 +4,7 @@ declare interface IWorkMindersWebPartStrings {
   cancel: string;
   edit: string;
   delete: string;
+  loadingData: string;
 
   // Property Pane
   propPaneDescription: string;

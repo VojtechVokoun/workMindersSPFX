@@ -1,6 +1,6 @@
-import { TWorkMinder } from "../types/ItemTypes";
 import { MSGraphClientV3 } from "@microsoft/sp-http";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { WorkMinder } from "./WorkMinder";
 
 export class Settings {
   // Technical stuff
@@ -11,7 +11,7 @@ export class Settings {
   public static tagList: string[];
 
   // Instance of the Settings class
-  private static instance: Settings;
+  static instance: Settings;
 
   /**
    * Initialize the settings.
@@ -49,7 +49,7 @@ export class Settings {
   public static editTag(
     oldTag: string,
     newTag: string,
-    tasks: TWorkMinder[],
+    tasks: WorkMinder[],
   ): void {
     if (Settings.tagList.includes(oldTag)) {
       Settings.tagList[Settings.tagList.indexOf(oldTag)] = newTag;
@@ -66,7 +66,7 @@ export class Settings {
    * @param tag - the tag name
    * @param tasks - the tasks to update
    */
-  public static deleteTag(tag: string, tasks: TWorkMinder[]): void {
+  public static deleteTag(tag: string, tasks: WorkMinder[]): void {
     if (Settings.tagList.includes(tag)) {
       Settings.tagList.splice(Settings.tagList.indexOf(tag), 1);
     }
@@ -101,7 +101,7 @@ export class Settings {
   private static replaceTagInTasks(
     oldTag: string,
     newTag: string,
-    tasks: TWorkMinder[],
+    tasks: WorkMinder[],
   ): void {
     tasks.forEach((task) => {
       if (task.tags.includes(oldTag)) {

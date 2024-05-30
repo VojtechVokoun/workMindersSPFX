@@ -1,13 +1,13 @@
 import * as React from "react";
 
-import { TWorkMinder } from "../../types/ItemTypes";
 import TaskItem from "./taskItem/TaskItem";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./TaskList.module.scss";
+import { WorkMinder } from "../../classes/WorkMinder";
 
 interface ITaskListProps {
-  tasks: TWorkMinder[];
+  tasks: WorkMinder[];
 }
 
 const TaskList = (props: ITaskListProps): JSX.Element => {
@@ -25,14 +25,14 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
       )}
 
       {props.tasks
-        .filter((task: TWorkMinder) => !task.isCompleted)
-        .map((task: TWorkMinder) => (
+        .filter((task: WorkMinder) => !task.isCompleted)
+        .map((task: WorkMinder) => (
           <TaskItem key={task.localId} task={task} />
         ))}
 
       {props.tasks
-        .filter((task: TWorkMinder) => task.isCompleted)
-        .map((task: TWorkMinder) => (
+        .filter((task: WorkMinder) => task.isCompleted)
+        .map((task: WorkMinder) => (
           <TaskItem key={task.localId} task={task} />
         ))}
     </section>

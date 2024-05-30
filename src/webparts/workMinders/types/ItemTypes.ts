@@ -54,22 +54,22 @@ export type TFile = {
   lastModifiedDateTime: string;
 };
 
-/**
- * This is the object holding the reminder data.
- */
-export type TWorkMinder = {
-  localId: number;
-  oneDriveId: string;
-  title: string;
-  description: string;
-  createdDate: string;
-  modifiedDate: string;
-  dueDate: string;
-  isCompleted: boolean;
-  isImportant: boolean;
-  linkedUsers: TUser[];
-  linkedTeams: TTeams[];
-  linkedSpSites: TSPSite[];
-  linkedFiles: TFile[];
-  tags: string[];
-};
+// /**
+//  * This is the object holding the reminder data.
+//  */
+// export type TWorkMinder = {
+//   localId: number;
+//   oneDriveId: string;
+//   title: string;
+//   description: string;
+//   createdDate: string;
+//   modifiedDate: string;
+//   dueDate: string;
+//   isCompleted: boolean;
+//   isImportant: boolean;
+//   linkedUsers: TUser[];
+//   linkedTeams: TTeams[];
+//   linkedSpSites: TSPSite[];
+//   linkedFiles: TFile[];
+//   tags: string[];
+// };

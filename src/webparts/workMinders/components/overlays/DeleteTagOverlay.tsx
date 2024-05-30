@@ -2,11 +2,11 @@ import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
 import { Settings } from "../../classes/Settings";
-import { TWorkMinder } from "../../types/ItemTypes";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./DeleteTagOverlay.module.scss";
 import globalStyles from "../GlobalStyles.module.scss";
+import { WorkMinder } from "../../classes/WorkMinder";
 
 interface IDeleteTagOverlayProps {
   activeTag: string;
@@ -14,7 +14,7 @@ interface IDeleteTagOverlayProps {
   setTagOverlayActive: Dispatch<SetStateAction<boolean>>;
   editedTag: string;
   setEditedTag: Dispatch<SetStateAction<string>>;
-  tasks: TWorkMinder[];
+  tasks: WorkMinder[];
 }
 
 const DeleteTagOverlay = (props: IDeleteTagOverlayProps): JSX.Element => {

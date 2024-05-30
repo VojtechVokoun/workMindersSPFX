@@ -2,11 +2,11 @@ import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
 import { Settings } from "../../classes/Settings";
-import { TWorkMinder } from "../../types/ItemTypes";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./AddEditTagOverlay.module.scss";
 import globalStyles from "../GlobalStyles.module.scss";
+import { WorkMinder } from "../../classes/WorkMinder";
 
 interface IAddEditTagOverlayProps {
   activeTag: string;
@@ -14,7 +14,7 @@ interface IAddEditTagOverlayProps {
   editedTag: string;
   setEditedTag: Dispatch<SetStateAction<string>>;
   setTagOverlayActive: Dispatch<SetStateAction<boolean>>;
-  tasks: TWorkMinder[];
+  tasks: WorkMinder[];
 }
 
 const AddEditTagOverlay = (props: IAddEditTagOverlayProps): JSX.Element => {

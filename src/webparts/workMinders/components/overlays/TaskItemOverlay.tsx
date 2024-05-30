@@ -1,11 +1,10 @@
 import * as React from "react";
 
-import { TWorkMinder } from "../../types/ItemTypes";
-
 import styles from "./TaskItemOverlay.module.scss";
+import { WorkMinder } from "../../classes/WorkMinder";
 
 interface ITaskItemOverlayProps {
-  task: TWorkMinder;
+  task: WorkMinder;
 }
 
 const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
