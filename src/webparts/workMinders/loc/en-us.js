@@ -5,6 +5,7 @@ define([], function () {
     cancel: "Cancel",
     edit: "Edit",
     delete: "Delete",
+    loadingData: "Loading your reminders...",
 
     // Property Pane
     propPaneDescription: "WebPart Settings",

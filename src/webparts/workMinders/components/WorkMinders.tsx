@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 import { Settings } from "../classes/Settings";
-import { TWorkMinder } from "../types/ItemTypes";
 
 import AddEditTagOverlay from "./overlays/AddEditTagOverlay";
 import ContentView from "./contentView/ContentView";
@@ -13,12 +12,14 @@ import TagChoice from "./tagChoice/TagChoice";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
+import { WorkMinder } from "../classes/WorkMinder";
+import { Spinner } from "@fluentui/react-components";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
   hasTeamsContext: boolean;
   webpartContext: WebPartContext;
-  workMinders: TWorkMinder[];
+  workMinders: WorkMinder[];
   height: number;
   oneDriveDoesNotExist: boolean;
 }
@@ -51,14 +52,19 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   /**
    * A state tracking the currently filtered tasks.
    */
-  const [filteredTasks, setFilteredTasks] = React.useState<TWorkMinder[]>([]);
+  const [filteredTasks, setFilteredTasks] = React.useState<WorkMinder[]>([]);
+
+  /**
+   * A state tracking the load state of the webpart.
+   */
+  const [loaded, setLoaded] = React.useState<boolean>(false);
 
   // METHODS ----------------------------------------------
   /**
    * Filter the tasks based on the active tag.
    */
   const filterTasks = (): void => {
-    let filteredTasks: TWorkMinder[];
+    let filteredTasks: WorkMinder[];
 
     // Filter the tasks based on the active tag
     switch (activeTag) {
@@ -67,12 +73,12 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         break;
       case strings.tasksCompleted:
         filteredTasks = props.workMinders.filter(
-          (task: TWorkMinder) => task.isCompleted,
+          (task: WorkMinder) => task.isCompleted,
         );
         break;
       case strings.tasksOverdue:
         filteredTasks = props.workMinders.filter(
-          (task: TWorkMinder) =>
+          (task: WorkMinder) =>
             task.dueDate &&
             new Date(task.dueDate) < new Date() &&
             !task.isCompleted,
@@ -80,7 +86,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         break;
       case strings.tasksUpcoming:
         filteredTasks = props.workMinders.filter(
-          (task: TWorkMinder) =>
+          (task: WorkMinder) =>
             task.dueDate &&
             new Date(task.dueDate) > new Date() &&
             !task.isCompleted,
@@ -88,18 +94,18 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         break;
       case strings.tasksImportant:
         filteredTasks = props.workMinders.filter(
-          (task: TWorkMinder) => task.isImportant,
+          (task: WorkMinder) => task.isImportant,
         );
         break;
       default:
-        filteredTasks = props.workMinders.filter((task: TWorkMinder) =>
+        filteredTasks = props.workMinders.filter((task: WorkMinder) =>
           task.tags.includes(activeTag),
         );
         break;
     }
 
     // Sort the tasks by due date
-    filteredTasks.sort((a: TWorkMinder, b: TWorkMinder): number => {
+    filteredTasks.sort((a: WorkMinder, b: WorkMinder): number => {
       if (a.dueDate && b.dueDate) {
         return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
       } else {
@@ -148,14 +154,33 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   useEffect((): void => {
     filterTasks();
+    setLoaded(false);
   }, [activeTag, props.workMinders, Settings.tagList]);
 
   // STYLES -----------------------------------------------
   const containerDynamicStyle: React.CSSProperties = {
-    height: props.height,
+    height: props.hasTeamsContext ? "auto" : `${props.height}px`,
   };
 
   // RENDER -----------------------------------------------
+  /**
+   * If the data is not yet fetched, render a loading spinner.
+   */
+  if (!loaded) {
+    return (
+      <div
+        className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${styles.wm_loading}`}
+        style={containerDynamicStyle}
+      >
+        <Spinner
+          label={strings.loadingData}
+          labelPosition={"below"}
+          size={"large"}
+        />
+      </div>
+    );
+  }
+
   /**
    * Render the webpart. If an overlay is active, render it as well (on top of the content).
    */

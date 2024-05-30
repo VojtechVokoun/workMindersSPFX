@@ -5,6 +5,7 @@ define([], function () {
     cancel: "Zrušit",
     edit: "Upravit",
     delete: "Smazat",
+    loadingData: "Načítám Vaše připomínky...",
 
     // Property Pane
     propPaneDescription: "Nastavení",
