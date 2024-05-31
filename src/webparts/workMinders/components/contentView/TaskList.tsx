@@ -1,10 +1,11 @@
 import * as React from "react";
 
+import { WorkMinder } from "../../classes/WorkMinder";
+
 import TaskItem from "./taskItem/TaskItem";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./TaskList.module.scss";
-import { WorkMinder } from "../../classes/WorkMinder";
 
 interface ITaskListProps {
   tasks: WorkMinder[];
@@ -25,13 +26,9 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
       )}
 
       {props.tasks
-        .filter((task: WorkMinder) => !task.isCompleted)
-        .map((task: WorkMinder) => (
-          <TaskItem key={task.localId} task={task} />
-        ))}
-
-      {props.tasks
-        .filter((task: WorkMinder) => task.isCompleted)
+        .sort((a, b) =>
+          a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1,
+        )
         .map((task: WorkMinder) => (
           <TaskItem key={task.localId} task={task} />
         ))}
