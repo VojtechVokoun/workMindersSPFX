@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { Spinner } from "@fluentui/react-components";
@@ -11,15 +11,20 @@ import {
   checkOneDriveExistence,
   checkWorkMindersFolder,
 } from "../tools/oneDriveUtilities";
+import {
+  getViewportDimensions,
+  TViewportDimensions,
+} from "../tools/windowDimensions";
 
 import AddEditTagOverlay from "./overlays/AddEditTagOverlay";
 import ContentView from "./contentView/ContentView";
 import DeleteTagOverlay from "./overlays/DeleteTagOverlay";
 import TagChoice from "./tagChoice/TagChoice";
+import TaskItemOverlay from "./overlays/TaskItemOverlay";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
-import TaskItemOverlay from "./overlays/TaskItemOverlay";
+import globalStyles from "./GlobalStyles.module.scss";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
@@ -39,44 +44,54 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * If the OneDrive does not exist, the value is true.
    */
   const [oneDriveDoesNotExist, setOneDriveDoesNotExist] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
   /**
    * A state holding all the tasks fetched from the Graph API.
    * The value is an array of WorkMinder objects.
    */
-  const [workMinders, setWorkMinders] = React.useState<WorkMinder[]>([]);
+  const [workMinders, setWorkMinders] = useState<WorkMinder[]>([]);
 
   /**
    * States tracking the actvity of the task creation/edit overlay.
    */
-  const [taskOverlayActive, setTaskOverlayActive] =
-    React.useState<boolean>(false);
-  const [taskOverlayItem, setTaskOverlayItem] = React.useState<
+  const [taskOverlayActive, setTaskOverlayActive] = useState<boolean>(false);
+  const [taskOverlayItem, setTaskOverlayItem] = useState<
     WorkMinder | undefined
   >(undefined);
   /**
    * States tracking the actvity of the tag creation/edit overlay.
    */
   const [tagEditOverlayActive, setTagEditOverlayActive] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
   const [tagDeleteOverlayActive, setTagDeleteOverlayActive] =
-    React.useState<boolean>(false);
-  const [editedTag, setEditedTag] = React.useState<string>("");
+    useState<boolean>(false);
+  const [editedTag, setEditedTag] = useState<string>("");
 
   /**
    * The active tag for the task list.
    */
-  const [activeTag, setActiveTag] = React.useState<string>(strings.tasksAll);
+  const [activeTag, setActiveTag] = useState<string>(strings.tasksAll);
   /**
    * A state tracking the currently filtered tasks.
    */
-  const [filteredTasks, setFilteredTasks] = React.useState<WorkMinder[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<WorkMinder[]>([]);
 
   /**
    * A state tracking the load state of the webpart.
    */
-  const [loaded, setLoaded] = React.useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  /**
+   * Hook responsible for storing the current viewport dimensions.
+   */
+  const [viewportDimensions, setViewportDimensions] =
+    useState<TViewportDimensions>(getViewportDimensions());
+
+  /**
+   * A state holding the activity of the sidebar. Only applies to mobile viewports.
+   */
+  const [sidebarActive, setSidebarActive] = useState<boolean>(false);
 
   // METHODS ----------------------------------------------
   /**
@@ -201,6 +216,25 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
 
   // LIFECYCLE ---------------------------------------------
   /**
+   * Event listener for the window resize event. Updates the viewport dimensions.
+   */
+  useEffect(() => {
+    /*
+      Function to handle the resize event
+      ! Intentionally only in the scope of this hook.
+    */
+    function handleResize(): void {
+      setViewportDimensions(getViewportDimensions());
+    }
+
+    // Add listener
+    window.addEventListener("resize", handleResize);
+
+    // Remove listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  /**
    * Fetch the data from OneDrive.
    */
   useEffect((): void => {
@@ -296,24 +330,43 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         />
       )}
 
-      <TagChoice
-        userTags={Settings.tagList}
-        activeTag={activeTag}
-        setActiveTag={setActiveTag}
-        handleTagAdd={handleTagAdd}
-        handleTagEdit={handleTagEdit}
-        handleTagDelete={handleTagDelete}
-        height={props.height}
-      />
+      <div className={globalStyles.hideOnMobile}>
+        <TagChoice
+          userTags={Settings.tagList}
+          activeTag={activeTag}
+          setActiveTag={setActiveTag}
+          handleTagAdd={handleTagAdd}
+          handleTagEdit={handleTagEdit}
+          handleTagDelete={handleTagDelete}
+          height={props.height}
+          setSidebarActive={setSidebarActive}
+        />
+      </div>
 
-      <ContentView
-        webpartContext={props.webpartContext}
-        activeTag={activeTag}
-        tasks={filteredTasks}
-        height={props.height}
-        handleTaskCreation={handleTaskCreation}
-        handleTaskEdit={handleTaskEdit}
-      />
+      {viewportDimensions.viewportWidth <= 1024 && sidebarActive && (
+        <TagChoice
+          userTags={Settings.tagList}
+          activeTag={activeTag}
+          setActiveTag={setActiveTag}
+          handleTagAdd={handleTagAdd}
+          handleTagEdit={handleTagEdit}
+          handleTagDelete={handleTagDelete}
+          height={props.height}
+          setSidebarActive={setSidebarActive}
+        />
+      )}
+
+      {!(viewportDimensions.viewportWidth <= 1024 && sidebarActive) && (
+        <ContentView
+          webpartContext={props.webpartContext}
+          activeTag={activeTag}
+          tasks={filteredTasks}
+          height={props.height}
+          handleTaskCreation={handleTaskCreation}
+          handleTaskEdit={handleTaskEdit}
+          setSidebarActive={setSidebarActive}
+        />
+      )}
     </div>
   );
 };

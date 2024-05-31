@@ -116,7 +116,15 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
       props.task.description = descriptionInputValue;
       props.task.dueDate = dueDateInputValue?.toISOString() || "";
       props.task.isImportant = priorityInputValue;
+      props.task.linkedUsers = localLinkedUsers;
+      props.task.linkedTeams = localLinkedTeams;
+      props.task.linkedSpSites = localLinkedSpSites;
+      props.task.linkedFiles = localLinkedFiles;
       props.task.tags = tagsInputValue;
+
+      props.task.updateReminder(props.webpartContext).catch((error) => {
+        console.error("An error occurred: ", error);
+      });
     } else {
       const newTask = new WorkMinder(
         0,
@@ -447,10 +455,20 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             >
               {strings.taskItemLinkedPeople}
             </label>
+
+            {localLinkedUsers.map((user) => (
+              <TaskItemOverlayLinkUserTile
+                key={user.id}
+                user={user}
+                handleRemoveLinkedUser={handleRemoveLinkedUser}
+              />
+            ))}
+
             <input
               type={"text"}
               id={"linkedPeopleInput"}
               className={styles.wm_taskItemOverlayRegularInput}
+              placeholder={strings.addMore}
               value={linkedUsersInputValue}
               onChange={handleLinkedUsersInputChange}
             />
@@ -466,10 +484,20 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             >
               {strings.taskItemLinkedTeams}
             </label>
+
+            {localLinkedTeams.map((team) => (
+              <TaskItemOverlayLinkTeamTile
+                key={team.id}
+                team={team}
+                handleRemoveLinkedTeam={handleRemoveLinkedTeam}
+              />
+            ))}
+
             <input
               type={"text"}
               id={"linkedTeamsInput"}
               className={styles.wm_taskItemOverlayRegularInput}
+              placeholder={strings.addMore}
               value={linkedTeamsInputValue}
               onChange={handleLinkedTeamsInputChange}
             />
@@ -485,10 +513,20 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             >
               {strings.taskItemLinkedSites}
             </label>
+
+            {localLinkedSpSites.map((site) => (
+              <TaskItemOverlayLinkSpSiteTile
+                key={site.id}
+                spSite={site}
+                handleRemoveLinkedSpSite={handleRemoveLinkedSpSite}
+              />
+            ))}
+
             <input
               type={"text"}
               id={"linkedSitesInput"}
               className={styles.wm_taskItemOverlayRegularInput}
+              placeholder={strings.addMore}
               value={linkedSpSitesInputValue}
               onChange={handleLinkedSpSitesInputChange}
             />
@@ -504,10 +542,20 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             >
               {strings.taskItemLinkedFiles}
             </label>
+
+            {localLinkedFiles.map((file) => (
+              <TaskItemOverlayLinkFileTile
+                key={file.id}
+                file={file}
+                handleRemoveLinkedFile={handleRemoveLinkedFile}
+              />
+            ))}
+
             <input
               type={"text"}
               id={"linkedFilesInput"}
               className={styles.wm_taskItemOverlayRegularInput}
+              placeholder={strings.addMore}
               value={linkedFilesInputValue}
               onChange={handleLinkedFilesInputChange}
             />
@@ -519,38 +567,6 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             <p>{linkedTeamsSuggestions.length}</p>
             <p>{linkedSpSitesSuggestions.length}</p>
             <p>{linkedFilesSuggestions.length}</p>
-          </div>
-
-          <div>
-            <p>local component state</p>
-            {localLinkedUsers.map((user) => (
-              <TaskItemOverlayLinkUserTile
-                key={user.id}
-                user={user}
-                handleRemoveLinkedUser={handleRemoveLinkedUser}
-              />
-            ))}
-            {localLinkedTeams.map((team) => (
-              <TaskItemOverlayLinkTeamTile
-                key={team.id}
-                team={team}
-                handleRemoveLinkedTeam={handleRemoveLinkedTeam}
-              />
-            ))}
-            {localLinkedSpSites.map((site) => (
-              <TaskItemOverlayLinkSpSiteTile
-                key={site.id}
-                spSite={site}
-                handleRemoveLinkedSpSite={handleRemoveLinkedSpSite}
-              />
-            ))}
-            {localLinkedFiles.map((file) => (
-              <TaskItemOverlayLinkFileTile
-                key={file.id}
-                file={file}
-                handleRemoveLinkedFile={handleRemoveLinkedFile}
-              />
-            ))}
           </div>
         </div>
 

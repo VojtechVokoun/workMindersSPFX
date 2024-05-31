@@ -56,6 +56,7 @@ declare interface IWorkMindersWebPartStrings {
   save: string;
   discard: string;
   searchTags: string;
+  addMore: string;
 
   // TagChoice
   tags: string;

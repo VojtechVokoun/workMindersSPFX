@@ -61,6 +61,7 @@ define([], function () {
     save: "Uložit",
     discard: "Zahodit a zavřít",
     searchTags: "Hledat tagy",
+    addMore: "Přidat další...",
 
     // TagChoice
     tags: "Tagy",

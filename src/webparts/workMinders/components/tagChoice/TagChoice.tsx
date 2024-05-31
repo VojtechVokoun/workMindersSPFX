@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
-import { Add20Regular } from "@fluentui/react-icons";
+import { Add20Regular, Dismiss20Regular } from "@fluentui/react-icons";
 
 import TagChoiceItem from "./TagChoiceItem";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./TagChoice.module.scss";
+import globalStyles from "../GlobalStyles.module.scss";
 
 export interface ITagChoiceProps {
   userTags: string[];
@@ -16,6 +17,7 @@ export interface ITagChoiceProps {
   handleTagEdit: (tag: string) => void;
   handleTagDelete: (tag: string) => void;
   height: number;
+  setSidebarActive: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -60,6 +62,13 @@ const TagChoice = (props: ITagChoiceProps): JSX.Element => {
       className={styles.wm_tagChoice}
       style={{ height: `${props.height}px` }}
     >
+      <section className={globalStyles.showOnMobile}>
+        <Dismiss20Regular
+          className={styles.wm_sidebarDismiss}
+          onClick={() => props.setSidebarActive(false)}
+        />
+      </section>
+
       <section className={styles.wm_tagSection}>
         {defaultTags.map((tag: string) => (
           <TagChoiceItem

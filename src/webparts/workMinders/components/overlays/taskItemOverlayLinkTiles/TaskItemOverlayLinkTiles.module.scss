@@ -6,7 +6,7 @@
   width: 100%;
   max-width: 350px;
   gap: 10px;
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   border: 1px solid gray;
   cursor: pointer;
@@ -21,10 +21,10 @@
 .wm_linkTileIcon {
   width: 24px;
   height: 24px;
+  flex-shrink: 0;
 }
 
 .wm_linkTileText {
-  font-size: 16px;
   margin: 0;
   overflow: hidden;
   white-space: nowrap;
@@ -40,6 +40,7 @@
   cursor: pointer;
   color: gray;
   transition: all ease-in-out 0.3s;
+  flex-shrink: 0;
 }
 
 .wm_linkTileButton:hover {

@@ -84,3 +84,19 @@
 .wm_overlayTitle {
   word-break: break-word;
 }
+
+.hideOnMobile {
+  display: block;
+
+  @media only screen and (max-width: 1024px) {
+    display: none;
+  }
+}
+
+.showOnMobile {
+  display: none;
+
+  @media only screen and (max-width: 1024px) {
+    display: block;
+  }
+}

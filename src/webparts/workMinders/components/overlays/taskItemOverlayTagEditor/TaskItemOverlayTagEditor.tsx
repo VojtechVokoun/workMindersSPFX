@@ -4,7 +4,6 @@ import {
   CheckboxChecked24Filled,
   CheckboxUnchecked24Regular,
   ChevronDown16Regular,
-  ChevronUp16Regular,
   Search16Regular,
 } from "@fluentui/react-icons";
 
@@ -29,7 +28,7 @@ const TaskItemOverlayTagEditorMainButton = (props: {
    * @param selectedDepartments The selected departments.
    * @returns The text for the primary filter label.
    */
-  const getPrimaryFilterLabelText = (selectedDepartments: string[]): string => {
+  const getLabelText = (selectedDepartments: string[]): string => {
     if (selectedDepartments.length === 0) {
       return "no tags";
     } else if (selectedDepartments.length === 1) {
@@ -39,27 +38,33 @@ const TaskItemOverlayTagEditorMainButton = (props: {
     }
   };
 
+  // STYLES -----------------------------------------------
+  /**
+   * Sets the border color of the view.
+   */
+  const viewStyle: React.CSSProperties = {
+    border: `1px solid ${props.isExpanded ? "#0078D4" : "gray"}`,
+  };
+
   // RENDER -----------------------------------------------
   return (
     <div
       className={styles.wm_tagEditorView}
+      style={viewStyle}
       onClick={() => props.setIsExpanded(!props.isExpanded)}
     >
       <p className={styles.wm_tagEditorLabel}>
-        {getPrimaryFilterLabelText(props.selectedTags)}
+        {getLabelText(props.selectedTags)}
       </p>
 
-      {props.isExpanded ? (
-        <ChevronUp16Regular
-          className={styles.wm_tagEditorIcon}
-          onClick={() => props.setIsExpanded(!props.isExpanded)}
-        />
-      ) : (
-        <ChevronDown16Regular
-          className={styles.wm_tagEditorIcon}
-          onClick={() => props.setIsExpanded(!props.isExpanded)}
-        />
-      )}
+      <ChevronDown16Regular
+        className={styles.wm_tagEditorIcon}
+        onClick={() => props.setIsExpanded(!props.isExpanded)}
+        style={{
+          transform: props.isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+          transition: "transform 0.2s",
+        }}
+      />
     </div>
   );
 };

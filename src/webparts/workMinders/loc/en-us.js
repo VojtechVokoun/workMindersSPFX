@@ -61,6 +61,7 @@ define([], function () {
     save: "Save",
     discard: "Discard and close",
     searchTags: "Search tags",
+    addMore: "Add more...",
 
     // TagChoice
     tags: "Tags",

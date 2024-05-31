@@ -20,3 +20,15 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.wm_contentTitleMobileNav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.wm_sidebarOpen {
+  cursor: pointer;
+  color: gray;
+}
