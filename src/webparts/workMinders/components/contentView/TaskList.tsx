@@ -9,6 +9,7 @@ import styles from "./TaskList.module.scss";
 
 interface ITaskListProps {
   tasks: WorkMinder[];
+  handleTaskEdit: (task: WorkMinder) => void;
 }
 
 const TaskList = (props: ITaskListProps): JSX.Element => {
@@ -30,7 +31,11 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
           a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1,
         )
         .map((task: WorkMinder) => (
-          <TaskItem key={task.localId} task={task} />
+          <TaskItem
+            key={task.localId}
+            task={task}
+            handleTaskEdit={props.handleTaskEdit}
+          />
         ))}
     </section>
   );

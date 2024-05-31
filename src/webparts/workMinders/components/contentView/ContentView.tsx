@@ -15,6 +15,8 @@ export interface IContentViewProps {
   activeTag: string;
   tasks: WorkMinder[];
   height: number;
+  handleTaskCreation: () => void;
+  handleTaskEdit: (task: WorkMinder) => void;
 }
 
 const ContentView = (props: IContentViewProps): JSX.Element => {
@@ -30,23 +32,7 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
 
         <button
           className={globalStyles.wm_rectButton_primary}
-          onClick={() =>
-            new WorkMinder(
-              0,
-              "Test WorkMinder",
-              "Testing the WorkMinder creation process.",
-              "",
-              "",
-              "",
-              false,
-              true,
-              [],
-              [],
-              [],
-              [],
-              ["pr1"],
-            ).createReminder(props.webpartContext)
-          }
+          onClick={() => props.handleTaskCreation()}
         >
           <Add16Regular color={"#FFFFFF"} />
 
@@ -54,7 +40,7 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
         </button>
       </nav>
 
-      <TaskList tasks={props.tasks} />
+      <TaskList tasks={props.tasks} handleTaskEdit={props.handleTaskEdit} />
     </div>
   );
 };

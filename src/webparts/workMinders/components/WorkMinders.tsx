@@ -19,6 +19,7 @@ import TagChoice from "./tagChoice/TagChoice";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./WorkMinders.module.scss";
+import TaskItemOverlay from "./overlays/TaskItemOverlay";
 
 export interface IWorkMindersProps {
   isDarkTheme: boolean;
@@ -48,10 +49,13 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   const [workMinders, setWorkMinders] = React.useState<WorkMinder[]>([]);
 
   /**
-   * The task edited in the overlay. If the overlay is not active, the value is empty.
+   * States tracking the actvity of the task creation/edit overlay.
    */
-  //const [overlayTask, setOverlayTask] =
-  //React.useState<TWorkMinder | null>(null);
+  const [taskOverlayActive, setTaskOverlayActive] =
+    React.useState<boolean>(false);
+  const [taskOverlayItem, setTaskOverlayItem] = React.useState<
+    WorkMinder | undefined
+  >(undefined);
   /**
    * States tracking the actvity of the tag creation/edit overlay.
    */
@@ -159,6 +163,16 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
     setEditedTag(tag);
   };
 
+  const handleTaskCreation = (): void => {
+    setTaskOverlayActive(true);
+    setTaskOverlayItem(undefined);
+  };
+
+  const handleTaskEdit = (task: WorkMinder): void => {
+    setTaskOverlayActive(true);
+    setTaskOverlayItem(task);
+  };
+
   /**
    * Fetch the data with the Graph API. If the OneDrive does not exist, set the state accordingly.
    * If the data is fetched, set the loaded state to true.
@@ -245,16 +259,21 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   }
 
   /**
-   * Render the webpart. If an overlay is active, render it as well (on top of the content).
+   * Render the webpart content. If an overlay is active, render it as well (on top of the content).
    */
   return (
     <div
       className={`${styles.wm_workMindersContainer} ${props.hasTeamsContext ? styles.teams : ""} ${props.isDarkTheme ? styles.wm_workMinders_dark : ""} ${styles.wm_sidebarContainer}`}
       style={containerDynamicStyle}
     >
-      {
-        //<div className={styles.wm_screenOverlay} />
-      }
+      {taskOverlayActive && (
+        <TaskItemOverlay
+          task={taskOverlayItem}
+          webpartContext={props.webpartContext}
+          setTaskOverlayActive={setTaskOverlayActive}
+          setTaskOverlayItem={setTaskOverlayItem}
+        />
+      )}
 
       {tagEditOverlayActive && (
         <AddEditTagOverlay
@@ -293,6 +312,8 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         activeTag={activeTag}
         tasks={filteredTasks}
         height={props.height}
+        handleTaskCreation={handleTaskCreation}
+        handleTaskEdit={handleTaskEdit}
       />
     </div>
   );

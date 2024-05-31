@@ -17,6 +17,7 @@ import globalStyles from "../../GlobalStyles.module.scss";
 
 interface ITaskItemProps {
   task: WorkMinder;
+  handleTaskEdit: (task: WorkMinder) => void;
 }
 
 const TaskItem = (props: ITaskItemProps): JSX.Element => {
@@ -54,6 +55,7 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
   return (
     <div
       className={`${styles.wm_taskItem} ${globalStyles.wm_contentViewItemHorizontalPadding}`}
+      onClick={() => props.handleTaskEdit(props.task)}
     >
       {isCompleted ? (
         <CheckboxChecked24Filled
@@ -61,6 +63,7 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
           color={"#0078D4"}
           title={strings.taskItemMarkAsIncomplete}
           onClick={handleTaskItemCompletionClick}
+          transform={"scale(1.5)"}
         />
       ) : (
         <CheckboxUnchecked24Regular
