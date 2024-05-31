@@ -54,6 +54,10 @@ define([], function () {
 
     // TaskOverlay
     editTask: "Edit Task",
+    title: "Title",
+    titlePlaceholder: "Enter a title",
+    description: "Description",
+    descriptionPlaceholder: "Enter a description",
 
     // TagChoice
     tags: "Tags",

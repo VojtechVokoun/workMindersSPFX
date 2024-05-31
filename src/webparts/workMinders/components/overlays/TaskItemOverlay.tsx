@@ -1,14 +1,24 @@
 import * as React from "react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 
-// import { TFile, TSPSite, TTeam, TUser } from "../../types/ItemTypes";
+import { TFile, TSPSite, TTeam, TUser } from "../../types/ItemTypes";
 import { WorkMinder } from "../../classes/WorkMinder";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./TaskItemOverlay.module.scss";
 import globalStyles from "../GlobalStyles.module.scss";
+import {
+  CheckboxChecked24Filled,
+  CheckboxUnchecked24Regular,
+} from "@fluentui/react-icons";
+import {
+  getRecentFiles,
+  getSites,
+  getTeamSuggestions,
+  getUserSuggestions,
+} from "../../tools/suggestionApiCalls";
 
 interface ITaskItemOverlayProps {
   task: WorkMinder | undefined;
@@ -34,20 +44,54 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
   const [priorityInputValue, setPriorityInputValue] = useState<boolean>(
     props.task?.isImportant || false,
   );
-  // const [linkedUsersInputValue, setLinkedUsersInputValue] = useState<TUser[]>(
-  //   props.task?.linkedUsers || [],
-  // );
-  // const [linkedTeamsInputValue, setLinkedTeamsInputValue] = useState<TTeam[]>(
-  //   props.task?.linkedTeams || [],
-  // );
-  // const [linkedSpSitesInputValue, setLinkedSpSitesInputValue] = useState<
-  //   TSPSite[]
-  // >(props.task?.linkedSpSites || []);
-  // const [linkedFilesInputValue, setLinkedFilesInputValue] = useState<TFile[]>(
-  //   props.task?.linkedFiles || [],
-  // );
+  const [linkedUsersInputValue, setLinkedUsersInputValue] =
+    useState<string>("");
+  const [linkedTeamsInputValue, setLinkedTeamsInputValue] =
+    useState<string>("");
+  const [linkedSpSitesInputValue, setLinkedSpSitesInputValue] =
+    useState<string>("");
+  const [linkedFilesInputValue, setLinkedFilesInputValue] =
+    useState<string>("");
   const [tagsInputValue, setTagsInputValue] = useState<string[]>(
     props.task?.tags || [],
+  );
+
+  /**
+   * States tracking the linked users, teams, sites and files.
+   */
+  const [localLinkedUsers, setLocalLinkedUsers] = useState<TUser[]>(
+    props.task?.linkedUsers || [],
+  );
+  const [localLinkedTeams, setLocalLinkedTeams] = useState<TTeam[]>(
+    props.task?.linkedTeams || [],
+  );
+  const [localLinkedSpSites, setLocalLinkedSpSites] = useState<TSPSite[]>(
+    props.task?.linkedSpSites || [],
+  );
+  const [localLinkedFiles, setLocalLinkedFiles] = useState<TFile[]>(
+    props.task?.linkedFiles || [],
+  );
+
+  /**
+   * These states hold all the recent files and SPSites, as they can't be loaded in real time.
+   */
+  const [recentFiles, setRecentFiles] = useState<TFile[]>([]);
+  const [spSites, setSpSites] = useState<TSPSite[]>([]);
+
+  /**
+   * These states hold the current suggestions for the linked users, teams, sites and files.
+   */
+  const [linkedUsersSuggestions, setLinkedUsersSuggestions] = useState<TUser[]>(
+    [],
+  );
+  const [linkedTeamsSuggestions, setLinkedTeamsSuggestions] = useState<TTeam[]>(
+    [],
+  );
+  const [linkedSpSitesSuggestions, setLinkedSpSitesSuggestions] = useState<
+    TSPSite[]
+  >([]);
+  const [linkedFilesSuggestions, setLinkedFilesSuggestions] = useState<TFile[]>(
+    [],
   );
 
   // EVENT HANDLERS ---------------------------------------
@@ -96,6 +140,94 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
     props.setTaskOverlayItem(undefined);
   };
 
+  /**
+   * Handles the change of the linked users input.
+   * @param event - the change event
+   */
+  const handleLinkedUsersInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setLinkedUsersInputValue(event.target.value);
+
+    // Get the user suggestions
+    getUserSuggestions(props.webpartContext, event.target.value)
+      .then((users) => {
+        setLinkedUsersSuggestions(users);
+      })
+      .catch((error) => {
+        console.error("An error occurred: ", error);
+      });
+  };
+
+  /**
+   * Handles the change of the linked Teams input.
+   * @param event - the change event
+   */
+  const handleLinkedTeamsInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setLinkedTeamsInputValue(event.target.value);
+
+    // Get the team suggestions
+    getTeamSuggestions(props.webpartContext, event.target.value)
+      .then((teams) => {
+        setLinkedTeamsSuggestions(teams);
+      })
+      .catch((error) => {
+        console.error("An error occurred: ", error);
+      });
+  };
+
+  /**
+   * Handles the change of the linked SPSites input.
+   */
+  const handleLinkedSpSitesInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setLinkedSpSitesInputValue(event.target.value);
+
+    // Filter the SPSites based on the input value
+    if (event.target.value === "") {
+      setLinkedSpSitesSuggestions([]);
+      return;
+    }
+
+    if (spSites.length > 3) {
+      setLinkedSpSitesSuggestions(
+        spSites.filter((site) =>
+          site.displayName
+            .toLowerCase()
+            .includes(event.target.value.toLowerCase()),
+        ),
+      );
+    }
+  };
+
+  /**
+   * Handles the change of the linked files input.
+   */
+  const handleLinkedFilesInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
+    setLinkedFilesInputValue(event.target.value);
+
+    // Filter the files based on the input value
+    if (event.target.value === "") {
+      setLinkedFilesSuggestions([]);
+      return;
+    }
+
+    if (recentFiles.length > 3) {
+      setLinkedFilesSuggestions(
+        recentFiles.filter((file) =>
+          file.displayName
+            .toLowerCase()
+            .includes(event.target.value.toLowerCase()),
+        ),
+      );
+    }
+  };
+
   // CONVERSION FUNCTIONS ---------------------------------
   /**
    * Convert a Date object to a string in the format YYYY-MM-DD to use in the date input.
@@ -118,6 +250,39 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
     return new Date(dateString);
   };
 
+  // EFFECTS ----------------------------------------------
+  /**
+   * When the component mounts, load the recent files and all SPSites, as they can't be loaded in real time.
+   */
+  useEffect(() => {
+    getRecentFiles(props.webpartContext)
+      .then((files) => {
+        setRecentFiles(files);
+      })
+      .catch((error) => {
+        console.error("An error occurred: ", error);
+      });
+
+    getSites(props.webpartContext)
+      .then((sites) => {
+        setSpSites(sites);
+      })
+      .catch((error) => {
+        console.error("An error occurred: ", error);
+      });
+  }, []);
+
+  // todo: remove this effect
+  useEffect(() => {
+    setLocalLinkedUsers(props.task?.linkedUsers || []);
+
+    setLocalLinkedTeams(props.task?.linkedTeams || []);
+
+    setLocalLinkedSpSites(props.task?.linkedSpSites || []);
+
+    setLocalLinkedFiles(props.task?.linkedFiles || []);
+  }, []);
+
   // RENDER -----------------------------------------------
   return (
     <div className={globalStyles.vm_screenOverlay}>
@@ -127,68 +292,97 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
         </h2>
 
         <div className={styles.wm_taskItemOverlayContent}>
-          <section className={styles.wm_taskItemOverlayItemSection}>
+          <section
+            className={styles.wm_taskItemOverlayItemSection}
+            title={strings.title}
+          >
             <label
               htmlFor={"titleInput"}
               className={styles.wm_taskItemOverlayItemLabel}
             >
-              TitleXX
+              {strings.title}
             </label>
             <input
               type={"text"}
               id={"titleInput"}
+              className={styles.wm_taskItemOverlayRegularInput}
+              placeholder={strings.titlePlaceholder}
               value={nameInputValue}
               onChange={(e) => setNameInputValue(e.target.value)}
+              autoFocus={true}
             />
           </section>
 
-          <section className={styles.wm_taskItemOverlayItemSection}>
+          <section
+            className={styles.wm_taskItemOverlayItemSection}
+            title={strings.description}
+          >
             <label
               htmlFor={"descriptionInput"}
               className={styles.wm_taskItemOverlayItemLabel}
             >
-              DescriptionXX
+              {strings.descriptionPlaceholder}
             </label>
             <textarea
               id={"descriptionInput"}
+              className={styles.wm_taskItemOverlayTextAreaInput}
+              placeholder={strings.descriptionPlaceholder}
               value={descriptionInputValue}
               onChange={(e) => setDescriptionInputValue(e.target.value)}
             />
           </section>
 
-          <section className={styles.wm_taskItemOverlayItemSection}>
-            <label
-              htmlFor={"dueDateInput"}
-              className={styles.wm_taskItemOverlayItemLabel}
-            >
-              {strings.taskItemDueDate}
-            </label>
-            <input
-              type={"date"}
-              id={"dueDateInput"}
-              value={dateToString(dueDateInputValue)}
-              onChange={(e) =>
-                setDueDateInputValue(stringToDate(e.target.value))
-              }
-            />
+          <section
+            className={styles.wm_taskItemOverlayItemHorizontalSection}
+            title={`${strings.taskItemDueDate}, ${strings.taskItemImportant}`}
+          >
+            <div className={styles.wm_taskItemOverlayItemHorizontalDiv}>
+              <label
+                htmlFor={"dueDateInput"}
+                className={styles.wm_taskItemOverlayItemLabel}
+              >
+                {strings.taskItemDueDate}
+              </label>
+              <input
+                type={"date"}
+                id={"dueDateInput"}
+                className={styles.wm_taskItemOverlayRegularInput}
+                value={dateToString(dueDateInputValue)}
+                onChange={(e) =>
+                  setDueDateInputValue(stringToDate(e.target.value))
+                }
+              />
+            </div>
+
+            <div className={styles.wm_taskItemOverlayItemHorizontalDiv}>
+              <label
+                htmlFor={"priorityInput"}
+                className={styles.wm_taskItemOverlayItemLabel}
+              >
+                {strings.taskItemImportant}
+              </label>
+              <div className={styles.wm_taskItemOverlayItemButtonCheckbox}>
+                {priorityInputValue ? (
+                  <CheckboxChecked24Filled
+                    color={"#0078D4"}
+                    title={strings.taskItemMarkAsIncomplete}
+                    onClick={() => setPriorityInputValue(false)}
+                  />
+                ) : (
+                  <CheckboxUnchecked24Regular
+                    color={"#323130"}
+                    title={strings.taskItemMarkAsComplete}
+                    onClick={() => setPriorityInputValue(true)}
+                  />
+                )}
+              </div>
+            </div>
           </section>
 
-          <section className={styles.wm_taskItemOverlayItemSection}>
-            <label
-              htmlFor={"priorityInput"}
-              className={styles.wm_taskItemOverlayItemLabel}
-            >
-              {strings.taskItemImportant}
-            </label>
-            <input
-              type={"checkbox"}
-              id={"priorityInput"}
-              checked={priorityInputValue}
-              onChange={(e) => setPriorityInputValue(e.target.checked)}
-            />
-          </section>
-
-          <section className={styles.wm_taskItemOverlayItemSection}>
+          <section
+            className={styles.wm_taskItemOverlayItemSection}
+            title={strings.tags}
+          >
             <label
               htmlFor={"tagsInput"}
               className={styles.wm_taskItemOverlayItemLabel}
@@ -198,10 +392,103 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             <input
               type={"text"}
               id={"tagsInput"}
+              className={styles.wm_taskItemOverlayRegularInput}
               value={tagsInputValue.join(", ")}
               onChange={(e) => setTagsInputValue(e.target.value.split(", "))}
             />
           </section>
+
+          <section
+            className={styles.wm_taskItemOverlayItemSection}
+            title={strings.taskItemLinkedPeople}
+          >
+            <label
+              htmlFor={"linkedPeopleInput"}
+              className={styles.wm_taskItemOverlayItemLabel}
+            >
+              {strings.taskItemLinkedPeople}
+            </label>
+            <input
+              type={"text"}
+              id={"linkedPeopleInput"}
+              className={styles.wm_taskItemOverlayRegularInput}
+              value={linkedUsersInputValue}
+              onChange={handleLinkedUsersInputChange}
+            />
+          </section>
+
+          <section
+            className={styles.wm_taskItemOverlayItemSection}
+            title={strings.taskItemLinkedTeams}
+          >
+            <label
+              htmlFor={"linkedTeamsInput"}
+              className={styles.wm_taskItemOverlayItemLabel}
+            >
+              {strings.taskItemLinkedTeams}
+            </label>
+            <input
+              type={"text"}
+              id={"linkedTeamsInput"}
+              className={styles.wm_taskItemOverlayRegularInput}
+              value={linkedTeamsInputValue}
+              onChange={handleLinkedTeamsInputChange}
+            />
+          </section>
+
+          <section
+            className={styles.wm_taskItemOverlayItemSection}
+            title={strings.taskItemLinkedSites}
+          >
+            <label
+              htmlFor={"linkedSitesInput"}
+              className={styles.wm_taskItemOverlayItemLabel}
+            >
+              {strings.taskItemLinkedSites}
+            </label>
+            <input
+              type={"text"}
+              id={"linkedSitesInput"}
+              className={styles.wm_taskItemOverlayRegularInput}
+              value={linkedSpSitesInputValue}
+              onChange={handleLinkedSpSitesInputChange}
+            />
+          </section>
+
+          <section
+            className={styles.wm_taskItemOverlayItemSection}
+            title={strings.taskItemLinkedFiles}
+          >
+            <label
+              htmlFor={"linkedFilesInput"}
+              className={styles.wm_taskItemOverlayItemLabel}
+            >
+              {strings.taskItemLinkedFiles}
+            </label>
+            <input
+              type={"text"}
+              id={"linkedFilesInput"}
+              className={styles.wm_taskItemOverlayRegularInput}
+              value={linkedFilesInputValue}
+              onChange={handleLinkedFilesInputChange}
+            />
+          </section>
+
+          <div>
+            <p>suggestions</p>
+            <p>{linkedUsersSuggestions.length}</p>
+            <p>{linkedTeamsSuggestions.length}</p>
+            <p>{linkedSpSitesSuggestions.length}</p>
+            <p>{linkedFilesSuggestions.length}</p>
+          </div>
+
+          <div>
+            <p>local component state</p>
+            <p>{localLinkedUsers.length}</p>
+            <p>{localLinkedTeams.length}</p>
+            <p>{localLinkedSpSites.length}</p>
+            <p>{localLinkedFiles.length}</p>
+          </div>
         </div>
 
         <footer

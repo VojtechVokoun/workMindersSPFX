@@ -32,7 +32,7 @@
   height: 100%;
   padding: 10px;
   overflow-y: scroll;
-  gap: 10px
+  gap: 20px
 }
 
 .wm_taskItemOverlayFooter {
@@ -46,7 +46,49 @@
   width: 100%;
 }
 
+.wm_taskItemOverlayItemHorizontalSection {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 40px;
+  align-items: center;
+}
+
+.wm_taskItemOverlayItemVerticalDiv {
+  display: flex;
+  flex-direction: column;
+}
+
+.wm_taskItemOverlayItemHorizontalDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
 .wm_taskItemOverlayItemLabel {
   color: gray;
+}
+
+.wm_taskItemOverlayItemButtonCheckbox {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.wm_taskItemOverlayRegularInput {
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  outline: none;
+
+  &:focus {
+    border: 1px solid #0078D4;
+  }
+}
+
+.wm_taskItemOverlayTextAreaInput {
+  @extend .wm_taskItemOverlayRegularInput;
+  resize: vertical;
 }
 

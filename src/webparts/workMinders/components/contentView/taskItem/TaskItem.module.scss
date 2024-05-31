@@ -85,4 +85,32 @@
 .wm_taskItemButtonCheckbox {
   width: 24px;
   height: 24px;
+  cursor: pointer;
+}
+
+.wm_taskItemLinks {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.wm_taskItemLinksBadge {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.wm_taskItemLinksBadgeIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.wm_taskItemLinksBadgeText {
+  font-size: 14px;
+  margin: 0;
 }

@@ -54,6 +54,10 @@ define([], function () {
 
     // TaskOverlay
     editTask: "Upravit úkol",
+    title: "Název",
+    titlePlaceholder: "Zadejte název",
+    description: "Popis",
+    descriptionPlaceholder: "Zadejte popis",
 
     // TagChoice
     tags: "Tagy",

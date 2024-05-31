@@ -49,6 +49,10 @@ declare interface IWorkMindersWebPartStrings {
 
   // TaskOverlay
   editTask: string;
+  title: string;
+  titlePlaceholder: string;
+  description: string;
+  descriptionPlaceholder: string;
 
   // TagChoice
   tags: string;

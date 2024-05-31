@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import * as React from "react";
 
 import {
@@ -5,6 +6,7 @@ import {
   CheckboxUnchecked24Regular,
   ChevronRight20Regular,
   Important20Regular,
+  Person16Regular,
 } from "@fluentui/react-icons";
 
 import { WorkMinder } from "../../../classes/WorkMinder";
@@ -14,6 +16,11 @@ import TagContainer from "./TagContainer";
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./TaskItem.module.scss";
 import globalStyles from "../../GlobalStyles.module.scss";
+
+// Using require because of SPFx limitations
+const imgSharePoint = require("../../../assets/imgs/sharepoint.svg");
+const imgTeams = require("../../../assets/imgs/teams.svg");
+const imgOneDrive = require("../../../assets/imgs/onedrive.svg");
 
 interface ITaskItemProps {
   task: WorkMinder;
@@ -57,22 +64,21 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
       className={`${styles.wm_taskItem} ${globalStyles.wm_contentViewItemHorizontalPadding}`}
       onClick={() => props.handleTaskEdit(props.task)}
     >
-      {isCompleted ? (
-        <CheckboxChecked24Filled
-          className={styles.wm_taskItemButtonCheckbox}
-          color={"#0078D4"}
-          title={strings.taskItemMarkAsIncomplete}
-          onClick={handleTaskItemCompletionClick}
-          transform={"scale(1.5)"}
-        />
-      ) : (
-        <CheckboxUnchecked24Regular
-          className={styles.wm_taskItemButtonCheckbox}
-          color={"#323130"}
-          title={strings.taskItemMarkAsComplete}
-          onClick={handleTaskItemCompletionClick}
-        />
-      )}
+      <div className={styles.wm_taskItemButtonCheckbox}>
+        {isCompleted ? (
+          <CheckboxChecked24Filled
+            color={"#0078D4"}
+            title={strings.taskItemMarkAsIncomplete}
+            onClick={handleTaskItemCompletionClick}
+          />
+        ) : (
+          <CheckboxUnchecked24Regular
+            color={"#323130"}
+            title={strings.taskItemMarkAsComplete}
+            onClick={handleTaskItemCompletionClick}
+          />
+        )}
+      </div>
 
       <div className={styles.wm_taskItemMainSection}>
         <h2 className={styles.wm_taskItemTitle}>{props.task.title}</h2>
@@ -89,6 +95,67 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
         )}
 
         <TagContainer tags={props.task.tags} />
+
+        <div className={styles.wm_taskItemLinks}>
+          {props.task.linkedUsers.length > 0 && (
+            <div className={styles.wm_taskItemLinksBadge}>
+              <Person16Regular
+                className={styles.wm_taskItemLinksBadgeIcon}
+                color={"#323130"}
+                title={strings.taskItemLinkedPeople}
+              />
+
+              <p className={styles.wm_taskItemLinksBadgeText}>
+                {props.task.linkedUsers.length}
+              </p>
+            </div>
+          )}
+
+          {props.task.linkedTeams.length > 0 && (
+            <div className={styles.wm_taskItemLinksBadge}>
+              <img
+                className={styles.wm_taskItemLinksBadgeIcon}
+                src={imgTeams}
+                alt={strings.taskItemLinkedTeams}
+                title={strings.taskItemLinkedTeams}
+              />
+
+              <p className={styles.wm_taskItemLinksBadgeText}>
+                {props.task.linkedTeams.length}
+              </p>
+            </div>
+          )}
+
+          {props.task.linkedSpSites.length > 0 && (
+            <div className={styles.wm_taskItemLinksBadge}>
+              <img
+                className={styles.wm_taskItemLinksBadgeIcon}
+                src={imgSharePoint}
+                alt={strings.taskItemLinkedSites}
+                title={strings.taskItemLinkedSites}
+              />
+
+              <p className={styles.wm_taskItemLinksBadgeText}>
+                {props.task.linkedSpSites.length}
+              </p>
+            </div>
+          )}
+
+          {props.task.linkedFiles.length > 0 && (
+            <div className={styles.wm_taskItemLinksBadge}>
+              <img
+                className={styles.wm_taskItemLinksBadgeIcon}
+                src={imgOneDrive}
+                alt={strings.taskItemLinkedFiles}
+                title={strings.taskItemLinkedFiles}
+              />
+
+              <p className={styles.wm_taskItemLinksBadgeText}>
+                {props.task.linkedFiles.length}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className={styles.wm_taskItemButtons}>
