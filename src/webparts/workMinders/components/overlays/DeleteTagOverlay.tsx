@@ -2,11 +2,11 @@ import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
 import { Settings } from "../../classes/Settings";
+import { WorkMinder } from "../../classes/WorkMinder";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./DeleteTagOverlay.module.scss";
 import globalStyles from "../GlobalStyles.module.scss";
-import { WorkMinder } from "../../classes/WorkMinder";
 
 interface IDeleteTagOverlayProps {
   activeTag: string;

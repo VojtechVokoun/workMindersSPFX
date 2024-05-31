@@ -1,6 +1,6 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { MSGraphClientV3 } from "@microsoft/sp-http";
-import { TFile, TSPSite, TTeams, TUser } from "../types/ItemTypes";
+import { TFile, TSPSite, TTeam, TUser } from "../types/ItemTypes";
 import { Settings } from "./Settings";
 
 export class WorkMinder {
@@ -13,7 +13,7 @@ export class WorkMinder {
   isCompleted: boolean;
   isImportant: boolean;
   linkedUsers: TUser[];
-  linkedTeams: TTeams[];
+  linkedTeams: TTeam[];
   linkedSpSites: TSPSite[];
   linkedFiles: TFile[];
   tags: string[];
@@ -28,7 +28,7 @@ export class WorkMinder {
     isCompleted: boolean,
     isImportant: boolean,
     linkedUsers: TUser[],
-    linkedTeams: TTeams[],
+    linkedTeams: TTeam[],
     linkedSpSites: TSPSite[],
     linkedFiles: TFile[],
     tags: string[],

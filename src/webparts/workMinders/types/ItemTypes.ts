@@ -20,7 +20,7 @@ export type TUser = {
  * @param url - the team's URL
  * @returns The team object.
  */
-export type TTeams = {
+export type TTeam = {
   id: string;
   displayName: string;
   url: string;

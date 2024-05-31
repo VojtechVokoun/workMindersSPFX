@@ -3,8 +3,6 @@ import * as React from "react";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { Add16Regular } from "@fluentui/react-icons";
 
-//import { createReminder } from "../../tools/reminderSenders";
-
 import TaskList from "./TaskList";
 
 import * as strings from "WorkMindersWebPartStrings";

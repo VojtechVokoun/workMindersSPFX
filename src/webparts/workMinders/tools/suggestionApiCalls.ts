@@ -7,7 +7,7 @@ import {
   ISPHttpClientConfiguration,
   SPHttpClientResponse,
 } from "@microsoft/sp-http";
-import { TUser, TTeams, TSPSite, TFile } from "../types/ItemTypes";
+import { TUser, TTeam, TSPSite, TFile } from "../types/ItemTypes";
 
 /**
  * This calls the Graph API to get the user autocomplete suggestions for a given search query.
@@ -68,7 +68,7 @@ export const getManager = async (client: MSGraphClientV3): Promise<TUser> => {
 export const getTeamSuggestions = async (
   client: MSGraphClientV3,
   query: string,
-): Promise<TTeams[]> => {
+): Promise<TTeam[]> => {
   // If the query is too short, return an empty array
   if (query.length < 3) {
     return [];
