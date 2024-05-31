@@ -47,6 +47,9 @@ declare interface IWorkMindersWebPartStrings {
   taskItemLinkedFiles: string;
   taskItemImportant: string;
 
+  // TaskOverlay
+  editTask: string;
+
   // TagChoice
   tags: string;
   addTag: string;

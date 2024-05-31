@@ -30,8 +30,7 @@ export interface IWorkMindersProps {
 
 /**
  * A background component that fetches data from the Graph API, renders the webpart and all its overlays.
- * @param props
- * @constructor
+ * @param props - the component properties
  */
 const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
   // COMPONENT STATE --------------------------------------

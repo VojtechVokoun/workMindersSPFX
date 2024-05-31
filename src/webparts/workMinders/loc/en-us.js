@@ -52,6 +52,9 @@ define([], function () {
     taskItemLinkedFiles: "Linked files",
     taskItemImportant: "Important",
 
+    // TaskOverlay
+    editTask: "Edit Task",
+
     // TagChoice
     tags: "Tags",
     addTag: "New tag",

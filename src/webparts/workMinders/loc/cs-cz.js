@@ -52,6 +52,9 @@ define([], function () {
     taskItemLinkedFiles: "Propojené soubory",
     taskItemImportant: "Důležité",
 
+    // TaskOverlay
+    editTask: "Upravit úkol",
+
     // TagChoice
     tags: "Tagy",
     addTag: "Nový tag",
