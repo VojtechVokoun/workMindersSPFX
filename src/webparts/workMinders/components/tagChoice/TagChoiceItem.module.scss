@@ -1,3 +1,15 @@
+@property --gradientStart {
+  syntax: '<color>';
+  initial-value: transparent;
+  inherits: false;
+}
+
+@property --gradientEnd {
+  syntax: '<color>';
+  initial-value: transparent;
+  inherits: false;
+}
+
 .wm_tagChoiceItem {
   display: flex;
   flex-direction: row;
@@ -12,6 +24,14 @@
   background-color: transparent;
   width: 100%;
   min-height: 16px;
+  background-image: linear-gradient(to bottom right, var(--gradientStart), var(--gradientEnd));
+  transition: all ease-in-out 0.1s, --gradientStart 0.3s, --gradientEnd 0.3s;;
+}
+
+.wm_tagChoiceItem:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  --gradientStart: #0078D411;
+  --gradientEnd: #0078D422;
 }
 
 .wm_tagChoiceItemActive {
@@ -19,8 +39,14 @@
   color: #0078D4FF;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-weight: 600;
-  background-color: transparent;
-  background-image: linear-gradient(to bottom right, #0078D433, #0078D44D);
+  --gradientStart: #0078D433;
+  --gradientEnd: #0078D44D;
+}
+
+.wm_tagChoiceItemActive:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  --gradientStart: #0078D44D;
+  --gradientEnd: #0078D466;
 }
 
 .wm_tagChoiceItemLabel {
@@ -53,6 +79,7 @@
   background-color: transparent;
   color: gray;
   height: 16px;
+  transition: all ease-in-out 0.3s;
 }
 
 .wm_tagChoiceItemButton:hover {
