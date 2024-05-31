@@ -84,7 +84,7 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
             className={styles.wm_taskItemDescription}
             style={dueDateDynamicStyle}
           >
-            Due: {props.task.dueDate.toLocaleLowerCase()}
+            {`${strings.taskItemDueDate}: ${new Date(props.task.dueDate).toLocaleDateString()}`}
           </p>
         )}
 
