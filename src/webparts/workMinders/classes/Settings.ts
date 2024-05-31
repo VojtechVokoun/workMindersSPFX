@@ -5,7 +5,7 @@ import { WorkMinder } from "./WorkMinder";
 export class Settings {
   // Technical stuff
   public static context: WebPartContext;
-  public static oneDriveId: string;
+  public static oneDriveFileId: string;
 
   // User properties
   public static tagList: string[];
@@ -20,7 +20,7 @@ export class Settings {
   constructor(context: WebPartContext) {
     Settings.context = context;
     Settings.tagList = [];
-    Settings.oneDriveId = "";
+    Settings.oneDriveFileId = "";
     Settings.getSettings().catch((error: unknown) => {
       console.error(`Settings: ${error}`);
     });
@@ -121,7 +121,7 @@ export class Settings {
 
     // Update the settings
     await graphClient
-      .api(`/me/drive/items/${this.oneDriveId}/content`)
+      .api(`/me/drive/items/${this.oneDriveFileId}/content`)
       .version("v1.0")
       .headers({
         "Content-Type": "application/json",
@@ -159,6 +159,9 @@ export class Settings {
       return;
     }
 
+    console.log(settingsFileMetadata);
+    this.oneDriveFileId = settingsFileMetadata.id;
+
     // Get the settings file
     const settingsFile = await graphClient
       .api(`/me/drive/root:/WorkMinders App/_appSettings.json:/content`)
@@ -170,7 +173,6 @@ export class Settings {
       });
 
     // Set the settings
-    this.oneDriveId = settingsFile.id;
     this.tagList = settingsFile.tagList.split(";;");
 
     this.tagList = this.tagList.filter((tag, index, self) => {
@@ -206,7 +208,7 @@ export class Settings {
       });
 
     // Set the OneDrive ID
-    this.oneDriveId = creationResponse.id;
+    this.oneDriveFileId = creationResponse.id;
 
     return;
   }

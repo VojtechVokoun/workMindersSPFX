@@ -129,7 +129,7 @@ export class WorkMinder {
 
     // Update the reminder
     const updateResponse = await graphClient
-      .api(`/me/drive/items/${Settings.oneDriveId}/content`)
+      .api(`/me/drive/items/${Settings.oneDriveFileId}/content`)
       .version("v1.0")
       .headers({
         "Content-Type": "application/json",
