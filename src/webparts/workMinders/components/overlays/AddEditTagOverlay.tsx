@@ -89,6 +89,12 @@ const AddEditTagOverlay = (props: IAddEditTagOverlayProps): JSX.Element => {
               ? strings.addTagPlaceholder
               : strings.editTagPlaceholder
           }
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              handleSaveClick();
+            }
+          }}
+          autoFocus
         />
 
         <p className={styles.wm_tagOverlayHint}>{strings.tagHint}</p>
