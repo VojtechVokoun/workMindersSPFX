@@ -1,0 +1,55 @@
+.wm_linkTile {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.wm_linkTile:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.wm_linkTileIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.wm_linkTileText {
+  font-size: 16px;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  width: 100%;
+  color: black;
+}
+
+.wm_linkTileButton {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  color: gray;
+  transition: all ease-in-out 0.3s;
+}
+
+.wm_linkTileButton:hover {
+  color: #0078d4;
+}
+
+.wm_linkTileRemoveButton {
+  @extend .wm_linkTileButton;
+}
+
+.wm_linkTileRemoveButton:hover {
+  color: red;
+}

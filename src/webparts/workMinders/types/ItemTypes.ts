@@ -49,7 +49,7 @@ export type TSPSite = {
  */
 export type TFile = {
   id: string;
-  displayName: string;
+  name: string;
   webUrl: string;
   lastModifiedDateTime: string;
 };

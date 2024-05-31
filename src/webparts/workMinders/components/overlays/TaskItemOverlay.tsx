@@ -19,6 +19,12 @@ import {
   getTeamSuggestions,
   getUserSuggestions,
 } from "../../tools/suggestionApiCalls";
+import {
+  TaskItemOverlayLinkFileTile,
+  TaskItemOverlayLinkSpSiteTile,
+  TaskItemOverlayLinkTeamTile,
+  TaskItemOverlayLinkUserTile,
+} from "./taskItemOverlayLinkTiles/TaskItemOverlayLinkTiles";
 
 interface ITaskItemOverlayProps {
   task: WorkMinder | undefined;
@@ -192,7 +198,7 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
       return;
     }
 
-    if (spSites.length > 3) {
+    if (event.target.value.length > 3) {
       setLinkedSpSitesSuggestions(
         spSites.filter((site) =>
           site.displayName
@@ -217,15 +223,47 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
       return;
     }
 
-    if (recentFiles.length > 3) {
+    if (event.target.value.length > 3) {
       setLinkedFilesSuggestions(
         recentFiles.filter((file) =>
-          file.displayName
-            .toLowerCase()
-            .includes(event.target.value.toLowerCase()),
+          file.name.toLowerCase().includes(event.target.value.toLowerCase()),
         ),
       );
     }
+  };
+
+  /**
+   * Handles the removal of a linked user.
+   * @param user - the user to remove
+   */
+  const handleRemoveLinkedUser = (user: TUser): void => {
+    setLocalLinkedUsers(localLinkedUsers.filter((u) => u.id !== user.id));
+  };
+
+  /**
+   * Handles the removal of a linked team.
+   * @param team - the team to remove
+   */
+  const handleRemoveLinkedTeam = (team: TTeam): void => {
+    setLocalLinkedTeams(localLinkedTeams.filter((t) => t.id !== team.id));
+  };
+
+  /**
+   * Handles the removal of a linked SPSite.
+   * @param spSite - the SPSite to remove
+   */
+  const handleRemoveLinkedSpSite = (spSite: TSPSite): void => {
+    setLocalLinkedSpSites(
+      localLinkedSpSites.filter((site) => site.id !== spSite.id),
+    );
+  };
+
+  /**
+   * Handles the removal of a linked file.
+   * @param file - the file to remove
+   */
+  const handleRemoveLinkedFile = (file: TFile): void => {
+    setLocalLinkedFiles(localLinkedFiles.filter((f) => f.id !== file.id));
   };
 
   // CONVERSION FUNCTIONS ---------------------------------
@@ -484,10 +522,34 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
 
           <div>
             <p>local component state</p>
-            <p>{localLinkedUsers.length}</p>
-            <p>{localLinkedTeams.length}</p>
-            <p>{localLinkedSpSites.length}</p>
-            <p>{localLinkedFiles.length}</p>
+            {localLinkedUsers.map((user) => (
+              <TaskItemOverlayLinkUserTile
+                key={user.id}
+                user={user}
+                handleRemoveLinkedUser={handleRemoveLinkedUser}
+              />
+            ))}
+            {localLinkedTeams.map((team) => (
+              <TaskItemOverlayLinkTeamTile
+                key={team.id}
+                team={team}
+                handleRemoveLinkedTeam={handleRemoveLinkedTeam}
+              />
+            ))}
+            {localLinkedSpSites.map((site) => (
+              <TaskItemOverlayLinkSpSiteTile
+                key={site.id}
+                spSite={site}
+                handleRemoveLinkedSpSite={handleRemoveLinkedSpSite}
+              />
+            ))}
+            {localLinkedFiles.map((file) => (
+              <TaskItemOverlayLinkFileTile
+                key={file.id}
+                file={file}
+                handleRemoveLinkedFile={handleRemoveLinkedFile}
+              />
+            ))}
           </div>
         </div>
 
@@ -499,13 +561,13 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             onClick={handleSaveClick}
             //style={{ opacity: inputValue === "" ? 0.5 : 1 }}
           >
-            {strings.done}
+            {strings.save}
           </button>
           <button
             className={globalStyles.wm_rectButton}
             onClick={handleCancelClick}
           >
-            {strings.cancel}
+            {strings.discard}
           </button>
         </footer>
       </div>

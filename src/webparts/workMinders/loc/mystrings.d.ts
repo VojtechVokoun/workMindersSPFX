@@ -53,6 +53,8 @@ declare interface IWorkMindersWebPartStrings {
   titlePlaceholder: string;
   description: string;
   descriptionPlaceholder: string;
+  save: string;
+  discard: string;
 
   // TagChoice
   tags: string;

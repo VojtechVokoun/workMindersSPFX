@@ -58,6 +58,8 @@ define([], function () {
     titlePlaceholder: "Enter a title",
     description: "Description",
     descriptionPlaceholder: "Enter a description",
+    save: "Save",
+    discard: "Discard and close",
 
     // TagChoice
     tags: "Tags",

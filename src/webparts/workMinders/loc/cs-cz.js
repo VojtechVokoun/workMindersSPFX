@@ -58,6 +58,8 @@ define([], function () {
     titlePlaceholder: "Zadejte název",
     description: "Popis",
     descriptionPlaceholder: "Zadejte popis",
+    save: "Uložit",
+    discard: "Zahodit a zavřít",
 
     // TagChoice
     tags: "Tagy",
