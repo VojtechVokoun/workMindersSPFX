@@ -60,6 +60,7 @@ define([], function () {
     descriptionPlaceholder: "Zadejte popis",
     save: "Uložit",
     discard: "Zahodit a zavřít",
+    searchTags: "Hledat tagy",
 
     // TagChoice
     tags: "Tagy",

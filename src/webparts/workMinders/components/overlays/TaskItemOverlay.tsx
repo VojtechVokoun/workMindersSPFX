@@ -25,6 +25,8 @@ import {
   TaskItemOverlayLinkTeamTile,
   TaskItemOverlayLinkUserTile,
 } from "./taskItemOverlayLinkTiles/TaskItemOverlayLinkTiles";
+import TaskItemOverlayTagEditor from "./taskItemOverlayTagEditor/TaskItemOverlayTagEditor";
+import { Settings } from "../../classes/Settings";
 
 interface ITaskItemOverlayProps {
   task: WorkMinder | undefined;
@@ -359,7 +361,7 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
               htmlFor={"descriptionInput"}
               className={styles.wm_taskItemOverlayItemLabel}
             >
-              {strings.descriptionPlaceholder}
+              {strings.description}
             </label>
             <textarea
               id={"descriptionInput"}
@@ -427,12 +429,11 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             >
               {strings.tags}
             </label>
-            <input
-              type={"text"}
-              id={"tagsInput"}
-              className={styles.wm_taskItemOverlayRegularInput}
-              value={tagsInputValue.join(", ")}
-              onChange={(e) => setTagsInputValue(e.target.value.split(", "))}
+
+            <TaskItemOverlayTagEditor
+              allAvailableTags={Settings.tagList}
+              selectedTags={tagsInputValue}
+              setSelectedTags={setTagsInputValue}
             />
           </section>
 

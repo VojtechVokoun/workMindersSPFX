@@ -60,6 +60,7 @@ define([], function () {
     descriptionPlaceholder: "Enter a description",
     save: "Save",
     discard: "Discard and close",
+    searchTags: "Search tags",
 
     // TagChoice
     tags: "Tags",
