@@ -8,6 +8,7 @@ import {
   Important20Regular,
   Person16Regular,
 } from "@fluentui/react-icons";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 import { WorkMinder } from "../../../classes/WorkMinder";
 
@@ -25,6 +26,7 @@ const imgOneDrive = require("../../../assets/imgs/onedrive.svg");
 interface ITaskItemProps {
   task: WorkMinder;
   handleTaskEdit: (task: WorkMinder) => void;
+  webpartContext: WebPartContext;
 }
 
 const TaskItem = (props: ITaskItemProps): JSX.Element => {
@@ -35,6 +37,12 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
   const [isCompleted, setIsCompleted] = React.useState<boolean>(
     props.task.isCompleted,
   );
+
+  /**
+   * A state tracking how many times a tag has been dropped.
+   * Used to force a re-render. May be used a diagnostic tool.
+   */
+  const [dropCount, setDropCount] = React.useState(0);
 
   // STYLING ----------------------------------------------
   /**
@@ -63,6 +71,26 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
     <div
       className={`${styles.wm_taskItem} ${globalStyles.wm_contentViewItemHorizontalPadding}`}
       onClick={() => props.handleTaskEdit(props.task)}
+      onDrop={(event) => {
+        event.preventDefault();
+
+        const data = event.dataTransfer.getData("text/plain");
+
+        if (!props.task.tags.includes(data)) {
+          props.task.tags = [...props.task.tags, data].sort((a, b) =>
+            a.localeCompare(b),
+          );
+
+          props.task.updateReminder(props.webpartContext).catch((error) => {
+            console.error(error);
+          });
+
+          setDropCount(dropCount + 1);
+        }
+      }}
+      onDragOver={(event) => {
+        event.preventDefault();
+      }}
     >
       <div className={styles.wm_taskItemButtonCheckbox}>
         {isCompleted ? (

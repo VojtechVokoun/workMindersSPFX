@@ -79,6 +79,11 @@ const TagChoiceItem = (props: ITagChoiceItemProps): JSX.Element => {
       onClick={() => props.setActiveTag(props.tag)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      draggable={true}
+      onDragStart={(event) => {
+        event.dataTransfer.setData("text/plain", props.tag);
+        event.dataTransfer.dropEffect = "link";
+      }}
     >
       <p className={styles.wm_tagChoiceItemLabel}>{props.tag}</p>
 
