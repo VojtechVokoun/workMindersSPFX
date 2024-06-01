@@ -1,13 +1,13 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import {
+  ISPHttpClientConfiguration,
   MSGraphClientV3,
+  ODataVersion,
   SPHttpClient,
   SPHttpClientConfiguration,
-  ODataVersion,
-  ISPHttpClientConfiguration,
   SPHttpClientResponse,
 } from "@microsoft/sp-http";
-import { TUser, TTeam, TSPSite, TFile } from "../types/ItemTypes";
+import { TFile, TSPSite, TTeam, TUser } from "../types/ItemTypes";
 
 /**
  * This calls the Graph API to get the user autocomplete suggestions for a given search query.
@@ -56,7 +56,8 @@ export const getManager = async (context: WebPartContext): Promise<TUser> => {
     await context.msGraphClientFactory.getClient("3");
 
   // Get the user's manager
-  const manager = await client
+  // Return the manager
+  return await client
     .api("/me/manager")
     .version("v1.0")
     .get()
@@ -64,9 +65,6 @@ export const getManager = async (context: WebPartContext): Promise<TUser> => {
       console.error(`getManager: ${error}`);
       return null;
     });
-
-  // Return the manager
-  return manager;
 };
 
 /**
@@ -108,6 +106,8 @@ export const getTeamSuggestions = async (
  * This function is called when the component is loaded – that is because the neither the SharePoint REST API nor the
  * Graph API is able to query the user's sites based on the user's input. (The 'starts with' filter is not supported,
  * both APIs only return sites if the name and search query are matching.)
+ * ! It is known that the Graph API would be better suited, but from experience, this specific functionality is not
+ * ! as stable as the SharePoint REST API just yet.
  * @param context - the webpart context
  * @returns The user's sites
  */
@@ -138,10 +138,12 @@ export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
   }
 
   // Process the response
+  // Disable the eslint rule for the next line because the response is not typed the same between tenants
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const processedResponse: any = await clientResponse.json();
-
   const loadedSites: any[] =
     processedResponse.PrimaryQueryResult.RelevantResults.Table.Rows;
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const finalSites: TSPSite[] = [];
 
