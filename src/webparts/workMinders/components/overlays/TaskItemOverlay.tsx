@@ -445,120 +445,122 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
             />
           </section>
 
-          <section
-            className={styles.wm_taskItemOverlayItemSection}
-            title={strings.taskItemLinkedPeople}
-          >
-            <label
-              htmlFor={"linkedPeopleInput"}
-              className={styles.wm_taskItemOverlayItemLabel}
+          <section className={styles.wm_taskItemOverlayLinkStack}>
+            <div
+              className={styles.wm_taskItemOverlayItemVerticalDiv}
+              title={strings.taskItemLinkedPeople}
             >
-              {strings.taskItemLinkedPeople}
-            </label>
+              <label
+                htmlFor={"linkedPeopleInput"}
+                className={styles.wm_taskItemOverlayItemLabel}
+              >
+                {strings.taskItemLinkedPeople}
+              </label>
 
-            {localLinkedUsers.map((user) => (
-              <TaskItemOverlayLinkUserTile
-                key={user.id}
-                user={user}
-                handleRemoveLinkedUser={handleRemoveLinkedUser}
+              {localLinkedUsers.map((user) => (
+                <TaskItemOverlayLinkUserTile
+                  key={user.id}
+                  user={user}
+                  handleRemoveLinkedUser={handleRemoveLinkedUser}
+                />
+              ))}
+
+              <input
+                type={"text"}
+                id={"linkedPeopleInput"}
+                className={styles.wm_taskItemOverlayRegularInput}
+                placeholder={strings.addMore}
+                value={linkedUsersInputValue}
+                onChange={handleLinkedUsersInputChange}
               />
-            ))}
+            </div>
 
-            <input
-              type={"text"}
-              id={"linkedPeopleInput"}
-              className={styles.wm_taskItemOverlayRegularInput}
-              placeholder={strings.addMore}
-              value={linkedUsersInputValue}
-              onChange={handleLinkedUsersInputChange}
-            />
-          </section>
-
-          <section
-            className={styles.wm_taskItemOverlayItemSection}
-            title={strings.taskItemLinkedTeams}
-          >
-            <label
-              htmlFor={"linkedTeamsInput"}
-              className={styles.wm_taskItemOverlayItemLabel}
+            <div
+              className={styles.wm_taskItemOverlayItemVerticalDiv}
+              title={strings.taskItemLinkedTeams}
             >
-              {strings.taskItemLinkedTeams}
-            </label>
+              <label
+                htmlFor={"linkedTeamsInput"}
+                className={styles.wm_taskItemOverlayItemLabel}
+              >
+                {strings.taskItemLinkedTeams}
+              </label>
 
-            {localLinkedTeams.map((team) => (
-              <TaskItemOverlayLinkTeamTile
-                key={team.id}
-                team={team}
-                handleRemoveLinkedTeam={handleRemoveLinkedTeam}
+              {localLinkedTeams.map((team) => (
+                <TaskItemOverlayLinkTeamTile
+                  key={team.id}
+                  team={team}
+                  handleRemoveLinkedTeam={handleRemoveLinkedTeam}
+                />
+              ))}
+
+              <input
+                type={"text"}
+                id={"linkedTeamsInput"}
+                className={styles.wm_taskItemOverlayRegularInput}
+                placeholder={strings.addMore}
+                value={linkedTeamsInputValue}
+                onChange={handleLinkedTeamsInputChange}
               />
-            ))}
+            </div>
 
-            <input
-              type={"text"}
-              id={"linkedTeamsInput"}
-              className={styles.wm_taskItemOverlayRegularInput}
-              placeholder={strings.addMore}
-              value={linkedTeamsInputValue}
-              onChange={handleLinkedTeamsInputChange}
-            />
-          </section>
-
-          <section
-            className={styles.wm_taskItemOverlayItemSection}
-            title={strings.taskItemLinkedSites}
-          >
-            <label
-              htmlFor={"linkedSitesInput"}
-              className={styles.wm_taskItemOverlayItemLabel}
+            <div
+              className={styles.wm_taskItemOverlayItemVerticalDiv}
+              title={strings.taskItemLinkedSites}
             >
-              {strings.taskItemLinkedSites}
-            </label>
+              <label
+                htmlFor={"linkedSitesInput"}
+                className={styles.wm_taskItemOverlayItemLabel}
+              >
+                {strings.taskItemLinkedSites}
+              </label>
 
-            {localLinkedSpSites.map((site) => (
-              <TaskItemOverlayLinkSpSiteTile
-                key={site.id}
-                spSite={site}
-                handleRemoveLinkedSpSite={handleRemoveLinkedSpSite}
+              {localLinkedSpSites.map((site) => (
+                <TaskItemOverlayLinkSpSiteTile
+                  key={site.id}
+                  spSite={site}
+                  handleRemoveLinkedSpSite={handleRemoveLinkedSpSite}
+                />
+              ))}
+
+              <input
+                type={"text"}
+                id={"linkedSitesInput"}
+                className={styles.wm_taskItemOverlayRegularInput}
+                placeholder={strings.addMore}
+                value={linkedSpSitesInputValue}
+                onChange={handleLinkedSpSitesInputChange}
               />
-            ))}
+            </div>
 
-            <input
-              type={"text"}
-              id={"linkedSitesInput"}
-              className={styles.wm_taskItemOverlayRegularInput}
-              placeholder={strings.addMore}
-              value={linkedSpSitesInputValue}
-              onChange={handleLinkedSpSitesInputChange}
-            />
-          </section>
-
-          <section
-            className={styles.wm_taskItemOverlayItemSection}
-            title={strings.taskItemLinkedFiles}
-          >
-            <label
-              htmlFor={"linkedFilesInput"}
-              className={styles.wm_taskItemOverlayItemLabel}
+            <div
+              className={styles.wm_taskItemOverlayItemVerticalDiv}
+              title={strings.taskItemLinkedFiles}
             >
-              {strings.taskItemLinkedFiles}
-            </label>
+              <label
+                htmlFor={"linkedFilesInput"}
+                className={styles.wm_taskItemOverlayItemLabel}
+              >
+                {strings.taskItemLinkedFiles}
+              </label>
 
-            {localLinkedFiles.map((file) => (
-              <TaskItemOverlayLinkFileTile
-                key={file.id}
-                file={file}
-                handleRemoveLinkedFile={handleRemoveLinkedFile}
+              {localLinkedFiles.map((file) => (
+                <TaskItemOverlayLinkFileTile
+                  key={file.id}
+                  file={file}
+                  handleRemoveLinkedFile={handleRemoveLinkedFile}
+                />
+              ))}
+
+              <input
+                type={"text"}
+                id={"linkedFilesInput"}
+                className={styles.wm_taskItemOverlayRegularInput}
+                placeholder={strings.addMore}
+                value={linkedFilesInputValue}
+                onChange={handleLinkedFilesInputChange}
               />
-            ))}
-
-            <input
-              type={"text"}
-              id={"linkedFilesInput"}
-              className={styles.wm_taskItemOverlayRegularInput}
-              placeholder={strings.addMore}
-              value={linkedFilesInputValue}
-              onChange={handleLinkedFilesInputChange}
-            />
+            </div>
           </section>
 
           <div>

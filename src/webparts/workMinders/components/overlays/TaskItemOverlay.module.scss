@@ -57,6 +57,9 @@
 .wm_taskItemOverlayItemVerticalDiv {
   display: flex;
   flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .wm_taskItemOverlayItemHorizontalDiv {
@@ -90,5 +93,15 @@
 .wm_taskItemOverlayTextAreaInput {
   @extend .wm_taskItemOverlayRegularInput;
   resize: vertical;
+}
+
+.wm_taskItemOverlayLinkStack {
+  column-count: 2;
+  width: 100%;
+  gap: 10px;
+
+  @media only screen and (max-width: 700px) {
+    column-count: 1;
+  }
 }
 
