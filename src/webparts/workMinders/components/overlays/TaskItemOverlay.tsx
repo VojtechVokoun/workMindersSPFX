@@ -103,12 +103,18 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
     [],
   );
 
+  /**
+   * This states holds the state of the name input. If it should be highlighted as invalid, it's set to true.
+   */
+  const [nameInputInvalid, setNameInputInvalid] = useState<boolean>(false);
+
   // EVENT HANDLERS ---------------------------------------
   /**
    * Handles the click event on the save button.
    */
   const handleSaveClick = (): void => {
     if (nameInputValue === "") {
+      setNameInputInvalid(true);
       return;
     }
 
@@ -333,16 +339,14 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
       });
   }, []);
 
-  // todo: remove this effect
-  useEffect(() => {
-    setLocalLinkedUsers(props.task?.linkedUsers || []);
-
-    setLocalLinkedTeams(props.task?.linkedTeams || []);
-
-    setLocalLinkedSpSites(props.task?.linkedSpSites || []);
-
-    setLocalLinkedFiles(props.task?.linkedFiles || []);
-  }, []);
+  // STYLING ----------------------------------------------
+  /**
+   * A dynamic styling object for the name input.
+   * If the input is invalid, it will be highlighted with a red border.
+   */
+  const nameInputDynamicStyle: React.CSSProperties = {
+    border: nameInputInvalid ? "1px solid #FF0000" : "",
+  };
 
   // RENDER -----------------------------------------------
   return (
@@ -367,9 +371,13 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
               type={"text"}
               id={"titleInput"}
               className={styles.wm_taskItemOverlayRegularInput}
+              style={nameInputDynamicStyle}
               placeholder={strings.titlePlaceholder}
               value={nameInputValue}
-              onChange={(e) => setNameInputValue(e.target.value)}
+              onChange={(e) => {
+                setNameInputValue(e.target.value);
+                setNameInputInvalid(false);
+              }}
               autoFocus={true}
             />
           </section>
@@ -486,6 +494,29 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
                 value={linkedUsersInputValue}
                 onChange={handleLinkedUsersInputChange}
               />
+
+              {linkedUsersSuggestions.length > 0 && (
+                <div className={styles.wm_taskItemOverlaySuggestionDropdown}>
+                  {linkedUsersSuggestions.map((user) => (
+                    <div
+                      key={user.id}
+                      className={
+                        styles.wm_taskItemOverlaySuggestionDropdownItem
+                      }
+                      onClick={() => {
+                        setLocalLinkedUsers((prevUsers) => [
+                          ...prevUsers,
+                          user,
+                        ]);
+                        setLinkedUsersInputValue("");
+                        setLinkedUsersSuggestions([]);
+                      }}
+                    >
+                      {user.displayName}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div
@@ -515,6 +546,29 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
                 value={linkedTeamsInputValue}
                 onChange={handleLinkedTeamsInputChange}
               />
+
+              {linkedTeamsSuggestions.length > 0 && (
+                <div className={styles.wm_taskItemOverlaySuggestionDropdown}>
+                  {linkedTeamsSuggestions.map((team) => (
+                    <div
+                      key={team.id}
+                      className={
+                        styles.wm_taskItemOverlaySuggestionDropdownItem
+                      }
+                      onClick={() => {
+                        setLocalLinkedTeams((prevTeams) => [
+                          ...prevTeams,
+                          team,
+                        ]);
+                        setLinkedTeamsInputValue("");
+                        setLinkedTeamsSuggestions([]);
+                      }}
+                    >
+                      {team.displayName}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div
@@ -544,6 +598,29 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
                 value={linkedSpSitesInputValue}
                 onChange={handleLinkedSpSitesInputChange}
               />
+
+              {linkedSpSitesSuggestions.length > 0 && (
+                <div className={styles.wm_taskItemOverlaySuggestionDropdown}>
+                  {linkedSpSitesSuggestions.map((site) => (
+                    <div
+                      key={site.id}
+                      className={
+                        styles.wm_taskItemOverlaySuggestionDropdownItem
+                      }
+                      onClick={() => {
+                        setLocalLinkedSpSites((prevSites) => [
+                          ...prevSites,
+                          site,
+                        ]);
+                        setLinkedSpSitesInputValue("");
+                        setLinkedTeamsSuggestions([]);
+                      }}
+                    >
+                      {site.displayName}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div
@@ -573,16 +650,31 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
                 value={linkedFilesInputValue}
                 onChange={handleLinkedFilesInputChange}
               />
+
+              {linkedFilesSuggestions.length > 0 && (
+                <div className={styles.wm_taskItemOverlaySuggestionDropdown}>
+                  {linkedFilesSuggestions.map((file) => (
+                    <div
+                      key={file.id}
+                      className={
+                        styles.wm_taskItemOverlaySuggestionDropdownItem
+                      }
+                      onClick={() => {
+                        setLocalLinkedFiles((prevFiles) => [
+                          ...prevFiles,
+                          file,
+                        ]);
+                        setLinkedFilesInputValue("");
+                        setLinkedFilesSuggestions([]);
+                      }}
+                    >
+                      {file.name}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
-
-          <div>
-            <p>suggestions</p>
-            <p>{linkedUsersSuggestions.length}</p>
-            <p>{linkedTeamsSuggestions.length}</p>
-            <p>{linkedSpSitesSuggestions.length}</p>
-            <p>{linkedFilesSuggestions.length}</p>
-          </div>
         </div>
 
         <footer
@@ -591,7 +683,7 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
           <button
             className={globalStyles.wm_rectButton_primary}
             onClick={handleSaveClick}
-            //style={{ opacity: inputValue === "" ? 0.5 : 1 }}
+            style={{ opacity: nameInputValue === "" ? 0.5 : 1 }}
           >
             {strings.save}
           </button>

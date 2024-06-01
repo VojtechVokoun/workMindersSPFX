@@ -50,7 +50,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * A state holding all the tasks fetched from the Graph API.
    * The value is an array of WorkMinder objects.
    */
-  const [workMinders, setWorkMinders] = useState<WorkMinder[]>([]);
+  const [allWorkMinders, setAllWorkMinders] = useState<WorkMinder[]>([]);
 
   /**
    * States tracking the actvity of the task creation/edit overlay.
@@ -103,15 +103,15 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
     // Filter the tasks based on the active tag
     switch (activeTag) {
       case strings.tasksAll:
-        filteredTasks = workMinders;
+        filteredTasks = allWorkMinders;
         break;
       case strings.tasksCompleted:
-        filteredTasks = workMinders.filter(
+        filteredTasks = allWorkMinders.filter(
           (task: WorkMinder) => task.isCompleted,
         );
         break;
       case strings.tasksOverdue:
-        filteredTasks = workMinders.filter(
+        filteredTasks = allWorkMinders.filter(
           (task: WorkMinder) =>
             task.dueDate &&
             new Date(task.dueDate) < new Date() &&
@@ -119,7 +119,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         );
         break;
       case strings.tasksUpcoming:
-        filteredTasks = workMinders.filter(
+        filteredTasks = allWorkMinders.filter(
           (task: WorkMinder) =>
             task.dueDate &&
             new Date(task.dueDate) > new Date() &&
@@ -127,12 +127,12 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         );
         break;
       case strings.tasksImportant:
-        filteredTasks = workMinders.filter(
+        filteredTasks = allWorkMinders.filter(
           (task: WorkMinder) => task.isImportant,
         );
         break;
       default:
-        filteredTasks = workMinders.filter((task: WorkMinder) =>
+        filteredTasks = allWorkMinders.filter((task: WorkMinder) =>
           task.tags.includes(activeTag),
         );
         break;
@@ -206,10 +206,10 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
 
     Settings.getInstance(props.webpartContext);
 
-    const workMinders: WorkMinder[] =
+    const fetchedWorkMinders: WorkMinder[] =
       await WorkMinder.getWorkMinders(graphClient);
 
-    setWorkMinders(workMinders);
+    setAllWorkMinders(fetchedWorkMinders);
 
     setLoaded(true);
   };
@@ -248,7 +248,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   useEffect((): void => {
     filterTasks();
-  }, [activeTag, workMinders, Settings.tagList]);
+  }, [activeTag, allWorkMinders, Settings.tagList]);
 
   // STYLES -----------------------------------------------
   /**
@@ -305,7 +305,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           webpartContext={props.webpartContext}
           setTaskOverlayActive={setTaskOverlayActive}
           setTaskOverlayItem={setTaskOverlayItem}
-          setAllTasks={setWorkMinders}
+          setAllTasks={setAllWorkMinders}
         />
       )}
 

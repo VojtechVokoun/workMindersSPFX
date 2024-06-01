@@ -26,8 +26,7 @@
       },
       "officeFabricIconFontName": "Page",
       "properties": {
-        "height": 500,
-        "smallUi": false
+        "height": 500
       }
     }
   ]

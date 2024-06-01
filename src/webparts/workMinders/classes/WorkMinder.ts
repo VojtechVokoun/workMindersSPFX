@@ -97,7 +97,7 @@ export class WorkMinder {
         ),
       );
     }
-    
+
     return workMinders;
   }
 
@@ -150,7 +150,7 @@ export class WorkMinder {
     // Send the reminder
     const creationResponse = await graphClient
       .api(
-        `/me/drive/root:/WorkMinders App/workminder_${this.title}_${new Date().toISOString()}.json:/content`,
+        `/me/drive/root:/WorkMinders App/workminder_${this.title}_${new Date().toISOString().replace(/:/g, "-")}.json:/content`,
       )
       .version("v1.0")
       .headers({
@@ -169,7 +169,7 @@ export class WorkMinder {
         tags: this.tags,
       })
       .catch((error: unknown) => {
-        console.error(`updateSettings: ${error}`);
+        console.error(`createReminder: ${error}`);
       });
 
     this.createdDate = creationResponse.createdDateTime;
