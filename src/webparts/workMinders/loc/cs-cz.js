@@ -66,6 +66,7 @@ define([], function () {
     // TagChoice
     tags: "Tagy",
     addTag: "Nový tag",
+    noTags: "Žádné tagy",
 
     // Add/Edit Tag
     addTagPlaceholder: "Zadejte název nového tagu",

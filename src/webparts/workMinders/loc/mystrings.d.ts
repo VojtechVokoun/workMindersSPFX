@@ -61,6 +61,7 @@ declare interface IWorkMindersWebPartStrings {
   // TagChoice
   tags: string;
   addTag: string;
+  noTags: string;
 
   // Add/Edit Tag
   addTagPlaceholder: string;

@@ -66,6 +66,7 @@ define([], function () {
     // TagChoice
     tags: "Tags",
     addTag: "New tag",
+    noTags: "No tags",
 
     // Add/Edit Tag
     addTagPlaceholder: "Enter a name for the new tag",

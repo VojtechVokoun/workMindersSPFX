@@ -122,7 +122,7 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
           </p>
         )}
 
-        <TagContainer tags={props.task.tags} />
+        {props.task.tags.length > 0 && <TagContainer tags={props.task.tags} />}
 
         <div className={styles.wm_taskItemLinks}>
           {props.task.linkedUsers.length > 0 && (

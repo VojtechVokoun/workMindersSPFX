@@ -105,7 +105,11 @@ export class Settings {
   ): void {
     tasks.forEach((task) => {
       if (task.tags.includes(oldTag)) {
-        task.tags[task.tags.indexOf(oldTag)] = newTag;
+        if (newTag === "") {
+          task.tags.splice(task.tags.indexOf(oldTag), 1);
+        } else {
+          task.tags[task.tags.indexOf(oldTag)] = newTag;
+        }
       }
     });
   }

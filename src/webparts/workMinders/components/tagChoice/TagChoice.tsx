@@ -125,6 +125,10 @@ const TagChoice = (props: ITagChoiceProps): JSX.Element => {
             handleTagDelete={props.handleTagDelete}
           />
         ))}
+
+        {sortUserTags().length === 0 && (
+          <p className={styles.wm_tagSectionInfo}>{strings.noTags + "..."}</p>
+        )}
       </section>
     </div>
   );

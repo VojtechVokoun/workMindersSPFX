@@ -30,7 +30,7 @@ const TaskItemOverlayTagEditorMainButton = (props: {
    */
   const getLabelText = (selectedDepartments: string[]): string => {
     if (selectedDepartments.length === 0) {
-      return "no tags";
+      return strings.noTags;
     } else if (selectedDepartments.length === 1) {
       return selectedDepartments[0];
     } else {
