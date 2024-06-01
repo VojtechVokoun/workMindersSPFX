@@ -41,9 +41,6 @@ export const getUserSuggestions = async (
       return null;
     });
 
-  // TODO: remove after testing
-  console.log(userSuggestions.value);
-
   // Return the suggestions
   return userSuggestions.value;
 };
@@ -67,9 +64,6 @@ export const getManager = async (context: WebPartContext): Promise<TUser> => {
       console.error(`getManager: ${error}`);
       return null;
     });
-
-  // TODO: remove after testing
-  console.log(manager);
 
   // Return the manager
   return manager;
@@ -104,9 +98,6 @@ export const getTeamSuggestions = async (
       console.error(`getTeamSuggestions: ${error}`);
       return null;
     });
-
-  // TODO: remove after testing
-  console.log(teamSuggestions.value);
 
   // Return the suggestions
   return teamSuggestions.value;
@@ -162,9 +153,6 @@ export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
     });
   });
 
-  // TODO: remove after testing
-  console.log(finalSites);
-
   // Return the suggestions
   return finalSites;
 };
@@ -193,9 +181,6 @@ export const getRecentFiles = async (
       console.error(`getRecentFiles: ${error}`);
       return null;
     });
-
-  // TODO: remove after testing
-  console.log(recentFiles.value as TFile[]);
 
   return recentFiles.value as TFile[];
 };

@@ -40,8 +40,6 @@ export const checkWorkMindersFolder = async (
       return;
     });
 
-  console.log(workMindersFolder);
-
   // If the folder doesn't exist, create it and return
   if (!workMindersFolder.value.length) {
     console.log("Creating the 'WorkMinders App' folder");

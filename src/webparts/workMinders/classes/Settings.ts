@@ -163,7 +163,6 @@ export class Settings {
       return;
     }
 
-    console.log(settingsFileMetadata);
     this.oneDriveFileId = settingsFileMetadata.id;
 
     // Get the settings file

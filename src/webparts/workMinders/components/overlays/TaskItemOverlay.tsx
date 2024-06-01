@@ -33,6 +33,7 @@ interface ITaskItemOverlayProps {
   webpartContext: WebPartContext;
   setTaskOverlayActive: Dispatch<SetStateAction<boolean>>;
   setTaskOverlayItem: Dispatch<SetStateAction<WorkMinder | undefined>>;
+  setAllTasks: Dispatch<SetStateAction<WorkMinder[]>>;
 }
 
 const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
@@ -125,6 +126,15 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
       props.task.updateReminder(props.webpartContext).catch((error) => {
         console.error("An error occurred: ", error);
       });
+
+      props.setAllTasks((prevState) => {
+        // Replace the old task with the updated one
+        return prevState.map((checkedTask) =>
+          checkedTask.localId === props.task?.localId
+            ? props.task
+            : checkedTask,
+        );
+      });
     } else {
       const newTask = new WorkMinder(
         0,
@@ -135,13 +145,20 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
         dueDateInputValue?.toISOString() || "",
         false,
         priorityInputValue,
-        [],
-        [],
-        [],
-        [],
+        localLinkedUsers,
+        localLinkedTeams,
+        localLinkedSpSites,
+        localLinkedFiles,
         tagsInputValue,
       );
-      console.log(newTask);
+
+      newTask.createReminder(props.webpartContext).catch((error) => {
+        console.error("An error occurred: ", error);
+      });
+
+      props.setAllTasks((prevState) => {
+        return [...prevState, newTask];
+      });
     }
 
     props.setTaskOverlayActive(false);
@@ -203,20 +220,18 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
     setLinkedSpSitesInputValue(event.target.value);
 
     // Filter the SPSites based on the input value
-    if (event.target.value === "") {
+    if (event.target.value.length < 3) {
       setLinkedSpSitesSuggestions([]);
       return;
     }
 
-    if (event.target.value.length > 3) {
-      setLinkedSpSitesSuggestions(
-        spSites.filter((site) =>
-          site.displayName
-            .toLowerCase()
-            .includes(event.target.value.toLowerCase()),
-        ),
-      );
-    }
+    setLinkedSpSitesSuggestions(
+      spSites.filter((site) =>
+        site.displayName
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()),
+      ),
+    );
   };
 
   /**
@@ -228,18 +243,16 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
     setLinkedFilesInputValue(event.target.value);
 
     // Filter the files based on the input value
-    if (event.target.value === "") {
+    if (event.target.value.length < 3) {
       setLinkedFilesSuggestions([]);
       return;
     }
 
-    if (event.target.value.length > 3) {
-      setLinkedFilesSuggestions(
-        recentFiles.filter((file) =>
-          file.name.toLowerCase().includes(event.target.value.toLowerCase()),
-        ),
-      );
-    }
+    setLinkedFilesSuggestions(
+      recentFiles.filter((file) =>
+        file.name.toLowerCase().includes(event.target.value.toLowerCase()),
+      ),
+    );
   };
 
   /**

@@ -56,8 +56,6 @@ export class WorkMinder {
   public static async getWorkMinders(
     graphClient: MSGraphClientV3,
   ): Promise<WorkMinder[]> {
-    console.log("Fetching the reminders");
-
     // Get the reminders
     const reminders = await graphClient
       .api(`/me/drive/root:/WorkMinders App:/children`)
@@ -72,8 +70,6 @@ export class WorkMinder {
     // Initialize the array of reminders
     const workMinders: WorkMinder[] = [];
 
-    console.log(reminders.value);
-
     // Process the reminders
     for (const reminder of reminders.value) {
       const id: number = reminders.value.indexOf(reminder);
@@ -82,8 +78,6 @@ export class WorkMinder {
         .api(`/me/drive/items/${reminder.id}/content`)
         .version("v1.0")
         .get();
-
-      console.log("pushing reminder with id: " + id);
 
       workMinders.push(
         new WorkMinder(
@@ -102,18 +96,8 @@ export class WorkMinder {
           reminderContent.tags,
         ),
       );
-
-      //   ...(reminderContent as WorkMinder),
-      //   context: context,
-      //   oneDriveId: reminder.id,
-      //   localId: id,
-      //   createdDate: reminder.createdDateTime,
-      //   modifiedDate: reminder.lastModifiedDateTime,
-      // } as WorkMinder);
     }
-
-    console.log(workMinders);
-
+    
     return workMinders;
   }
 
