@@ -26,6 +26,12 @@ export interface ITagChoiceProps {
  * @constructor
  */
 const TagChoice = (props: ITagChoiceProps): JSX.Element => {
+  // STATE ------------------------------------------------
+  /**
+   * This holds the hover state of the add button.
+   */
+  const [addButtonHover, setAddButtonHover] = React.useState(false);
+
   // HELPER LIST ------------------------------------------
   /**
    * List of default tags.
@@ -54,6 +60,20 @@ const TagChoice = (props: ITagChoiceProps): JSX.Element => {
    */
   const handleAddClick = (): void => {
     props.handleTagAdd();
+  };
+
+  /**
+   * Handles the pointer enter event on the add button.
+   */
+  const handleAddButtonPointerEnter = (): void => {
+    setAddButtonHover(true);
+  };
+
+  /**
+   * Handles the pointer leave event on the add button.
+   */
+  const handleAddButtonPointerLeave = (): void => {
+    setAddButtonHover(false);
   };
 
   // RENDER -----------------------------------------------
@@ -85,7 +105,13 @@ const TagChoice = (props: ITagChoiceProps): JSX.Element => {
           <Add20Regular
             title={strings.addTag}
             onClick={handleAddClick}
+            onPointerEnter={handleAddButtonPointerEnter}
+            onPointerLeave={handleAddButtonPointerLeave}
             cursor={"pointer"}
+            style={{
+              transform: addButtonHover ? "rotate(90deg)" : "rotate(0deg)",
+              transition: "transform 0.2s ease-in-out",
+            }}
           />
         </div>
 

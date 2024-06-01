@@ -62,7 +62,7 @@ const TaskItemOverlayTagEditorMainButton = (props: {
         onClick={() => props.setIsExpanded(!props.isExpanded)}
         style={{
           transform: props.isExpanded ? "rotate(180deg)" : "rotate(0deg)",
-          transition: "transform 0.2s",
+          transition: "transform 0.2s ease-in-out",
         }}
       />
     </div>
