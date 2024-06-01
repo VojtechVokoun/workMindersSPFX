@@ -50,7 +50,11 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
         </button>
       </nav>
 
-      <TaskList tasks={props.tasks} handleTaskEdit={props.handleTaskEdit} />
+      <TaskList
+        tasks={props.tasks}
+        handleTaskEdit={props.handleTaskEdit}
+        webpartContext={props.webpartContext}
+      />
     </div>
   );
 };

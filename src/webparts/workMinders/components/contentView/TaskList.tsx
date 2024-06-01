@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+
 import { WorkMinder } from "../../classes/WorkMinder";
 
 import TaskItem from "./taskItem/TaskItem";
@@ -10,6 +12,7 @@ import styles from "./TaskList.module.scss";
 interface ITaskListProps {
   tasks: WorkMinder[];
   handleTaskEdit: (task: WorkMinder) => void;
+  webpartContext: WebPartContext;
 }
 
 const TaskList = (props: ITaskListProps): JSX.Element => {
@@ -35,6 +38,7 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
             key={task.localId}
             task={task}
             handleTaskEdit={props.handleTaskEdit}
+            webpartContext={props.webpartContext}
           />
         ))}
     </section>

@@ -68,6 +68,18 @@ const TagChoiceItem = (props: ITagChoiceItemProps): JSX.Element => {
     props.handleTagDelete(props.tag);
   };
 
+  // HELPER LIST ------------------------------------------
+  /**
+   * List of default tags.
+   */
+  const defaultTags: string[] = [
+    strings.tasksAll,
+    strings.tasksCompleted,
+    strings.tasksOverdue,
+    strings.tasksUpcoming,
+    strings.tasksImportant,
+  ];
+
   // RENDER -----------------------------------------------
   return (
     <button
@@ -79,6 +91,11 @@ const TagChoiceItem = (props: ITagChoiceItemProps): JSX.Element => {
       onClick={() => props.setActiveTag(props.tag)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      draggable={!defaultTags.includes(props.tag)}
+      onDragStart={(event) => {
+        event.dataTransfer.setData("text/plain", props.tag);
+        event.dataTransfer.dropEffect = "link";
+      }}
     >
       <p className={styles.wm_tagChoiceItemLabel}>{props.tag}</p>
 
