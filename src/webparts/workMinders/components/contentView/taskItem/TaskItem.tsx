@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as React from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import {
   CheckboxChecked24Filled,
@@ -27,6 +28,7 @@ interface ITaskItemProps {
   task: WorkMinder;
   handleTaskEdit: (task: WorkMinder) => void;
   webpartContext: WebPartContext;
+  setCompleteCount: Dispatch<SetStateAction<number>>;
 }
 
 const TaskItem = (props: ITaskItemProps): JSX.Element => {
@@ -44,12 +46,29 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
    */
   const [dropCount, setDropCount] = React.useState(0);
 
+  // METHODS ----------------------------------------------
+  /**
+   * Gets yesterday's date.
+   * @returns a Date object representing yesterday's date
+   */
+  const getYesterday = (): Date => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return yesterday;
+  };
+
   // STYLING ----------------------------------------------
   /**
    * A dynamic styling object for the due date.
+   * If the task is overdue and not completed, the color is orange.
    */
   const dueDateDynamicStyle: React.CSSProperties = {
-    color: props.task.dueDate > new Date().toISOString() ? "#FF0000" : "gray",
+    color:
+      props.task.dueDate &&
+      new Date(props.task.dueDate) < getYesterday() &&
+      !props.task.isCompleted
+        ? "#FF7300"
+        : "gray",
   };
 
   // EVENT HANDLERS ---------------------------------------
@@ -63,7 +82,13 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
   ): void => {
     event.stopPropagation();
     props.task.isCompleted = !props.task.isCompleted;
+    props.task.updateReminder(props.webpartContext).catch((error) => {
+      console.error(error);
+    });
     setIsCompleted(props.task.isCompleted);
+    props.setCompleteCount((prevCount) =>
+      props.task.isCompleted ? prevCount + 1 : prevCount - 1,
+    );
   };
 
   // RENDER -----------------------------------------------
@@ -110,9 +135,11 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
 
       <div className={styles.wm_taskItemMainSection}>
         <h2 className={styles.wm_taskItemTitle}>{props.task.title}</h2>
-        <p className={styles.wm_taskItemDescription}>
-          {props.task.description}
-        </p>
+        {props.task.description !== "" && (
+          <p className={styles.wm_taskItemDescription}>
+            {props.task.description}
+          </p>
+        )}
         {props.task.dueDate !== "" && (
           <p
             className={styles.wm_taskItemDescription}
@@ -124,66 +151,71 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
 
         {props.task.tags.length > 0 && <TagContainer tags={props.task.tags} />}
 
-        <div className={styles.wm_taskItemLinks}>
-          {props.task.linkedUsers.length > 0 && (
-            <div className={styles.wm_taskItemLinksBadge}>
-              <Person16Regular
-                className={styles.wm_taskItemLinksBadgeIcon}
-                color={"#323130"}
-                title={strings.taskItemLinkedPeople}
-              />
+        {props.task.linkedTeams.length > 0 &&
+          props.task.linkedUsers.length > 0 &&
+          props.task.linkedFiles.length > 0 &&
+          props.task.linkedSpSites.length > 0 && (
+            <div className={styles.wm_taskItemLinks}>
+              {props.task.linkedUsers.length > 0 && (
+                <div className={styles.wm_taskItemLinksBadge}>
+                  <Person16Regular
+                    className={styles.wm_taskItemLinksBadgeIcon}
+                    color={"#323130"}
+                    title={strings.taskItemLinkedPeople}
+                  />
 
-              <p className={styles.wm_taskItemLinksBadgeText}>
-                {props.task.linkedUsers.length}
-              </p>
+                  <p className={styles.wm_taskItemLinksBadgeText}>
+                    {props.task.linkedUsers.length}
+                  </p>
+                </div>
+              )}
+
+              {props.task.linkedTeams.length > 0 && (
+                <div className={styles.wm_taskItemLinksBadge}>
+                  <img
+                    className={styles.wm_taskItemLinksBadgeIcon}
+                    src={imgTeams}
+                    alt={strings.taskItemLinkedTeams}
+                    title={strings.taskItemLinkedTeams}
+                  />
+
+                  <p className={styles.wm_taskItemLinksBadgeText}>
+                    {props.task.linkedTeams.length}
+                  </p>
+                </div>
+              )}
+
+              {props.task.linkedSpSites.length > 0 && (
+                <div className={styles.wm_taskItemLinksBadge}>
+                  <img
+                    className={styles.wm_taskItemLinksBadgeIcon}
+                    src={imgSharePoint}
+                    alt={strings.taskItemLinkedSites}
+                    title={strings.taskItemLinkedSites}
+                  />
+
+                  <p className={styles.wm_taskItemLinksBadgeText}>
+                    {props.task.linkedSpSites.length}
+                  </p>
+                </div>
+              )}
+
+              {props.task.linkedFiles.length > 0 && (
+                <div className={styles.wm_taskItemLinksBadge}>
+                  <img
+                    className={styles.wm_taskItemLinksBadgeIcon}
+                    src={imgOneDrive}
+                    alt={strings.taskItemLinkedFiles}
+                    title={strings.taskItemLinkedFiles}
+                  />
+
+                  <p className={styles.wm_taskItemLinksBadgeText}>
+                    {props.task.linkedFiles.length}
+                  </p>
+                </div>
+              )}
             </div>
           )}
-
-          {props.task.linkedTeams.length > 0 && (
-            <div className={styles.wm_taskItemLinksBadge}>
-              <img
-                className={styles.wm_taskItemLinksBadgeIcon}
-                src={imgTeams}
-                alt={strings.taskItemLinkedTeams}
-                title={strings.taskItemLinkedTeams}
-              />
-
-              <p className={styles.wm_taskItemLinksBadgeText}>
-                {props.task.linkedTeams.length}
-              </p>
-            </div>
-          )}
-
-          {props.task.linkedSpSites.length > 0 && (
-            <div className={styles.wm_taskItemLinksBadge}>
-              <img
-                className={styles.wm_taskItemLinksBadgeIcon}
-                src={imgSharePoint}
-                alt={strings.taskItemLinkedSites}
-                title={strings.taskItemLinkedSites}
-              />
-
-              <p className={styles.wm_taskItemLinksBadgeText}>
-                {props.task.linkedSpSites.length}
-              </p>
-            </div>
-          )}
-
-          {props.task.linkedFiles.length > 0 && (
-            <div className={styles.wm_taskItemLinksBadge}>
-              <img
-                className={styles.wm_taskItemLinksBadgeIcon}
-                src={imgOneDrive}
-                alt={strings.taskItemLinkedFiles}
-                title={strings.taskItemLinkedFiles}
-              />
-
-              <p className={styles.wm_taskItemLinksBadgeText}>
-                {props.task.linkedFiles.length}
-              </p>
-            </div>
-          )}
-        </div>
       </div>
 
       <div className={styles.wm_taskItemButtons}>

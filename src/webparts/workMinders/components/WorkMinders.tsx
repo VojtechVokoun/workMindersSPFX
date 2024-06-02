@@ -93,7 +93,23 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   const [sidebarActive, setSidebarActive] = useState<boolean>(false);
 
+  /**
+   * A state tracking the number of completed tasks.
+   * Used to force a re-filter and re-sort when a task is marked as complete.
+   */
+  const [completeCount, setCompleteCount] = useState<number>(0);
+
   // METHODS ----------------------------------------------
+  /**
+   * Gets yesterday's date.
+   * @returns a Date object representing yesterday's date
+   */
+  const getYesterday = (): Date => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return yesterday;
+  };
+
   /**
    * Filter the tasks based on the active tag.
    */
@@ -114,7 +130,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         filteredTasks = allWorkMinders.filter(
           (task: WorkMinder) =>
             task.dueDate &&
-            new Date(task.dueDate) < new Date() &&
+            new Date(task.dueDate) < getYesterday() &&
             !task.isCompleted,
         );
         break;
@@ -248,7 +264,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   useEffect((): void => {
     filterTasks();
-  }, [activeTag, allWorkMinders, Settings.tagList]);
+  }, [activeTag, allWorkMinders, Settings.tagList, completeCount]);
 
   // STYLES -----------------------------------------------
   /**
@@ -368,6 +384,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           handleTaskCreation={handleTaskCreation}
           handleTaskEdit={handleTaskEdit}
           setSidebarActive={setSidebarActive}
+          setCompleteCount={setCompleteCount}
         />
       )}
     </div>
