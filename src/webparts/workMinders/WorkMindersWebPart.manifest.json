@@ -22,7 +22,7 @@
         "default": "WorkMinders"
       },
       "description": {
-        "default": "WorkMinders description"
+        "default": "Take control of your work day with WorkMinders."
       },
       "officeFabricIconFontName": "Page",
       "properties": {
