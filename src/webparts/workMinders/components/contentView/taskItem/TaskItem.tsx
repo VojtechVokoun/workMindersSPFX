@@ -46,12 +46,29 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
    */
   const [dropCount, setDropCount] = React.useState(0);
 
+  // METHODS ----------------------------------------------
+  /**
+   * Gets yesterday's date.
+   * @returns a Date object representing yesterday's date
+   */
+  const getYesterday = (): Date => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return yesterday;
+  };
+
   // STYLING ----------------------------------------------
   /**
    * A dynamic styling object for the due date.
+   * If the task is overdue and not completed, the color is orange.
    */
   const dueDateDynamicStyle: React.CSSProperties = {
-    color: props.task.dueDate < new Date().toISOString() ? "#FF7300" : "gray",
+    color:
+      props.task.dueDate &&
+      new Date(props.task.dueDate) < getYesterday() &&
+      !props.task.isCompleted
+        ? "#FF7300"
+        : "gray",
   };
 
   // EVENT HANDLERS ---------------------------------------

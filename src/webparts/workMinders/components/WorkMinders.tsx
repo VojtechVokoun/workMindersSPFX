@@ -101,13 +101,13 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
 
   // METHODS ----------------------------------------------
   /**
-   * Gets tomorrow's date.
-   * @returns a Date object representing tomorrow's date
+   * Gets yesterday's date.
+   * @returns a Date object representing yesterday's date
    */
-  const getTomorrow = (): Date => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow;
+  const getYesterday = (): Date => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return yesterday;
   };
 
   /**
@@ -130,7 +130,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
         filteredTasks = allWorkMinders.filter(
           (task: WorkMinder) =>
             task.dueDate &&
-            new Date(task.dueDate) < getTomorrow() &&
+            new Date(task.dueDate) < getYesterday() &&
             !task.isCompleted,
         );
         break;
