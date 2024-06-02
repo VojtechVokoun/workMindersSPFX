@@ -4,72 +4,59 @@ WorkMinders – a task manager built for Microsoft 365.
 
 ## Summary
 
-Short summary on functionality and used technologies.
+WorkMinders is a task manager built for Microsoft 365. It allows users to create and track tasks.
+This tool is built for colalboration, so users can link users, teams, documents and SharePoint Sites to their tasks.
 
-[picture of the solution in action, if possible]
+The data is saved on OneDrive in JSON format, so users can access their tasks from anywhere, even when they don't
+have access to the SharePoint site where the solution is deployed.
+
+The solution is built using SharePoint Framework and React.
 
 ## Used SharePoint Framework Version
 
 ![version](https://img.shields.io/badge/version-1.18.2-green.svg)
 
-## Applies to
-
-- [SharePoint Framework](https://aka.ms/spfx)
-- [Microsoft 365 tenant](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-developer-tenant)
-
-> Get your own free development tenant by subscribing to [Microsoft 365 developer program](http://aka.ms/o365devprogram)
-
 ## Prerequisites
 
-> Any special pre-requisites?
-
-## Solution
-
-| Solution    | Author(s)                                               |
-| ----------- | ------------------------------------------------------- |
-| folder name | Author details (name, company, twitter alias with link) |
+- Office 365 subscription with SharePoint Online
+- OneDrive for Business to store the tasks
 
 ## Version history
 
-| Version | Date             | Comments        |
-| ------- | ---------------- | --------------- |
-| 1.1     | March 10, 2021   | Update comment  |
-| 1.0     | January 29, 2021 | Initial release |
+| Version | Date         | Comments        |
+|---------|--------------|-----------------|
+| 1.0.0   | June 2, 2024 | Initial release |
 
 ## Disclaimer
 
-**THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+**THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED
+WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 ---
 
 ## Minimal Path to Awesome
 
+To test this web part in your SharePoint environment, follow these steps:
+
 - Clone this repository
 - Ensure that you are at the solution folder
 - in the command-line run:
-  - **npm install**
-  - **gulp serve**
+    - **npm install**
+    - **gulp serve**
 
-> Include any additional steps as needed.
+> **Note:** It is possible that it will not be fully functional, this is because the web part requires permissions to
+> access the Microsoft Graph API through delegated permissions. To get the full functionality, you need to deploy the
+> web part to SharePoint.
 
-## Features
+## Deployment
 
-Description of the extension that expands upon high-level summary above.
+To deploy this web part to SharePoint, run the following commands:
 
-This extension illustrates the following concepts:
-
-- topic 1
-- topic 2
-- topic 3
-
-> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
-
-> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
-
-## References
-
-- [Getting started with SharePoint Framework](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/set-up-your-developer-tenant)
-- [Building for Microsoft teams](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/build-for-teams-overview)
-- [Use Microsoft Graph in your solution](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/get-started/using-microsoft-graph-apis)
-- [Publish SharePoint Framework applications to the Marketplace](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/publish-to-marketplace-overview)
-- [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development
+- **gulp bundle --ship**
+- **gulp package-solution --ship**
+- Upload the .sppkg file from the sharepoint/solution folder to the App Catalog
+- Go to the API Access page in the SharePoint Admin Center and approve the requested permissions
+- Add the app to the site where you want to use it
+- Add the web part to a page
+- _Optional: Set the height of the web part to your liking_
+- Enjoy!
