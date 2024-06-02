@@ -20,7 +20,7 @@ export type TUser = {
  * @param url - the team's URL
  * @returns The team object.
  */
-export type TTeams = {
+export type TTeam = {
   id: string;
   displayName: string;
   url: string;
@@ -49,26 +49,7 @@ export type TSPSite = {
  */
 export type TFile = {
   id: string;
-  displayName: string;
+  name: string;
   webUrl: string;
   lastModifiedDateTime: string;
-};
-
-/**
- * This is the object holding the reminder data.
- */
-export type TWorkMinder = {
-  localId: string;
-  oneDriveId: string;
-  title: string;
-  description: string;
-  createdDate: string;
-  modifiedDate: string;
-  dueDate: string;
-  isCompleted: boolean;
-  isImportant: boolean;
-  linkedUsers: TUser[];
-  linkedTeams: TTeams[];
-  linkedSpSites: TSPSite[];
-  linkedFiles: TFile[];
 };

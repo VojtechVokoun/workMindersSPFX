@@ -3,7 +3,7 @@
   "solution": {
     "name": "workminders-spfx-client-side-solution",
     "id": "98655c61-63d2-4510-8ae9-50ea22c1b279",
-    "version": "1.0.0.0",
+    "version": "0.0.1.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
@@ -52,7 +52,7 @@
         "title": "workminders-spfx Feature",
         "description": "The feature that activates elements of the workminders-spfx solution.",
         "id": "0959c3f9-53cc-4f77-aee9-cb2b3c46df85",
-        "version": "1.0.0.0"
+        "version": "0.0.1.0"
       }
     ]
   },

@@ -1,0 +1,22 @@
+.wm_taskList {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.vm_noTasks {
+  margin: auto 30px;
+}
+
+.vm_noTasksTitle {
+  margin: 0;
+}
+
+.vm_noTasksDescription {
+  margin: 0;
+  color: gray;
+}

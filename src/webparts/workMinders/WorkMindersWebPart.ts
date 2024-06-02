@@ -1,17 +1,13 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import { Version } from "@microsoft/sp-core-library";
-import {
-  type IPropertyPaneConfiguration,
-  PropertyPaneTextField,
-} from "@microsoft/sp-property-pane";
+import { type IPropertyPaneConfiguration } from "@microsoft/sp-property-pane";
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import { IReadonlyTheme } from "@microsoft/sp-component-base";
-import { MSGraphClientV3 } from "@microsoft/sp-http";
+import { PropertyFieldNumber } from "@pnp/spfx-property-controls/lib/PropertyFieldNumber";
+import { PropertyPaneWebPartInformation } from "@pnp/spfx-property-controls/lib/PropertyPaneWebPartInformation";
 
-import WorkMinders from "./components/WorkMinders";
-import { IWorkMindersProps } from "./components/IWorkMindersProps";
-import { TWorkMinder } from "./types/ItemTypes";
+import WorkMinders, { IWorkMindersProps } from "./components/WorkMinders";
 
 import * as strings from "WorkMindersWebPartStrings";
 
@@ -21,10 +17,6 @@ export interface IWorkMindersWebPartProps {
 
 export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMindersWebPartProps> {
   private _isDarkTheme: boolean = false;
-  private _workMinders: TWorkMinder[] = [];
-  private _oneDriveDoesNotExist: boolean = false;
-
-  //private _environmentMessage: string = "";
 
   public render(): void {
     const element: React.ReactElement<IWorkMindersProps> = React.createElement(
@@ -34,32 +26,19 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         webpartContext: this.context,
         height: this.properties.height,
-        oneDriveDoesNotExist: this._oneDriveDoesNotExist,
-        workMinders: this._workMinders,
       },
     );
 
     ReactDom.render(element, this.domElement);
   }
 
-  protected onInit(): Promise<void> {
-    return this._getWorkMinders()
-      .then((data: TWorkMinder[] | undefined) => {
-        if (data) {
-          this._workMinders = data;
-        } else {
-          this._workMinders = [];
-        }
-      })
-      .catch((error) => {
-        console.error(`onInit: ${error}`);
-      });
-    //return this._getEnvironmentMessage().then((message) => {
-    //this._environmentMessage = message;
-    //});
+  protected async onInit(): Promise<void> {
+    return this._getEnvironmentMessage().then((message) => {
+      console.log(message);
+    });
   }
 
-  /*private _getEnvironmentMessage(): Promise<string> {
+  private _getEnvironmentMessage(): Promise<string> {
     if (!!this.context.sdks.microsoftTeams) {
       // running in Teams, office.com or Outlook
       return this.context.sdks.microsoftTeams.teamsJs.app
@@ -96,82 +75,6 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
         ? strings.AppLocalEnvironmentSharePoint
         : strings.AppSharePointEnvironment,
     );
-  }*/
-
-  /**
-   * Fetches all reminders from user's OneDrive.
-   * @private
-   */
-  private async _getWorkMinders(): Promise<TWorkMinder[] | undefined> {
-    // Get the Graph client
-    const graphClient: MSGraphClientV3 =
-      await this.context.msGraphClientFactory.getClient("3");
-
-    // Find out if the user has a OneDrive
-    // Get the user's OneDrive
-    const oneDrive = await graphClient
-      .api("/me/drive")
-      .version("v1.0")
-      .get()
-      .catch((error: unknown) => {
-        console.error(`_getReminders: ${error}`);
-        return;
-      });
-
-    // If the user doesn't have a OneDrive, set the flag and return
-    if (!oneDrive) {
-      this._oneDriveDoesNotExist = true;
-      return;
-    }
-
-    // See if the 'WorkMinders App' folder exists, if not, create it
-    // Get the 'WorkMinders App' folder
-    const workMindersFolder = await graphClient
-      .api(`/me/drive/root/children`)
-      .version("v1.0")
-      .filter("name eq 'WorkMinders App'")
-      .get()
-      .catch((error: unknown) => {
-        console.error(`_getReminders: ${error}`);
-        return null;
-      });
-
-    console.log(workMindersFolder);
-
-    // If the folder doesn't exist, create it and return
-    if (!workMindersFolder.value.length) {
-      console.log("Creating the 'WorkMinders App' folder");
-
-      await graphClient
-        .api("/me/drive/root/children")
-        .version("v1.0")
-        .post({
-          name: "WorkMinders App",
-          folder: {},
-        })
-        .catch((error: unknown) => {
-          console.error(`_getReminders: ${error}`);
-        });
-
-      return;
-    }
-
-    // Get the reminders
-    const reminders = await graphClient
-      .api(`/me/drive/root:/WorkMinders App:/children`)
-      .version("v1.0")
-      .get()
-      .catch((error: unknown) => {
-        console.error(`_getReminders: ${error}`);
-        return null;
-      });
-
-    // TODO: remove after testing
-    console.log(reminders.value);
-
-    // Process the reminders
-    // TODO: implement
-    return reminders.value;
   }
 
   protected onThemeChanged(currentTheme: IReadonlyTheme | undefined): void {
@@ -214,9 +117,20 @@ export default class WorkMindersWebPart extends BaseClientSideWebPart<IWorkMinde
             {
               groupName: strings.propPaneLookAndFeel,
               groupFields: [
-                PropertyPaneTextField("description", {
+                PropertyFieldNumber("height", {
+                  key: "height",
                   label: strings.propPaneHeight,
                   description: strings.propPaneHeightDescription,
+                  value: this.properties.height,
+                }),
+              ],
+            },
+            {
+              groupName: strings.propPaneVersion,
+              groupFields: [
+                PropertyPaneWebPartInformation({
+                  description: `WorkMinders v${this.context.manifest.version}<br><a href="https://www.vokounapps.cz" target="_blank">VokounApps</a>`,
+                  key: `webPartInfoId`,
                 }),
               ],
             },

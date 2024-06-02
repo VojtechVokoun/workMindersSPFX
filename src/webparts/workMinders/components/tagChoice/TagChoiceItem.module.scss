@@ -1,0 +1,95 @@
+@property --gradientStart {
+  syntax: '<color>';
+  initial-value: transparent;
+  inherits: false;
+}
+
+@property --gradientEnd {
+  syntax: '<color>';
+  initial-value: transparent;
+  inherits: false;
+}
+
+.wm_tagChoiceItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  padding: 7px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+  width: 100%;
+  min-height: 16px;
+  background-image: linear-gradient(to bottom right, var(--gradientStart), var(--gradientEnd));
+  transition: all ease-in-out 0.1s, --gradientStart 0.3s, --gradientEnd 0.3s;;
+}
+
+.wm_tagChoiceItem:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  --gradientStart: #0078D405;
+  --gradientEnd: #0078D422;
+}
+
+.wm_tagChoiceItemActive {
+  @extend .wm_tagChoiceItem;
+  color: #0078D4FF;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  --gradientStart: #0078D433;
+  --gradientEnd: #0078D44D;
+}
+
+.wm_tagChoiceItemActive:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  --gradientStart: #0078D44D;
+  --gradientEnd: #0078D466;
+}
+
+.wm_tagChoiceItemLabel {
+  width: 100%;
+  margin: 0;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-height: 16px;
+}
+
+.wm_tagChoiceItemHoverSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 7px;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+.wm_tagChoiceItemButton {
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: gray;
+  height: 16px;
+  transition: all ease-in-out 0.3s;
+}
+
+.wm_tagChoiceItemButton:hover {
+  color: #0078d4;
+}
+
+.wm_tagChoiceItemDeleteButton {
+  @extend .wm_tagChoiceItemButton;
+}
+
+.wm_tagChoiceItemDeleteButton:hover {
+  color: #ff0000;
+}

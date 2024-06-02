@@ -9,7 +9,6 @@
   "supportedHosts": [
     "SharePointWebPart",
     "TeamsPersonalApp",
-    "TeamsTab",
     "SharePointFullPage"
   ],
   "supportsThemeVariants": true,

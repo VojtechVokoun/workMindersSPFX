@@ -1,25 +1,32 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import {
+  ISPHttpClientConfiguration,
   MSGraphClientV3,
+  ODataVersion,
   SPHttpClient,
   SPHttpClientConfiguration,
-  ODataVersion,
-  ISPHttpClientConfiguration,
   SPHttpClientResponse,
 } from "@microsoft/sp-http";
-import { TUser, TTeams, TSPSite, TFile } from "../types/ItemTypes";
+import { TFile, TSPSite, TTeam, TUser } from "../types/ItemTypes";
 
 /**
  * This calls the Graph API to get the user autocomplete suggestions for a given search query.
+ * @param context - the webpart context
+ * @param query - the search query
+ * @returns The user suggestions based on the search query
  */
 export const getUserSuggestions = async (
-  client: MSGraphClientV3,
+  context: WebPartContext,
   query: string,
 ): Promise<TUser[]> => {
   // If the query is too short, return an empty array
   if (query.length < 3) {
     return [];
   }
+
+  // Get the Graph client
+  const client: MSGraphClientV3 =
+    await context.msGraphClientFactory.getClient("3");
 
   // Get the user suggestions
   const userSuggestions = await client
@@ -34,19 +41,23 @@ export const getUserSuggestions = async (
       return null;
     });
 
-  // TODO: remove after testing
-  console.log(userSuggestions.value);
-
   // Return the suggestions
   return userSuggestions.value;
 };
 
 /**
  * This calls the Graph API to get the user's manager. This is used in the webpart after entering a certain keyword.
+ * @param context - the webpart context
+ * @returns The user's manager
  */
-export const getManager = async (client: MSGraphClientV3): Promise<TUser> => {
+export const getManager = async (context: WebPartContext): Promise<TUser> => {
+  // Get the Graph client
+  const client: MSGraphClientV3 =
+    await context.msGraphClientFactory.getClient("3");
+
   // Get the user's manager
-  const manager = await client
+  // Return the manager
+  return await client
     .api("/me/manager")
     .version("v1.0")
     .get()
@@ -54,25 +65,26 @@ export const getManager = async (client: MSGraphClientV3): Promise<TUser> => {
       console.error(`getManager: ${error}`);
       return null;
     });
-
-  // TODO: remove after testing
-  console.log(manager);
-
-  // Return the manager
-  return manager;
 };
 
 /**
  * This calls the Graph API to get suggestions for the user's Teams based on the user's input.
+ * @param context - the webpart context
+ * @param query - the search query
+ * @returns The team suggestions based on the search query
  */
 export const getTeamSuggestions = async (
-  client: MSGraphClientV3,
+  context: WebPartContext,
   query: string,
-): Promise<TTeams[]> => {
+): Promise<TTeam[]> => {
   // If the query is too short, return an empty array
   if (query.length < 3) {
     return [];
   }
+
+  // Get the Graph client
+  const client: MSGraphClientV3 =
+    await context.msGraphClientFactory.getClient("3");
 
   // Get the team suggestions
   const teamSuggestions = await client
@@ -85,18 +97,19 @@ export const getTeamSuggestions = async (
       return null;
     });
 
-  // TODO: remove after testing
-  console.log(teamSuggestions.value);
-
   // Return the suggestions
   return teamSuggestions.value;
 };
 
 /**
  * This calls the SharePoint REST API to get all the sites that the user has access to.
- * This function is called when the webpart is loaded – that is because the neither the SharePoint REST API nor the
+ * This function is called when the component is loaded – that is because the neither the SharePoint REST API nor the
  * Graph API is able to query the user's sites based on the user's input. (The 'starts with' filter is not supported,
  * both APIs only return sites if the name and search query are matching.)
+ * ! It is known that the Graph API would be better suited, but from experience, this specific functionality is not
+ * ! as stable as the SharePoint REST API just yet.
+ * @param context - the webpart context
+ * @returns The user's sites
  */
 export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
   // Set up the SharePoint HTTP client
@@ -125,10 +138,12 @@ export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
   }
 
   // Process the response
+  // Disable the eslint rule for the next line because the response is not typed the same between tenants
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const processedResponse: any = await clientResponse.json();
-
   const loadedSites: any[] =
     processedResponse.PrimaryQueryResult.RelevantResults.Table.Rows;
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const finalSites: TSPSite[] = [];
 
@@ -140,21 +155,24 @@ export const getSites = async (context: WebPartContext): Promise<TSPSite[]> => {
     });
   });
 
-  // TODO: remove after testing
-  console.log(finalSites);
-
   // Return the suggestions
   return finalSites;
 };
 
 /**
  * This calls the Graph API to get the user's recent files.
- * This function is called when the webpart is loaded – that is because the Graph API is able to query the user's recent
- * files based on the user's input.
+ * This function is called when the component is loaded – that is because the Graph API is uable to query the user's
+ * recent files based on the user's input.
+ * @param context - the webpart context
+ * @returns The user's recent files
  */
 export const getRecentFiles = async (
-  client: MSGraphClientV3,
+  context: WebPartContext,
 ): Promise<TFile[]> => {
+  // Get the Graph client
+  const client: MSGraphClientV3 =
+    await context.msGraphClientFactory.getClient("3");
+
   // Get the user's recent files
   const recentFiles = await client
     .api("/me/drive/recent")
@@ -165,9 +183,6 @@ export const getRecentFiles = async (
       console.error(`getRecentFiles: ${error}`);
       return null;
     });
-
-  // TODO: remove after testing
-  console.log(recentFiles.value as TFile[]);
 
   return recentFiles.value as TFile[];
 };

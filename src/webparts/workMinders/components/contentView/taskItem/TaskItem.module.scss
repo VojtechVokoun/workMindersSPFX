@@ -1,0 +1,116 @@
+@property --gradientStart {
+  syntax: '<color>';
+  initial-value: transparent;
+  inherits: false;
+}
+
+@property --gradientEnd {
+  syntax: '<color>';
+  initial-value: transparent;
+  inherits: false;
+}
+
+.wm_taskItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 7px;
+  border-bottom: .5px solid #EAEAEAEA;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: calc(100% - 25px);
+  cursor: pointer;
+  background-image: linear-gradient(to bottom right, var(--gradientStart), var(--gradientEnd));
+  transition: all ease-in-out 0.1s, --gradientStart 0.3s, --gradientEnd 0.3s;
+}
+
+.wm_taskItem:hover {
+  --gradientStart: #0078D405;
+  --gradientEnd: #0078D422;
+}
+
+.wm_taskItemMainSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 7px;
+  width: calc(100% - 87px);
+}
+
+.wm_taskItemTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.wm_taskItemDescription {
+  font-size: 14px;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.wm_taskItemButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+  width: 45px;
+  flex-shrink: 0;
+}
+
+.wm_taskItemButton {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #323130;
+  height: 20px;
+}
+
+.wm_taskItemButtonImportant {
+  color: #FF0000;
+}
+
+.wm_taskItemButtonCheckbox {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.wm_taskItemLinks {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.wm_taskItemLinksBadge {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.wm_taskItemLinksBadgeIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.wm_taskItemLinksBadgeText {
+  font-size: 14px;
+  margin: 0;
+}

@@ -1,6 +1,16 @@
 define([], function () {
   return {
-    // WORKMINDERS WEBPART
+    // General Actions
+    done: "Hotovo",
+    cancel: "Zrušit",
+    edit: "Upravit",
+    delete: "Smazat",
+
+    // Web Part Status
+    oneDriveDoesNotExist:
+      "Nepodařilo se načíst Vaše připomínky (OneDrive neexistuje).",
+    loadingData: "Načítám Vaše připomínky...",
+
     // Property Pane
     propPaneDescription: "Nastavení",
     // Property Pane - Look and Feel
@@ -8,6 +18,63 @@ define([], function () {
     propPaneHeight: "Výška",
     propPaneHeightDescription:
       "Nastavte výšku WorkMinders. Výchozí hodnota je 500px.",
+    propPaneSmallUi: "Minimalistické rozhraní",
+    propPaneSmallUiDescription:
+      "Rozhraní WorkMinders bude minimalizováno. Ideální pro umístění ve více sloupcích.",
+    // Property Pane - Version
+    propPaneVersion: "Verze",
+
+    // Header
+    tasksAll: "Všechny úkoly",
+    tasksCompleted: "Dokončené úkoly",
+    tasksOverdue: "Úkoly po termínu",
+    tasksUpcoming: "Nadcházející úkoly",
+    tasksImportant: "Důležité úkoly",
+
+    // ContentView
+    taskListViewNoTasks: "Žádné úkoly",
+    taskListViewNoTasksDescription:
+      "Nejsou tady žádné úkoly. Přidejte nový kliknutím na tlačítko v pravém horním rohu.",
+    addTask: "Nový úkol",
+
+    // TaskItem
+    taskItemMarkAsComplete: "Označit jako dokončené",
+    taskItemMarkAsIncomplete: "Označit jako nedokončené",
+    taskItemDelete: "Smazat",
+    taskItemEdit: "Upravit",
+    taskItemViewDetails: "Zobrazit detaily",
+    taskItemDueDate: "Termín",
+    taskItemCreated: "Vytvořeno",
+    taskItemModified: "Upraveno",
+    taskItemLinkedPeople: "Propojení lidé",
+    taskItemLinkedSites: "Propojené weby",
+    taskItemLinkedTeams: "Propojené týmy",
+    taskItemLinkedFiles: "Propojené soubory",
+    taskItemImportant: "Důležité",
+
+    // TaskOverlay
+    editTask: "Upravit úkol",
+    title: "Název",
+    titlePlaceholder: "Zadejte název",
+    description: "Popis",
+    descriptionPlaceholder: "Zadejte popis",
+    save: "Uložit",
+    discard: "Zahodit a zavřít",
+    searchTags: "Hledat tagy",
+    addMore: "Přidat další...",
+
+    // TagChoice
+    tags: "Tagy",
+    addTag: "Nový tag",
+    noTags: "Žádné tagy",
+
+    // Add/Edit Tag
+    addTagPlaceholder: "Zadejte název nového tagu",
+    editTagPlaceholder: "Zadejte nový název tagu",
+    tagHint: "Vyberte krátký, výstižný název.",
+
+    // Delete Tag
+    tagDeleteDescription: "Tuto akci nelze vrátit zpět.",
 
     // Environment
     AppLocalEnvironmentSharePoint:
