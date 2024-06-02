@@ -28,7 +28,7 @@ interface ITaskItemProps {
   task: WorkMinder;
   handleTaskEdit: (task: WorkMinder) => void;
   webpartContext: WebPartContext;
-  setCompleteCount: Dispatch<SetStateAction<number>>;
+  filterTasks: () => void;
 }
 
 const TaskItem = (props: ITaskItemProps): JSX.Element => {
@@ -86,9 +86,7 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
       console.error(error);
     });
     setIsCompleted(props.task.isCompleted);
-    props.setCompleteCount((prevCount) =>
-      props.task.isCompleted ? prevCount + 1 : prevCount - 1,
-    );
+    props.filterTasks();
   };
 
   // RENDER -----------------------------------------------
