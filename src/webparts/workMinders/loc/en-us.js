@@ -25,7 +25,7 @@ define([], function () {
     propPaneVersion: "Version",
 
     // Header
-    tasksAll: "All Tasks",
+    tasksAll: "Open Tasks",
     tasksCompleted: "Completed Tasks",
     tasksOverdue: "Overdue Tasks",
     tasksUpcoming: "Upcoming Tasks",

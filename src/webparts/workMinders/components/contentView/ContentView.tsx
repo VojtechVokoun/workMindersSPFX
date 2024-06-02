@@ -20,8 +20,8 @@ export interface IContentViewProps {
   handleTaskCreation: () => void;
   handleTaskEdit: (task: WorkMinder) => void;
   setSidebarActive: Dispatch<SetStateAction<boolean>>;
-  setCompleteCount: Dispatch<SetStateAction<number>>;
   hasTeamsContext: boolean;
+  setAllTasks: Dispatch<SetStateAction<WorkMinder[]>>;
 }
 
 const ContentView = (props: IContentViewProps): JSX.Element => {
@@ -92,7 +92,7 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
         activeTag={props.activeTag}
         handleTaskEdit={props.handleTaskEdit}
         webpartContext={props.webpartContext}
-        setCompleteCount={props.setCompleteCount}
+        setAllTasks={props.setAllTasks}
       />
     </div>
   );

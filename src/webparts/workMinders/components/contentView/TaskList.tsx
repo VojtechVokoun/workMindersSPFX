@@ -12,10 +12,10 @@ import styles from "./TaskList.module.scss";
 
 interface ITaskListProps {
   allTasks: WorkMinder[];
+  setAllTasks: Dispatch<SetStateAction<WorkMinder[]>>;
   activeTag: string;
   handleTaskEdit: (task: WorkMinder) => void;
   webpartContext: WebPartContext;
-  setCompleteCount: Dispatch<SetStateAction<number>>;
 }
 
 const TaskList = (props: ITaskListProps): JSX.Element => {
@@ -45,7 +45,9 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
     // Filter the tasks based on the active tag
     switch (props.activeTag) {
       case strings.tasksAll:
-        filteredTasks = props.allTasks;
+        filteredTasks = props.allTasks.filter(
+          (task: WorkMinder) => !task.isCompleted,
+        );
         break;
       case strings.tasksCompleted:
         filteredTasks = props.allTasks.filter(
@@ -70,7 +72,7 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
         break;
       case strings.tasksImportant:
         filteredTasks = props.allTasks.filter(
-          (task: WorkMinder) => task.isImportant,
+          (task: WorkMinder) => task.isImportant && !task.isCompleted,
         );
         break;
       default:
@@ -89,11 +91,6 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
       }
     });
 
-    // Sort the tasks by completion status
-    // filteredTasks.sort((a: WorkMinder, b: WorkMinder): number =>
-    //   a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1,
-    // );
-
     // Set the filtered tasks state
     setFilteredTasks(filteredTasks);
   };
@@ -105,6 +102,27 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
   React.useEffect(() => {
     filterTasks();
   }, [props.activeTag, props.allTasks]);
+
+  // EVENT HANDLERS ---------------------------------------
+  /**
+   * An event handler that toggles the task completion status.
+   * @param task - the task to toggle
+   */
+  const handleTaskItemCompletionToggle = (task: WorkMinder): void => {
+    // Toggle the isCompleted property of the task
+    task.isCompleted = !task.isCompleted;
+
+    // Sync the data with the remote
+
+    task.updateReminder(props.webpartContext).catch((error) => {
+      console.error(error);
+    });
+
+    // Update the allTasks state
+    props.setAllTasks((prevTasks) =>
+      prevTasks.map((t) => (t.localId === task.localId ? task : t)),
+    );
+  };
 
   // RENDER -----------------------------------------------
   return (
@@ -126,7 +144,8 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
           task={task}
           handleTaskEdit={props.handleTaskEdit}
           webpartContext={props.webpartContext}
-          filterTasks={filterTasks}
+          setAllTasks={props.setAllTasks}
+          handleTaskItemCompletionToggle={handleTaskItemCompletionToggle}
         />
       ))}
     </section>

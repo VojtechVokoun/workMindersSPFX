@@ -89,12 +89,6 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    */
   const [sidebarActive, setSidebarActive] = useState<boolean>(false);
 
-  /**
-   * A state tracking the number of completed tasks.
-   * Used to force a re-filter and re-sort when a task is marked as complete.
-   */
-  const [completeCount, setCompleteCount] = useState<number>(0);
-
   // EVENT HANDLERS ---------------------------------------
   /**
    * Handles the addition of a tag.
@@ -186,7 +180,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
       console.error(`getDataFromOneDrive: ${error}`);
     });
   }, []);
-  
+
   // STYLES -----------------------------------------------
   /**
    * The dynamic styles for the container. Sets the height of the container based on the set webpart height.
@@ -307,8 +301,8 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           handleTaskCreation={handleTaskCreation}
           handleTaskEdit={handleTaskEdit}
           setSidebarActive={setSidebarActive}
-          setCompleteCount={setCompleteCount}
           hasTeamsContext={props.hasTeamsContext}
+          setAllTasks={setAllWorkMinders}
         />
       )}
     </div>

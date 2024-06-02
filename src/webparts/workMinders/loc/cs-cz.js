@@ -25,7 +25,7 @@ define([], function () {
     propPaneVersion: "Verze",
 
     // Header
-    tasksAll: "Všechny úkoly",
+    tasksAll: "Otevřené úkoly",
     tasksCompleted: "Dokončené úkoly",
     tasksOverdue: "Úkoly po termínu",
     tasksUpcoming: "Nadcházející úkoly",
