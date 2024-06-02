@@ -1,0 +1,103 @@
+.primaryFilterStackerContainer {
+  position: absolute;
+  z-index: 1030;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 5px;
+}
+
+.wm_tagEditorView {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0;
+  cursor: pointer;
+  width: calc(100% - 12px);
+  transition: all ease-in-out 0.3s;
+}
+
+.wm_tagEditorLabel {
+  margin: 0;
+  text-wrap: nowrap;
+  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wm_tagEditorIcon {
+  color: gray;
+}
+
+.wm_tagEditorExpandedContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  background: #FFFFFF;
+  border: #00000029;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  width: calc(100% - 20px);
+  margin-bottom: 5px;
+}
+
+.wm_tagEditorExpandedSearch {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 3px;
+  border-bottom: 1px solid #13141633;
+  width: 100%;
+}
+
+.wm_tagEditorExpandedSearchInput {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  gap: 5px;
+  outline: none;
+  border: none;
+}
+
+
+.wm_tagEditorExpandedSearchIcon {
+  color: #656772;
+}
+
+.wm_tagEditorSingleTagContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+
+}
+
+
+.wm_tagEditorSingleTagCheckbox {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.wm_tagEditorSingleTagTitle {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 20px;
+}

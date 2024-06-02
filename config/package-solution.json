@@ -1,0 +1,62 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "workminders-spfx-client-side-solution",
+    "id": "98655c61-63d2-4510-8ae9-50ea22c1b279",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "Vojtech Vokoun",
+      "websiteUrl": "https://www.vokounapps.cz",
+      "privacyUrl": "https://www.vokounapps.cz",
+      "termsOfUseUrl": "https://www.vokounapps.cz",
+      "mpnId": ""
+    },
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Files.ReadWrite"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Team.ReadBasic.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.Read"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Sites.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Directory.Read.All"
+      }
+    ],
+    "metadata": {
+      "shortDescription": {
+        "default": "Take control of your workday with WorkMinders."
+      },
+      "longDescription": {
+        "default": "WorkMinders is a productivity tool that helps you take control of your workday. It provides you with a daily overview of your tasks, meetings, and emails, and helps you to stay focused on what matters most. WorkMinders is designed to help you work smarter, not harder."
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "WorkMinders",
+        "description": "The WorkMinders web part.",
+        "id": "0959c3f9-53cc-4f77-aee9-cb2b3c46df85",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/workminders-spfx.sppkg"
+  }
+}

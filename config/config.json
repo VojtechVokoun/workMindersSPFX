@@ -1,0 +1,19 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "work-minders-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/workMinders/WorkMindersWebPart.js",
+          "manifest": "./src/webparts/workMinders/WorkMindersWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "WorkMindersWebPartStrings": "lib/webparts/workMinders/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+  }
+}

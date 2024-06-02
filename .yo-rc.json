@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "20.8.1",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.12.0"
+    },
+    "version": "1.18.2",
+    "libraryName": "workminders-spfx",
+    "libraryId": "98655c61-63d2-4510-8ae9-50ea22c1b279",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "workminders-spfx",
+    "solutionShortDescription": "workminders-spfx description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

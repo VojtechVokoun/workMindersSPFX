@@ -1,0 +1,33 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "cd37a32b-4b05-43bf-af87-2760126f0912",
+  "alias": "WorkMindersWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart",
+    "TeamsPersonalApp",
+    "SharePointFullPage"
+  ],
+  "supportsThemeVariants": true,
+  "preconfiguredEntries": [
+    {
+      "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+      "group": {
+        "default": "Advanced"
+      },
+      "title": {
+        "default": "WorkMinders"
+      },
+      "description": {
+        "default": "Take control of your work day with WorkMinders."
+      },
+      "officeFabricIconFontName": "Page",
+      "properties": {
+        "height": 500
+      }
+    }
+  ]
+}

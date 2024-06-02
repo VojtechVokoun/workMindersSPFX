@@ -1,0 +1,130 @@
+.wm_taskItemOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 5px 0 10px rgba(0, 0, 0, 0.1);
+  transition: all ease-in-out 0.3s;
+  background-color: white;
+  border-radius: 10px;
+  z-index: 1011;
+  width: 90dvw;
+  height: 90dvh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.wm_taskItemOverlayTitle {
+  font-weight: bold;
+  word-break: break-word;
+  margin: 0;
+  padding: 10px 15px 7px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wm_taskItemOverlayContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+  padding: 10px;
+  overflow-y: scroll;
+  gap: 20px
+}
+
+.wm_taskItemOverlayFooter {
+  padding: 10px;
+  box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wm_taskItemOverlayItemSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.wm_taskItemOverlayItemHorizontalSection {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 40px;
+  align-items: center;
+}
+
+.wm_taskItemOverlayItemVerticalDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.wm_taskItemOverlayItemHorizontalDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.wm_taskItemOverlayItemLabel {
+  color: gray;
+}
+
+.wm_taskItemOverlayItemButtonCheckbox {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.wm_taskItemOverlayRegularInput {
+  padding: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  outline: none;
+
+  &:focus {
+    border: 1px solid #0078D4;
+  }
+}
+
+.wm_taskItemOverlayTextAreaInput {
+  @extend .wm_taskItemOverlayRegularInput;
+  resize: vertical;
+}
+
+.wm_taskItemOverlayLinkStack {
+  column-count: 2;
+  width: 100%;
+  gap: 10px;
+
+  @media only screen and (max-width: 700px) {
+    column-count: 1;
+  }
+}
+
+.wm_taskItemOverlaySuggestionDropdown {
+  position: absolute;
+  z-index: 1011;
+  background-color: #FFFFFF;
+  border: #00000029;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow-y: auto;
+  width: 100%;
+  top: 100%;
+}
+
+.wm_taskItemOverlaySuggestionDropdownItem {
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.wm_taskItemOverlaySuggestionDropdownItem:hover {
+  background-color: #0078D422;
+}
