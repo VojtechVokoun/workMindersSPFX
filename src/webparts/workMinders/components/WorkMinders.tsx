@@ -236,6 +236,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           webpartContext={props.webpartContext}
           setTaskOverlayActive={setTaskOverlayActive}
           setTaskOverlayItem={setTaskOverlayItem}
+          allTasks={allWorkMinders}
           setAllTasks={setAllWorkMinders}
         />
       )}
