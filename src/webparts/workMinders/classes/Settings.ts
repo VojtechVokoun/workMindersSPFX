@@ -176,7 +176,7 @@ export class Settings {
       });
 
     // Set the settings
-    this.tagList = settingsFile.tagList.split(";;");
+    this.tagList = settingsFile.tagList;
 
     this.tagList = this.tagList.filter((tag, index, self) => {
       return self.indexOf(tag) === index && tag !== "";
@@ -204,7 +204,7 @@ export class Settings {
         "Content-Type": "application/json",
       })
       .put({
-        tagList: "",
+        tagList: [],
       })
       .catch((error: unknown) => {
         console.error(`_getSettings: ${error}`);
