@@ -49,7 +49,7 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
    * A dynamic styling object for the due date.
    */
   const dueDateDynamicStyle: React.CSSProperties = {
-    color: props.task.dueDate > new Date().toISOString() ? "#FF0000" : "gray",
+    color: props.task.dueDate < new Date().toISOString() ? "#FF7300" : "gray",
   };
 
   // EVENT HANDLERS ---------------------------------------
