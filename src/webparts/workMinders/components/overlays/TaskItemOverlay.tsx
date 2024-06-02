@@ -33,6 +33,7 @@ interface ITaskItemOverlayProps {
   webpartContext: WebPartContext;
   setTaskOverlayActive: Dispatch<SetStateAction<boolean>>;
   setTaskOverlayItem: Dispatch<SetStateAction<WorkMinder | undefined>>;
+  allTasks: WorkMinder[];
   setAllTasks: Dispatch<SetStateAction<WorkMinder[]>>;
 }
 
@@ -118,17 +119,34 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
       return;
     }
 
+    let newLocalId = 0;
     if (props.task) {
-      props.task.title = nameInputValue;
-      props.task.description = descriptionInputValue;
-      props.task.dueDate = dueDateInputValue?.toISOString() || "";
-      props.task.isImportant = priorityInputValue;
-      props.task.linkedUsers = localLinkedUsers;
-      props.task.linkedTeams = localLinkedTeams;
-      props.task.linkedSpSites = localLinkedSpSites;
-      props.task.linkedFiles = localLinkedFiles;
-      props.task.tags = tagsInputValue;
+      // Find the new local ID (the lowest number after all the other tasks)
+      newLocalId = Math.max(...props.allTasks.map((task) => task.localId), 0);
+    }
 
+    // Create a new task object with the updated properties
+    const updatedTask = new WorkMinder(
+      props.task ? props.task.localId : newLocalId + 1,
+      nameInputValue,
+      descriptionInputValue,
+      props.task ? props.task.createdDate : new Date().toISOString(),
+      new Date().toISOString(),
+      dueDateInputValue.toISOString(),
+      props.task ? props.task.isCompleted : false,
+      priorityInputValue,
+      localLinkedUsers,
+      localLinkedTeams,
+      localLinkedSpSites,
+      localLinkedFiles,
+      tagsInputValue,
+    );
+
+    if (props.task) {
+      // Update the properties of the original task object
+      props.task.updateProperties(updatedTask);
+
+      // Sync the data with the remote
       props.task.updateReminder(props.webpartContext).catch((error) => {
         console.error("An error occurred: ", error);
       });
@@ -142,32 +160,12 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
         );
       });
     } else {
-      const newTask = new WorkMinder(
-        0,
-        nameInputValue,
-        descriptionInputValue,
-        new Date().toISOString(),
-        new Date().toISOString(),
-        dueDateInputValue.toISOString(),
-        false,
-        priorityInputValue,
-        localLinkedUsers,
-        localLinkedTeams,
-        localLinkedSpSites,
-        localLinkedFiles,
-        tagsInputValue,
-      );
-
-      newTask.createReminder(props.webpartContext).catch((error) => {
+      updatedTask.createReminder(props.webpartContext).catch((error) => {
         console.error("An error occurred: ", error);
       });
 
       props.setAllTasks((prevState) => {
-        console.log("Previous state: ", prevState);
-        console.log("Adding new task: ", newTask);
-        console.log("New state: ", [...prevState, newTask]);
-
-        return [...prevState, newTask];
+        return [...prevState, updatedTask];
       });
     }
 

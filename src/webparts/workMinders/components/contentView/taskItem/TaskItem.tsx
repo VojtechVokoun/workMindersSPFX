@@ -109,8 +109,10 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
             localId: newLocalId,
           };
 
+          props.task.updateProperties(updatedTask);
+
           // Sync the data with the remote
-          updatedTask.updateReminder(props.webpartContext).catch((error) => {
+          props.task.updateReminder(props.webpartContext).catch((error) => {
             console.error(error);
           });
 

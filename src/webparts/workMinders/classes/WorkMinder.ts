@@ -183,4 +183,18 @@ export class WorkMinder {
     this.modifiedDate = creationResponse.lastModifiedDateTime;
     this.oneDriveFileId = creationResponse.id;
   };
+
+  public updateProperties = (updatedTask: WorkMinder): void => {
+    this.title = updatedTask.title;
+    this.description = updatedTask.description;
+    this.dueDate = updatedTask.dueDate;
+    this.isCompleted = updatedTask.isCompleted;
+    this.isImportant = updatedTask.isImportant;
+    this.linkedUsers = updatedTask.linkedUsers;
+    this.linkedTeams = updatedTask.linkedTeams;
+    this.linkedSpSites = updatedTask.linkedSpSites;
+    this.linkedFiles = updatedTask.linkedFiles;
+    this.tags = updatedTask.tags;
+    this.localId = updatedTask.localId;
+  };
 }
