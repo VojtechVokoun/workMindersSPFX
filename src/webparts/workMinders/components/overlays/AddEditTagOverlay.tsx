@@ -1,12 +1,14 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+
 import { Settings } from "../../classes/Settings";
+import { WorkMinder } from "../../classes/WorkMinder";
 
 import * as strings from "WorkMindersWebPartStrings";
 import styles from "./AddEditTagOverlay.module.scss";
 import globalStyles from "../GlobalStyles.module.scss";
-import { WorkMinder } from "../../classes/WorkMinder";
 
 interface IAddEditTagOverlayProps {
   activeTag: string;
@@ -15,6 +17,7 @@ interface IAddEditTagOverlayProps {
   setEditedTag: Dispatch<SetStateAction<string>>;
   setTagOverlayActive: Dispatch<SetStateAction<boolean>>;
   tasks: WorkMinder[];
+  webpartContext: WebPartContext;
 }
 
 const AddEditTagOverlay = (props: IAddEditTagOverlayProps): JSX.Element => {
@@ -54,7 +57,12 @@ const AddEditTagOverlay = (props: IAddEditTagOverlayProps): JSX.Element => {
     if (props.editedTag === "") {
       Settings.addTag(inputValue);
     } else {
-      Settings.editTag(props.editedTag, inputValue, props.tasks);
+      Settings.editTag(
+        props.editedTag,
+        inputValue,
+        props.tasks,
+        props.webpartContext,
+      );
       props.setEditedTag("");
     }
     if (inputValue === props.activeTag) {

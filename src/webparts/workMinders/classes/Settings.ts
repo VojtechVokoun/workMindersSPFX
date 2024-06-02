@@ -45,17 +45,19 @@ export class Settings {
    * @param oldTag - the old tag name
    * @param newTag - the new tag name
    * @param tasks - the tasks to update
+   * @param context - the web part context
    */
   public static editTag(
     oldTag: string,
     newTag: string,
     tasks: WorkMinder[],
+    context: WebPartContext,
   ): void {
     if (Settings.tagList.includes(oldTag)) {
       Settings.tagList[Settings.tagList.indexOf(oldTag)] = newTag;
     }
 
-    this.replaceTagInTasks(oldTag, newTag, tasks);
+    this.replaceTagInTasks(oldTag, newTag, tasks, context);
     this.syncWithRemote().catch((error: unknown) => {
       console.error(`editTag: ${error}`);
     });
@@ -65,13 +67,18 @@ export class Settings {
    * Delete the tag, replacing it in all tasks and updating the settings.
    * @param tag - the tag name
    * @param tasks - the tasks to update
+   * @param context - the web part context
    */
-  public static deleteTag(tag: string, tasks: WorkMinder[]): void {
+  public static deleteTag(
+    tag: string,
+    tasks: WorkMinder[],
+    context: WebPartContext,
+  ): void {
     if (Settings.tagList.includes(tag)) {
       Settings.tagList.splice(Settings.tagList.indexOf(tag), 1);
     }
 
-    this.replaceTagInTasks(tag, "", tasks);
+    this.replaceTagInTasks(tag, "", tasks, context);
     this.syncWithRemote().catch((error: unknown) => {
       console.error(`deleteTag: ${error}`);
     });
@@ -96,12 +103,14 @@ export class Settings {
    * @param oldTag - the old tag name
    * @param newTag - the new tag name
    * @param tasks - the tasks to update
+   * @param context - the web part context
    * @private
    */
   private static replaceTagInTasks(
     oldTag: string,
     newTag: string,
     tasks: WorkMinder[],
+    context: WebPartContext,
   ): void {
     tasks.forEach((task) => {
       if (task.tags.includes(oldTag)) {
@@ -111,6 +120,10 @@ export class Settings {
           task.tags[task.tags.indexOf(oldTag)] = newTag;
         }
       }
+
+      task.updateReminder(context).catch((error: unknown) => {
+        console.error(`replaceTagInTasks: ${error}`);
+      });
     });
   }
 

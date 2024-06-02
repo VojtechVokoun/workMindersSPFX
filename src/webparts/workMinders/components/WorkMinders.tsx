@@ -317,6 +317,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           activeTag={activeTag}
           setActiveTag={setActiveTag}
           tasks={filteredTasks}
+          webpartContext={props.webpartContext}
         />
       )}
 
@@ -328,6 +329,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           activeTag={activeTag}
           setActiveTag={setActiveTag}
           tasks={filteredTasks}
+          webpartContext={props.webpartContext}
         />
       )}
 

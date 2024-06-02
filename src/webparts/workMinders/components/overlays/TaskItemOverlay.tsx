@@ -47,8 +47,8 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
   const [descriptionInputValue, setDescriptionInputValue] = useState<string>(
     props.task?.description || "",
   );
-  const [dueDateInputValue, setDueDateInputValue] = useState<Date | undefined>(
-    props.task ? new Date(props.task.dueDate) : undefined,
+  const [dueDateInputValue, setDueDateInputValue] = useState<Date>(
+    props.task ? new Date(props.task.dueDate) : new Date(),
   );
   const [priorityInputValue, setPriorityInputValue] = useState<boolean>(
     props.task?.isImportant || false,
@@ -300,8 +300,7 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
    * Convert a Date object to a string in the format YYYY-MM-DD to use in the date input.
    * @param date - the date to convert
    */
-  const dateToString = (date: Date | undefined): string => {
-    if (!date) return "";
+  const dateToString = (date: Date): string => {
     const year = date.getFullYear();
     const month = ("0" + (date.getMonth() + 1)).slice(-2); // Months are 0 indexed, so +1 is added
     const day = ("0" + date.getDate()).slice(-2);
@@ -312,8 +311,7 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
    * Convert a string in the format YYYY-MM-DD to a Date object. If the string is empty, return undefined.
    * @param dateString - the string to convert
    */
-  const stringToDate = (dateString: string): Date | undefined => {
-    if (!dateString) return undefined;
+  const stringToDate = (dateString: string): Date => {
     return new Date(dateString);
   };
 

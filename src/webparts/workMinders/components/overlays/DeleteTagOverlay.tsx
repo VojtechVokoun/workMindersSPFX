@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+
 import { Settings } from "../../classes/Settings";
 import { WorkMinder } from "../../classes/WorkMinder";
 
@@ -15,6 +17,7 @@ interface IDeleteTagOverlayProps {
   editedTag: string;
   setEditedTag: Dispatch<SetStateAction<string>>;
   tasks: WorkMinder[];
+  webpartContext: WebPartContext;
 }
 
 const DeleteTagOverlay = (props: IDeleteTagOverlayProps): JSX.Element => {
@@ -32,7 +35,7 @@ const DeleteTagOverlay = (props: IDeleteTagOverlayProps): JSX.Element => {
    * Handles the click event on the delete button.
    */
   const handleDeleteClick = (): void => {
-    Settings.deleteTag(props.editedTag, props.tasks);
+    Settings.deleteTag(props.editedTag, props.tasks, props.webpartContext);
     props.setTagOverlayActive(false);
     props.setEditedTag("");
     if (props.activeTag === props.editedTag) {
