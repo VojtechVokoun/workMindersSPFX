@@ -271,7 +271,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * The dynamic styles for the container. Sets the height of the container based on the set webpart height.
    */
   const containerDynamicStyle: React.CSSProperties = {
-    height: props.hasTeamsContext ? "auto" : `${props.height}px`,
+    height: props.hasTeamsContext ? "100%" : `${props.height}px`,
   };
 
   // RENDER -----------------------------------------------
