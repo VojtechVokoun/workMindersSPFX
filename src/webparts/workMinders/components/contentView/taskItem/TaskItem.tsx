@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as React from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import {
   CheckboxChecked24Filled,
@@ -27,6 +28,7 @@ interface ITaskItemProps {
   task: WorkMinder;
   handleTaskEdit: (task: WorkMinder) => void;
   webpartContext: WebPartContext;
+  setCompleteCount: Dispatch<SetStateAction<number>>;
 }
 
 const TaskItem = (props: ITaskItemProps): JSX.Element => {
@@ -63,7 +65,13 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
   ): void => {
     event.stopPropagation();
     props.task.isCompleted = !props.task.isCompleted;
+    props.task.updateReminder(props.webpartContext).catch((error) => {
+      console.error(error);
+    });
     setIsCompleted(props.task.isCompleted);
+    props.setCompleteCount((prevCount) =>
+      props.task.isCompleted ? prevCount + 1 : prevCount - 1,
+    );
   };
 
   // RENDER -----------------------------------------------

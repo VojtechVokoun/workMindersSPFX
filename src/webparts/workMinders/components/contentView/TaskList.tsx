@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 
@@ -13,9 +14,11 @@ interface ITaskListProps {
   tasks: WorkMinder[];
   handleTaskEdit: (task: WorkMinder) => void;
   webpartContext: WebPartContext;
+  setCompleteCount: Dispatch<SetStateAction<number>>;
 }
 
 const TaskList = (props: ITaskListProps): JSX.Element => {
+  // RENDER -----------------------------------------------
   return (
     <section className={styles.wm_taskList}>
       {!props.tasks.length && (
@@ -39,6 +42,7 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
             task={task}
             handleTaskEdit={props.handleTaskEdit}
             webpartContext={props.webpartContext}
+            setCompleteCount={props.setCompleteCount}
           />
         ))}
     </section>
