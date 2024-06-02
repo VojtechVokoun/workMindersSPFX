@@ -72,10 +72,6 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * The active tag for the task list.
    */
   const [activeTag, setActiveTag] = useState<string>(strings.tasksAll);
-  /**
-   * A state tracking the currently filtered tasks.
-   */
-  const [filteredTasks, setFilteredTasks] = useState<WorkMinder[]>([]);
 
   /**
    * A state tracking the load state of the webpart.
@@ -92,80 +88,6 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
    * A state holding the activity of the sidebar. Only applies to mobile viewports.
    */
   const [sidebarActive, setSidebarActive] = useState<boolean>(false);
-
-  /**
-   * A state tracking the number of completed tasks.
-   * Used to force a re-filter and re-sort when a task is marked as complete.
-   */
-  const [completeCount, setCompleteCount] = useState<number>(0);
-
-  // METHODS ----------------------------------------------
-  /**
-   * Gets yesterday's date.
-   * @returns a Date object representing yesterday's date
-   */
-  const getYesterday = (): Date => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    return yesterday;
-  };
-
-  /**
-   * Filter the tasks based on the active tag.
-   */
-  const filterTasks = (): void => {
-    let filteredTasks: WorkMinder[];
-
-    // Filter the tasks based on the active tag
-    switch (activeTag) {
-      case strings.tasksAll:
-        filteredTasks = allWorkMinders;
-        break;
-      case strings.tasksCompleted:
-        filteredTasks = allWorkMinders.filter(
-          (task: WorkMinder) => task.isCompleted,
-        );
-        break;
-      case strings.tasksOverdue:
-        filteredTasks = allWorkMinders.filter(
-          (task: WorkMinder) =>
-            task.dueDate &&
-            new Date(task.dueDate) < getYesterday() &&
-            !task.isCompleted,
-        );
-        break;
-      case strings.tasksUpcoming:
-        filteredTasks = allWorkMinders.filter(
-          (task: WorkMinder) =>
-            task.dueDate &&
-            new Date(task.dueDate) > new Date() &&
-            !task.isCompleted,
-        );
-        break;
-      case strings.tasksImportant:
-        filteredTasks = allWorkMinders.filter(
-          (task: WorkMinder) => task.isImportant,
-        );
-        break;
-      default:
-        filteredTasks = allWorkMinders.filter((task: WorkMinder) =>
-          task.tags.includes(activeTag),
-        );
-        break;
-    }
-
-    // Sort the tasks by due date
-    filteredTasks.sort((a: WorkMinder, b: WorkMinder): number => {
-      if (a.dueDate && b.dueDate) {
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-      } else {
-        return 0;
-      }
-    });
-
-    // Set the filtered tasks state
-    setFilteredTasks(filteredTasks);
-  };
 
   // EVENT HANDLERS ---------------------------------------
   /**
@@ -259,13 +181,6 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
     });
   }, []);
 
-  /**
-   * Filter the tasks when the active tag changes and when the tasks change.
-   */
-  useEffect((): void => {
-    filterTasks();
-  }, [activeTag, allWorkMinders, Settings.tagList, completeCount]);
-
   // STYLES -----------------------------------------------
   /**
    * The dynamic styles for the container. Sets the height of the container based on the set webpart height.
@@ -332,7 +247,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           setEditedTag={setEditedTag}
           activeTag={activeTag}
           setActiveTag={setActiveTag}
-          tasks={filteredTasks}
+          tasks={allWorkMinders}
           webpartContext={props.webpartContext}
         />
       )}
@@ -344,7 +259,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           setEditedTag={setEditedTag}
           activeTag={activeTag}
           setActiveTag={setActiveTag}
-          tasks={filteredTasks}
+          tasks={allWorkMinders}
           webpartContext={props.webpartContext}
         />
       )}
@@ -359,6 +274,7 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           handleTagDelete={handleTagDelete}
           height={props.height}
           setSidebarActive={setSidebarActive}
+          hasTeamsContext={props.hasTeamsContext}
         />
       </div>
 
@@ -372,19 +288,21 @@ const WorkMinders = (props: IWorkMindersProps): JSX.Element => {
           handleTagDelete={handleTagDelete}
           height={props.height}
           setSidebarActive={setSidebarActive}
+          hasTeamsContext={props.hasTeamsContext}
         />
       )}
 
       {!(viewportDimensions.viewportWidth <= 1024 && sidebarActive) && (
         <ContentView
           webpartContext={props.webpartContext}
+          allTasks={allWorkMinders}
           activeTag={activeTag}
-          tasks={filteredTasks}
           height={props.height}
           handleTaskCreation={handleTaskCreation}
           handleTaskEdit={handleTaskEdit}
           setSidebarActive={setSidebarActive}
-          setCompleteCount={setCompleteCount}
+          hasTeamsContext={props.hasTeamsContext}
+          setAllTasks={setAllWorkMinders}
         />
       )}
     </div>

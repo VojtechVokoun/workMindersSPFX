@@ -138,7 +138,7 @@ export class WorkMinder {
         tags: this.tags,
       })
       .catch((error: unknown) => {
-        console.error(`updateSettings: ${error}`);
+        console.error(`updateReminder: ${error}`);
       });
 
     this.modifiedDate = updateResponse.lastModifiedDateTime;

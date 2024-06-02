@@ -163,6 +163,10 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
       });
 
       props.setAllTasks((prevState) => {
+        console.log("Previous state: ", prevState);
+        console.log("Adding new task: ", newTask);
+        console.log("New state: ", [...prevState, newTask]);
+
         return [...prevState, newTask];
       });
     }

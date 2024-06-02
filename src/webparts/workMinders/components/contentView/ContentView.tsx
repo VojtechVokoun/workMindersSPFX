@@ -14,13 +14,14 @@ import globalStyles from "../GlobalStyles.module.scss";
 
 export interface IContentViewProps {
   webpartContext: WebPartContext;
+  allTasks: WorkMinder[];
   activeTag: string;
-  tasks: WorkMinder[];
   height: number;
   handleTaskCreation: () => void;
   handleTaskEdit: (task: WorkMinder) => void;
   setSidebarActive: Dispatch<SetStateAction<boolean>>;
-  setCompleteCount: Dispatch<SetStateAction<number>>;
+  hasTeamsContext: boolean;
+  setAllTasks: Dispatch<SetStateAction<WorkMinder[]>>;
 }
 
 const ContentView = (props: IContentViewProps): JSX.Element => {
@@ -45,12 +46,17 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
     setAddButtonHover(false);
   };
 
+  // STYLES -----------------------------------------------
+  /**
+   * The dynamic styles for the container. Sets the height of the container based on the set webpart height.
+   */
+  const containerDynamicStyle: React.CSSProperties = {
+    height: props.hasTeamsContext ? "100%" : `${props.height}px`,
+  };
+
   // RENDER ------------------------------------------------
   return (
-    <div
-      className={styles.wm_contentView}
-      style={{ height: `${props.height}px` }}
-    >
+    <div className={styles.wm_contentView} style={containerDynamicStyle}>
       <nav
         className={`${styles.wm_contentNav} ${globalStyles.wm_contentViewItemHorizontalPadding}`}
       >
@@ -82,10 +88,11 @@ const ContentView = (props: IContentViewProps): JSX.Element => {
       </nav>
 
       <TaskList
-        tasks={props.tasks}
+        allTasks={props.allTasks}
+        activeTag={props.activeTag}
         handleTaskEdit={props.handleTaskEdit}
         webpartContext={props.webpartContext}
-        setCompleteCount={props.setCompleteCount}
+        setAllTasks={props.setAllTasks}
       />
     </div>
   );

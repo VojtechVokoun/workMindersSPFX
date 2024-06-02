@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as React from "react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import {
   CheckboxChecked24Filled,
@@ -28,23 +28,17 @@ interface ITaskItemProps {
   task: WorkMinder;
   handleTaskEdit: (task: WorkMinder) => void;
   webpartContext: WebPartContext;
-  setCompleteCount: Dispatch<SetStateAction<number>>;
+  setAllTasks: Dispatch<SetStateAction<WorkMinder[]>>;
+  handleTaskItemCompletionToggle: (task: WorkMinder) => void;
 }
 
 const TaskItem = (props: ITaskItemProps): JSX.Element => {
   // LOCAL STATE ------------------------------------------
   /**
-   * The state tracking the completion status of the task.
-   */
-  const [isCompleted, setIsCompleted] = React.useState<boolean>(
-    props.task.isCompleted,
-  );
-
-  /**
    * A state tracking how many times a tag has been dropped.
    * Used to force a re-render. May be used a diagnostic tool.
    */
-  const [dropCount, setDropCount] = React.useState(0);
+  const [dropCount, setDropCount] = useState(0);
 
   // METHODS ----------------------------------------------
   /**
@@ -81,16 +75,9 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
     event: React.MouseEvent<SVGElement>,
   ): void => {
     event.stopPropagation();
-    props.task.isCompleted = !props.task.isCompleted;
-    props.task.updateReminder(props.webpartContext).catch((error) => {
-      console.error(error);
-    });
-    setIsCompleted(props.task.isCompleted);
-    props.setCompleteCount((prevCount) =>
-      props.task.isCompleted ? prevCount + 1 : prevCount - 1,
-    );
-  };
 
+    props.handleTaskItemCompletionToggle(props.task);
+  };
   // RENDER -----------------------------------------------
   return (
     <div
@@ -118,7 +105,7 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
       }}
     >
       <div className={styles.wm_taskItemButtonCheckbox}>
-        {isCompleted ? (
+        {props.task.isCompleted ? (
           <CheckboxChecked24Filled
             color={"#0078D4"}
             title={strings.taskItemMarkAsIncomplete}
