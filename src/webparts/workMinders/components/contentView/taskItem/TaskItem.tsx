@@ -28,6 +28,7 @@ interface ITaskItemProps {
   task: WorkMinder;
   handleTaskEdit: (task: WorkMinder) => void;
   webpartContext: WebPartContext;
+  allTasks: WorkMinder[];
   setAllTasks: Dispatch<SetStateAction<WorkMinder[]>>;
   handleTaskItemCompletionToggle: (task: WorkMinder) => void;
 }
@@ -90,9 +91,22 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
 
         if (!props.task.tags.includes(data)) {
           // Create a new task object with the updated tags property
+          // Get the old local ID
+          const oldLocalId = props.task.localId;
+
+          // Find the new local ID (the lowest number after all the other tasks)
+          let newLocalId = 0;
+          props.allTasks.forEach((t) => {
+            if (t.localId >= newLocalId) {
+              newLocalId = t.localId + 1;
+            }
+          });
+
+          // Create a new task object with the isCompleted property toggled
           const updatedTask = {
             ...props.task,
             tags: [...props.task.tags, data].sort((a, b) => a.localeCompare(b)),
+            localId: newLocalId,
           };
 
           // Sync the data with the remote
@@ -100,11 +114,12 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
             console.error(error);
           });
 
-          // Update the allTasks state
+          // Update the allTasks state by removing the old task and adding the updated task
           props.setAllTasks((prevTasks) =>
-            prevTasks.map((t) =>
-              t.localId === updatedTask.localId ? updatedTask : t,
-            ),
+            prevTasks
+              .filter((t) => t.localId !== oldLocalId)
+              .concat(updatedTask)
+              .sort((a, b) => a.localId - b.localId),
           );
 
           setDropCount(dropCount + 1);
