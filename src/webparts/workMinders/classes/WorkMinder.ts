@@ -75,8 +75,6 @@ export class WorkMinder {
     // Initialize the array of reminders
     const workMinders: WorkMinder[] = [];
 
-    console.log(reminders);
-
     // Process the reminders
     for (const reminder of reminders.value) {
       const localId: number = reminders.value.indexOf(reminder);
@@ -86,8 +84,6 @@ export class WorkMinder {
         .api(`/me/drive/items/${reminder.id}/content`)
         .version("v1.0")
         .get();
-
-      console.log(oneDriveFileId);
 
       workMinders.push(
         new WorkMinder(
