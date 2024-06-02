@@ -110,9 +110,11 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
 
       <div className={styles.wm_taskItemMainSection}>
         <h2 className={styles.wm_taskItemTitle}>{props.task.title}</h2>
-        <p className={styles.wm_taskItemDescription}>
-          {props.task.description}
-        </p>
+        {props.task.description !== "" && (
+          <p className={styles.wm_taskItemDescription}>
+            {props.task.description}
+          </p>
+        )}
         {props.task.dueDate !== "" && (
           <p
             className={styles.wm_taskItemDescription}
@@ -124,66 +126,71 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
 
         {props.task.tags.length > 0 && <TagContainer tags={props.task.tags} />}
 
-        <div className={styles.wm_taskItemLinks}>
-          {props.task.linkedUsers.length > 0 && (
-            <div className={styles.wm_taskItemLinksBadge}>
-              <Person16Regular
-                className={styles.wm_taskItemLinksBadgeIcon}
-                color={"#323130"}
-                title={strings.taskItemLinkedPeople}
-              />
+        {props.task.linkedTeams.length > 0 &&
+          props.task.linkedUsers.length > 0 &&
+          props.task.linkedFiles.length > 0 &&
+          props.task.linkedSpSites.length > 0 && (
+            <div className={styles.wm_taskItemLinks}>
+              {props.task.linkedUsers.length > 0 && (
+                <div className={styles.wm_taskItemLinksBadge}>
+                  <Person16Regular
+                    className={styles.wm_taskItemLinksBadgeIcon}
+                    color={"#323130"}
+                    title={strings.taskItemLinkedPeople}
+                  />
 
-              <p className={styles.wm_taskItemLinksBadgeText}>
-                {props.task.linkedUsers.length}
-              </p>
+                  <p className={styles.wm_taskItemLinksBadgeText}>
+                    {props.task.linkedUsers.length}
+                  </p>
+                </div>
+              )}
+
+              {props.task.linkedTeams.length > 0 && (
+                <div className={styles.wm_taskItemLinksBadge}>
+                  <img
+                    className={styles.wm_taskItemLinksBadgeIcon}
+                    src={imgTeams}
+                    alt={strings.taskItemLinkedTeams}
+                    title={strings.taskItemLinkedTeams}
+                  />
+
+                  <p className={styles.wm_taskItemLinksBadgeText}>
+                    {props.task.linkedTeams.length}
+                  </p>
+                </div>
+              )}
+
+              {props.task.linkedSpSites.length > 0 && (
+                <div className={styles.wm_taskItemLinksBadge}>
+                  <img
+                    className={styles.wm_taskItemLinksBadgeIcon}
+                    src={imgSharePoint}
+                    alt={strings.taskItemLinkedSites}
+                    title={strings.taskItemLinkedSites}
+                  />
+
+                  <p className={styles.wm_taskItemLinksBadgeText}>
+                    {props.task.linkedSpSites.length}
+                  </p>
+                </div>
+              )}
+
+              {props.task.linkedFiles.length > 0 && (
+                <div className={styles.wm_taskItemLinksBadge}>
+                  <img
+                    className={styles.wm_taskItemLinksBadgeIcon}
+                    src={imgOneDrive}
+                    alt={strings.taskItemLinkedFiles}
+                    title={strings.taskItemLinkedFiles}
+                  />
+
+                  <p className={styles.wm_taskItemLinksBadgeText}>
+                    {props.task.linkedFiles.length}
+                  </p>
+                </div>
+              )}
             </div>
           )}
-
-          {props.task.linkedTeams.length > 0 && (
-            <div className={styles.wm_taskItemLinksBadge}>
-              <img
-                className={styles.wm_taskItemLinksBadgeIcon}
-                src={imgTeams}
-                alt={strings.taskItemLinkedTeams}
-                title={strings.taskItemLinkedTeams}
-              />
-
-              <p className={styles.wm_taskItemLinksBadgeText}>
-                {props.task.linkedTeams.length}
-              </p>
-            </div>
-          )}
-
-          {props.task.linkedSpSites.length > 0 && (
-            <div className={styles.wm_taskItemLinksBadge}>
-              <img
-                className={styles.wm_taskItemLinksBadgeIcon}
-                src={imgSharePoint}
-                alt={strings.taskItemLinkedSites}
-                title={strings.taskItemLinkedSites}
-              />
-
-              <p className={styles.wm_taskItemLinksBadgeText}>
-                {props.task.linkedSpSites.length}
-              </p>
-            </div>
-          )}
-
-          {props.task.linkedFiles.length > 0 && (
-            <div className={styles.wm_taskItemLinksBadge}>
-              <img
-                className={styles.wm_taskItemLinksBadgeIcon}
-                src={imgOneDrive}
-                alt={strings.taskItemLinkedFiles}
-                title={strings.taskItemLinkedFiles}
-              />
-
-              <p className={styles.wm_taskItemLinksBadgeText}>
-                {props.task.linkedFiles.length}
-              </p>
-            </div>
-          )}
-        </div>
       </div>
 
       <div className={styles.wm_taskItemButtons}>

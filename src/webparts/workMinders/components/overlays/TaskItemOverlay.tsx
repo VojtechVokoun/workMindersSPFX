@@ -148,7 +148,7 @@ const TaskItemOverlay = (props: ITaskItemOverlayProps): JSX.Element => {
         descriptionInputValue,
         new Date().toISOString(),
         new Date().toISOString(),
-        dueDateInputValue?.toISOString() || "",
+        dueDateInputValue.toISOString(),
         false,
         priorityInputValue,
         localLinkedUsers,
