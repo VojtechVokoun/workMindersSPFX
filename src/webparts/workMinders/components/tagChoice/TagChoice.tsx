@@ -18,6 +18,7 @@ export interface ITagChoiceProps {
   handleTagDelete: (tag: string) => void;
   height: number;
   setSidebarActive: Dispatch<SetStateAction<boolean>>;
+  hasTeamsContext: boolean;
 }
 
 /**
@@ -76,12 +77,17 @@ const TagChoice = (props: ITagChoiceProps): JSX.Element => {
     setAddButtonHover(false);
   };
 
+  // STYLES -----------------------------------------------
+  /**
+   * The dynamic styles for the container. Sets the height of the container based on the set webpart height.
+   */
+  const containerDynamicStyle: React.CSSProperties = {
+    height: props.hasTeamsContext ? "100%" : `${props.height}px`,
+  };
+
   // RENDER -----------------------------------------------
   return (
-    <div
-      className={styles.wm_tagChoice}
-      style={{ height: `${props.height}px` }}
-    >
+    <div className={styles.wm_tagChoice} style={containerDynamicStyle}>
       <section className={globalStyles.showOnMobile}>
         <Dismiss20Regular
           className={styles.wm_sidebarDismiss}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as React from "react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import {
   CheckboxChecked24Filled,
@@ -28,23 +28,18 @@ interface ITaskItemProps {
   task: WorkMinder;
   handleTaskEdit: (task: WorkMinder) => void;
   webpartContext: WebPartContext;
-  setCompleteCount: Dispatch<SetStateAction<number>>;
+  allTasks: WorkMinder[];
+  setAllTasks: Dispatch<SetStateAction<WorkMinder[]>>;
+  handleTaskItemCompletionToggle: (task: WorkMinder) => void;
 }
 
 const TaskItem = (props: ITaskItemProps): JSX.Element => {
   // LOCAL STATE ------------------------------------------
   /**
-   * The state tracking the completion status of the task.
-   */
-  const [isCompleted, setIsCompleted] = React.useState<boolean>(
-    props.task.isCompleted,
-  );
-
-  /**
    * A state tracking how many times a tag has been dropped.
    * Used to force a re-render. May be used a diagnostic tool.
    */
-  const [dropCount, setDropCount] = React.useState(0);
+  const [dropCount, setDropCount] = useState(0);
 
   // METHODS ----------------------------------------------
   /**
@@ -81,16 +76,9 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
     event: React.MouseEvent<SVGElement>,
   ): void => {
     event.stopPropagation();
-    props.task.isCompleted = !props.task.isCompleted;
-    props.task.updateReminder(props.webpartContext).catch((error) => {
-      console.error(error);
-    });
-    setIsCompleted(props.task.isCompleted);
-    props.setCompleteCount((prevCount) =>
-      props.task.isCompleted ? prevCount + 1 : prevCount - 1,
-    );
-  };
 
+    props.handleTaskItemCompletionToggle(props.task);
+  };
   // RENDER -----------------------------------------------
   return (
     <div
@@ -102,13 +90,39 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
         const data = event.dataTransfer.getData("text/plain");
 
         if (!props.task.tags.includes(data)) {
-          props.task.tags = [...props.task.tags, data].sort((a, b) =>
-            a.localeCompare(b),
-          );
+          // Create a new task object with the updated tags property
+          // Get the old local ID
+          const oldLocalId = props.task.localId;
 
+          // Find the new local ID (the lowest number after all the other tasks)
+          let newLocalId = 0;
+          props.allTasks.forEach((t) => {
+            if (t.localId >= newLocalId) {
+              newLocalId = t.localId + 1;
+            }
+          });
+
+          // Create a new task object with the isCompleted property toggled
+          const updatedTask = {
+            ...props.task,
+            tags: [...props.task.tags, data].sort((a, b) => a.localeCompare(b)),
+            localId: newLocalId,
+          };
+
+          props.task.updateProperties(updatedTask);
+
+          // Sync the data with the remote
           props.task.updateReminder(props.webpartContext).catch((error) => {
             console.error(error);
           });
+
+          // Update the allTasks state by removing the old task and adding the updated task
+          props.setAllTasks((prevTasks) =>
+            prevTasks
+              .filter((t) => t.localId !== oldLocalId)
+              .concat(updatedTask)
+              .sort((a, b) => a.localId - b.localId),
+          );
 
           setDropCount(dropCount + 1);
         }
@@ -118,7 +132,7 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
       }}
     >
       <div className={styles.wm_taskItemButtonCheckbox}>
-        {isCompleted ? (
+        {props.task.isCompleted ? (
           <CheckboxChecked24Filled
             color={"#0078D4"}
             title={strings.taskItemMarkAsIncomplete}

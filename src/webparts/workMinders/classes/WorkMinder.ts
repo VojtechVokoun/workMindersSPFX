@@ -138,7 +138,7 @@ export class WorkMinder {
         tags: this.tags,
       })
       .catch((error: unknown) => {
-        console.error(`updateSettings: ${error}`);
+        console.error(`updateReminder: ${error}`);
       });
 
     this.modifiedDate = updateResponse.lastModifiedDateTime;
@@ -182,5 +182,19 @@ export class WorkMinder {
     this.createdDate = creationResponse.createdDateTime;
     this.modifiedDate = creationResponse.lastModifiedDateTime;
     this.oneDriveFileId = creationResponse.id;
+  };
+
+  public updateProperties = (updatedTask: WorkMinder): void => {
+    this.title = updatedTask.title;
+    this.description = updatedTask.description;
+    this.dueDate = updatedTask.dueDate;
+    this.isCompleted = updatedTask.isCompleted;
+    this.isImportant = updatedTask.isImportant;
+    this.linkedUsers = updatedTask.linkedUsers;
+    this.linkedTeams = updatedTask.linkedTeams;
+    this.linkedSpSites = updatedTask.linkedSpSites;
+    this.linkedFiles = updatedTask.linkedFiles;
+    this.tags = updatedTask.tags;
+    this.localId = updatedTask.localId;
   };
 }
