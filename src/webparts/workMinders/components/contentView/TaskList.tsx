@@ -109,18 +109,19 @@ const TaskList = (props: ITaskListProps): JSX.Element => {
    * @param task - the task to toggle
    */
   const handleTaskItemCompletionToggle = (task: WorkMinder): void => {
-    // Toggle the isCompleted property of the task
-    task.isCompleted = !task.isCompleted;
+    // Create a new task object with the isCompleted property toggled
+    const updatedTask = { ...task, isCompleted: !task.isCompleted };
 
     // Sync the data with the remote
-
-    task.updateReminder(props.webpartContext).catch((error) => {
+    updatedTask.updateReminder(props.webpartContext).catch((error) => {
       console.error(error);
     });
 
     // Update the allTasks state
     props.setAllTasks((prevTasks) =>
-      prevTasks.map((t) => (t.localId === task.localId ? task : t)),
+      prevTasks.map((t) =>
+        t.localId === updatedTask.localId ? updatedTask : t,
+      ),
     );
   };
 

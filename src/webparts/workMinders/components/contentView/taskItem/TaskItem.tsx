@@ -89,13 +89,23 @@ const TaskItem = (props: ITaskItemProps): JSX.Element => {
         const data = event.dataTransfer.getData("text/plain");
 
         if (!props.task.tags.includes(data)) {
-          props.task.tags = [...props.task.tags, data].sort((a, b) =>
-            a.localeCompare(b),
-          );
+          // Create a new task object with the updated tags property
+          const updatedTask = {
+            ...props.task,
+            tags: [...props.task.tags, data].sort((a, b) => a.localeCompare(b)),
+          };
 
-          props.task.updateReminder(props.webpartContext).catch((error) => {
+          // Sync the data with the remote
+          updatedTask.updateReminder(props.webpartContext).catch((error) => {
             console.error(error);
           });
+
+          // Update the allTasks state
+          props.setAllTasks((prevTasks) =>
+            prevTasks.map((t) =>
+              t.localId === updatedTask.localId ? updatedTask : t,
+            ),
+          );
 
           setDropCount(dropCount + 1);
         }
