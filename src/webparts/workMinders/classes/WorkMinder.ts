@@ -1,10 +1,13 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { MSGraphClientV3 } from "@microsoft/sp-http";
 import { TFile, TSPSite, TTeam, TUser } from "../types/ItemTypes";
-import { Settings } from "./Settings";
 
 export class WorkMinder {
+  // Technical
   localId: number;
+  oneDriveFileId: string;
+
+  // Content
   title: string;
   description: string;
   createdDate: string;
@@ -32,6 +35,7 @@ export class WorkMinder {
     linkedSpSites: TSPSite[],
     linkedFiles: TFile[],
     tags: string[],
+    oneDriveFileId?: string,
   ) {
     this.localId = localId;
     this.title = title;
@@ -46,6 +50,7 @@ export class WorkMinder {
     this.linkedSpSites = linkedSpSites;
     this.linkedFiles = linkedFiles;
     this.tags = tags;
+    this.oneDriveFileId = oneDriveFileId ?? "";
   }
 
   /**
@@ -70,18 +75,23 @@ export class WorkMinder {
     // Initialize the array of reminders
     const workMinders: WorkMinder[] = [];
 
+    console.log(reminders);
+
     // Process the reminders
     for (const reminder of reminders.value) {
-      const id: number = reminders.value.indexOf(reminder);
+      const localId: number = reminders.value.indexOf(reminder);
+      const oneDriveFileId: string = reminder.id;
       // Get the reminder content
       const reminderContent = await graphClient
         .api(`/me/drive/items/${reminder.id}/content`)
         .version("v1.0")
         .get();
 
+      console.log(oneDriveFileId);
+
       workMinders.push(
         new WorkMinder(
-          id,
+          localId,
           reminderContent.title,
           reminderContent.description,
           reminderContent.createdDate,
@@ -94,6 +104,7 @@ export class WorkMinder {
           reminderContent.linkedSpSites,
           reminderContent.linkedFiles,
           reminderContent.tags,
+          oneDriveFileId,
         ),
       );
     }
@@ -113,7 +124,7 @@ export class WorkMinder {
 
     // Update the reminder
     const updateResponse = await graphClient
-      .api(`/me/drive/items/${Settings.oneDriveFileId}/content`)
+      .api(`/me/drive/items/${this.oneDriveFileId}/content`)
       .version("v1.0")
       .headers({
         "Content-Type": "application/json",
@@ -174,5 +185,6 @@ export class WorkMinder {
 
     this.createdDate = creationResponse.createdDateTime;
     this.modifiedDate = creationResponse.lastModifiedDateTime;
+    this.oneDriveFileId = creationResponse.id;
   };
 }
